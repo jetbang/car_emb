@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="C Source File">
+<includepath>${ProjDirPath}/../../stl/CMSIS/core</includepath>
+<includepath>${ProjDirPath}/../../stl/CMSIS/device</includepath>
+<includepath>${ProjDirPath}/../../stl/StdPeriph_Driver/inc</includepath>
+<includepath>${ProjDirPath}/../../bsp/inc</includepath>
+<includepath>${ProjDirPath}/../../srv/inc</includepath>
+<includepath>${ProjDirPath}/../../asp/inc</includepath>
+<includepath>${ProjDirPath}/../../app/inc</includepath>
+<includepath>${ProjDirPath}/../../usr/inc</includepath>
+<includepath>${ProjDirPath}/../../rtx/inc</includepath>
+<includepath>${ProjDirPath}/../../hal/inc</includepath>
+<includepath>${ProjDirPath}/../../kos/inc</includepath>
+<includepath>${ProjDirPath}/../../drv/inc</includepath>
+<includepath>${ProjDirPath}/../../rtx/inc/gcc</includepath>
+<includepath>${ProjDirPath}/inc</includepath>
+
+</language>
+<language name="S">
+<includepath>${ProjDirPath}/../../stl/CMSIS/core</includepath>
+<includepath>${ProjDirPath}/../../stl/CMSIS/device</includepath>
+<includepath>${ProjDirPath}/../../stl/StdPeriph_Driver/inc</includepath>
+<includepath>${ProjDirPath}/../../bsp/inc</includepath>
+<includepath>${ProjDirPath}/../../srv/inc</includepath>
+<includepath>${ProjDirPath}/../../asp/inc</includepath>
+<includepath>${ProjDirPath}/../../app/inc</includepath>
+<includepath>${ProjDirPath}/../../usr/inc</includepath>
+<includepath>${ProjDirPath}/../../rtx/inc</includepath>
+<includepath>${ProjDirPath}/../../hal/inc</includepath>
+<includepath>${ProjDirPath}/../../kos/inc</includepath>
+<includepath>${ProjDirPath}/../../drv/inc</includepath>
+<includepath>${ProjDirPath}/../../rtx/inc/gcc</includepath>
+<includepath>${ProjDirPath}/inc</includepath>
+
+</language>
+<language name="Object File">
+
+</language>
+<language name="Assembly Source File">
+
+</language>
+<language name="s">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="C Source File">
+<macro>
+<name>STM32F4</name><value/>
+</macro>
+<macro>
+<name>STM32F427IIHx</name><value/>
+</macro>
+<macro>
+<name>STM32</name><value/>
+</macro>
+<macro>
+<name>DEBUG</name><value/>
+</macro>
+<macro>
+<name>STM32F427X</name><value/>
+</macro>
+<macro>
+<name>USE_STDPERIPH_DRIVER</name><value/>
+</macro>
+
+</language>
+<language name="S">
+<macro>
+<name>STM32F4</name><value/>
+</macro>
+<macro>
+<name>STM32F427IIHx</name><value/>
+</macro>
+<macro>
+<name>STM32</name><value/>
+</macro>
+<macro>
+<name>DEBUG</name><value/>
+</macro>
+<macro>
+<name>STM32F427X</name><value/>
+</macro>
+<macro>
+<name>USE_STDPERIPH_DRIVER</name><value/>
+</macro>
+
+</language>
+<language name="Object File">
+
+</language>
+<language name="Assembly Source File">
+
+</language>
+<language name="s">
+
+</language>
+</section>
+</cdtprojectproperties>
