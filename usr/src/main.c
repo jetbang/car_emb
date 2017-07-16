@@ -163,6 +163,8 @@ int main()
 	//vAppTaskCreate();
 	//vTaskStartScheduler();
 	
+	//Cfg_Reset();
+
 	while(1)
 	{
 		//Dnl_Proc();

@@ -62,8 +62,8 @@ void Act_Init(void)
 
 void Act_Proc(void)
 {
-	//PeriphsStateAct();
+	PeriphsStateAct();
 	ChassisStateAct();
 	//LED_GREEN_OFF();
-	//GrabberStateAct();
+	GrabberStateAct();
 }

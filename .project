@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>gnd-emb</name>
+	<name>kylinbot</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -28,52 +28,52 @@
 		<link>
 			<name>app</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/app</locationURI>
+			<locationURI>PROJECT_LOC/app</locationURI>
 		</link>
 		<link>
 			<name>asp</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/asp</locationURI>
+			<locationURI>PROJECT_LOC/asp</locationURI>
 		</link>
 		<link>
 			<name>bsp</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/bsp</locationURI>
+			<locationURI>PROJECT_LOC/bsp</locationURI>
 		</link>
 		<link>
 			<name>drv</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/drv</locationURI>
+			<locationURI>PROJECT_LOC/drv</locationURI>
 		</link>
 		<link>
 			<name>hal</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/hal</locationURI>
+			<locationURI>PROJECT_LOC/hal</locationURI>
 		</link>
 		<link>
 			<name>kos</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/kos</locationURI>
+			<locationURI>PROJECT_LOC/kos</locationURI>
 		</link>
 		<link>
 			<name>rtx</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/rtx</locationURI>
+			<locationURI>PROJECT_LOC/rtx</locationURI>
 		</link>
 		<link>
 			<name>srv</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/srv</locationURI>
+			<locationURI>PROJECT_LOC/srv</locationURI>
 		</link>
 		<link>
 			<name>stl</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/stl</locationURI>
+			<locationURI>PROJECT_LOC/stl</locationURI>
 		</link>
 		<link>
 			<name>usr</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/usr</locationURI>
+			<locationURI>PROJECT_LOC/usr</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
