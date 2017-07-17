@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>gnd-emb</name>
+	<name>car_emb</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -28,52 +28,58 @@
 		<link>
 			<name>app</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/app</locationURI>
+			<locationURI>copy_PARENT/app</locationURI>
 		</link>
 		<link>
 			<name>asp</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/asp</locationURI>
+			<locationURI>copy_PARENT/asp</locationURI>
 		</link>
 		<link>
 			<name>bsp</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/bsp</locationURI>
+			<locationURI>copy_PARENT/bsp</locationURI>
 		</link>
 		<link>
 			<name>drv</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/drv</locationURI>
+			<locationURI>copy_PARENT/drv</locationURI>
 		</link>
 		<link>
 			<name>hal</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/hal</locationURI>
+			<locationURI>copy_PARENT/hal</locationURI>
 		</link>
 		<link>
 			<name>kos</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/kos</locationURI>
+			<locationURI>copy_PARENT/kos</locationURI>
 		</link>
 		<link>
 			<name>rtx</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/rtx</locationURI>
+			<locationURI>copy_PARENT/rtx</locationURI>
 		</link>
 		<link>
 			<name>srv</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/srv</locationURI>
+			<locationURI>copy_PARENT/srv</locationURI>
 		</link>
 		<link>
 			<name>stl</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/stl</locationURI>
+			<locationURI>copy_PARENT/stl</locationURI>
 		</link>
 		<link>
 			<name>usr</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/usr</locationURI>
+			<locationURI>copy_PARENT/usr</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-2-PROJECT_LOC%7D</value>
+		</variable>
+	</variableList>
 </projectDescription>

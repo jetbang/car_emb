@@ -28,7 +28,7 @@ extern "C" {
 #define BTM_TX_PIN PD5
 #define BTM_RX_PIN PD6
 #define BTM_USART USART2
-#define BTM_USART_BR 9600
+#define BTM_USART_BR 115200
 #define BTM_USART_WL 8
 #define BTM_USART_PA 'N'
 #define BTM_USART_SB 1
