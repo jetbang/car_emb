@@ -24,34 +24,6 @@ Odo_t odo;
 
 static void GetFunctionalStateFdb(void)
 {
-	FS_Det(&odo.fs, FS_KEY_H, KEY_H_IS_PRESSED());
-	FS_Det(&odo.fs, FS_KEY_L, KEY_L_IS_PRESSED());
-	FS_Det(&odo.fs, FS_KEY_M, KEY_M_IS_PRESSED());
-	FS_Det(&odo.fs, FS_KEY_N, KEY_N_IS_PRESSED());
-	FS_Det(&odo.fs, FS_LED_RED, LED_RED_IS_ON());
-	FS_Det(&odo.fs, FS_LED_GREEN, LED_GREEN_IS_ON());
-	/*
-	FS_Det(&odo.fs, FS_SONAR_F, srs[SR04_IDX_FIXED].state != SR04_STATE_STOP);
-	FS_Det(&odo.fs, FS_SONAR_M, srs[SR04_IDX_MOBLE].state != SR04_STATE_STOP);
-	FS_Det(&odo.fs, FS_SONAR_L, srs[SR04_IDX_LEFT].state != SR04_STATE_STOP);
-	FS_Det(&odo.fs, FS_SONAR_R, srs[SR04_IDX_RIGHT].state != SR04_STATE_STOP);
-	*/
-}
-
-static void GetMecanumPositionFdb(void)
-{
-	
-	odo.mp.w1 = motor[0].angle_rad;
-	odo.mp.w2 = motor[1].angle_rad;
-	odo.mp.w3 = motor[2].angle_rad;
-	odo.mp.w4 = motor[3].angle_rad;
-	
-	/*
-	odo.mp.w1 = motor[0].angle_filtered * MOTOR_ANGLE_RAD_RECIP;
-	odo.mp.w2 = motor[1].angle_filtered * MOTOR_ANGLE_RAD_RECIP;
-	odo.mp.w3 = motor[2].angle_filtered * MOTOR_ANGLE_RAD_RECIP;
-	odo.mp.w4 = motor[3].angle_filtered * MOTOR_ANGLE_RAD_RECIP;
-	*/
 }
 
 static void GetMecanumVelocityFdb(void)
@@ -62,18 +34,12 @@ static void GetMecanumVelocityFdb(void)
 	odo.mv.w4 = motor[3].rate_rad;
 }
 
-static void GetMecanumCurrentsFdb(void)
+static void GetMecanumPositionFdb(void)
 {
-	odo.mc.w1 = motor[0].current_ref;
-	odo.mc.w2 = motor[1].current_ref;
-	odo.mc.w3 = motor[2].current_ref;
-	odo.mc.w4 = motor[3].current_ref;
-}
-
-static void GetChassisPositionFdb(void)
-{
-	Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
-	//odo.cp.z = zgyro.angle_rad;
+	odo.mp.w1 = motor[0].angle_rad;
+	odo.mp.w2 = motor[1].angle_rad;
+	odo.mp.w3 = motor[2].angle_rad;
+	odo.mp.w4 = motor[3].angle_rad;
 }
 
 static void GetChassisVelocityFdb(void)
@@ -82,43 +48,39 @@ static void GetChassisVelocityFdb(void)
 	//odo.cv.z = zgyro.rate_rad;
 }
 
-static float odo_gp_c = 0;
-static void GetGrabberPositionFdb(void)
+static void GetChassisPositionFdb(void)
 {
-	odo.gp.e = motor[5].angle_rad * SCREW_PITCH_RECIP;
-	odo_gp_c = odo.gp.c; // 
-	odo.gp.c = map(CLAW_GET_PWM(), 1000, 2000, 0, PI);
+	//Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
+	//odo.cp.z = zgyro.angle_rad;
+
 }
 
-static void GetGrabberVelocityFdb(void)
+static void GetGimbalsVelocityFdb(void)
 {
-	odo.gv.e = motor[5].rate_rad * SCREW_PITCH_RECIP;
-	odo.gv.c = (odo.gp.c - odo_gp_c) / SYS_CTL_TSC; // 
+	odo.gv.p = motor[4].rate_rad;
+	odo.gv.t = motor[5].rate_rad;
 }
 
-static void GetGrabberCurrentsFdb(void)
+static void GetGimbalsPositionFdb(void)
 {
-	odo.gc.e = motor[5].current_ref;
-	odo.gc.c = odo.gv.c * odo.gv.c; // 
+	odo.gp.p = motor[4].angle_rad;
+	odo.gp.t = motor[5].angle_rad;
 }
 
 void Odo_Init(void)
 {
-	odo_gp_c = 0;
 	memset((void*)&odo, 0, sizeof(Odo_t));
 }
 
 void Odo_Proc(void)
 {
 	GetFunctionalStateFdb();
-	GetMecanumPositionFdb();
 	GetMecanumVelocityFdb();
-	GetMecanumCurrentsFdb();
-	GetChassisPositionFdb();
+	GetMecanumPositionFdb();
 	GetChassisVelocityFdb();
-	GetGrabberPositionFdb();
-	GetGrabberVelocityFdb();
-	GetGrabberCurrentsFdb();
+	GetChassisPositionFdb();
+	GetGimbalsVelocityFdb();
+	GetGimbalsPositionFdb();
 }
 
 void Odo_Zero(void)
@@ -129,6 +91,7 @@ void Odo_Zero(void)
 	memset(&odo.cv, 0, sizeof(ChassisState_t));
 	memset(&odo.mp, 0, sizeof(MecanumState_t));
 	memset(&odo.mv, 0, sizeof(MecanumState_t));
-	memset(&odo.mc, 0, sizeof(MecanumState_t));
+	memset(&odo.gp, 0, sizeof(GimbalsState_t));
+	memset(&odo.gv, 0, sizeof(GimbalsState_t));
 }
 

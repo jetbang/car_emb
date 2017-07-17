@@ -25,9 +25,6 @@
 extern "C" {
 #endif
 
-#include "ekf.h"
-#include "med.h"
-#include "maf.h"
 #include "fun.h"
 #include "wdg.h"
 
@@ -39,21 +36,14 @@ extern "C" {
 #define MOTOR5_FDB_CAN_MSG_ID  0x205
 #define MOTOR6_FDB_CAN_MSG_ID  0x206
 
-#define MOTOR_ESC_CURRENT_FDB_MAX 13000
 #define MOTOR_ECD_MOD 8192
 #define MOTOR_ECD_GAP 4096
 
 #define MOTOR_NUM 6
 #define MOTOR_INIT_FRAME_CNT 100
-#define MOTOR_RATE_EKF_Q 0.1f
-#define MOTOR_RATE_EKF_R 1.3f
-#define MOTOR_RATE_BUF_LEN 3
-#define MOTOR_ANGLE_EKF_Q 0.01f
-#define MOTOR_ANGLE_EKF_R 0.9f
-#define MOTOR_ANGLE_BUF_LEN 3
 
-#define MOTOR_RATE_DEG_RECIP 43.94531f
-#define MOTOR_RATE_RAD_RECIP 0.7669904f
+#define MOTOR_RATE_DEG_RECIP 6.0f
+#define MOTOR_RATE_RAD_RECIP 0.10471975f
 #define MOTOR_ANGLE_DEG_RECIP 0.04394531f
 #define MOTOR_ANGLE_RAD_RECIP 7.669904e-4f
 
@@ -82,28 +72,12 @@ typedef struct
 {
 	uint32_t id;
 	uint32_t frame_cnt;
-	Ekf_t rate_ekf;
-	Ekf_t angle_ekf;
-	//Med_t rate_med;
-	//Med_t angle_med;
-	//Maf_t rate_maf;
-	//Maf_t angle_maf;
-	//float rate_buf[MOTOR_RATE_BUF_LEN];
-	//float angle_buf[MOTOR_ANGLE_BUF_LEN];
 	uint16_t angle_fdb[2];
 	int16_t rate_fdb;
-	float rate;
-	int32_t current_fdb;
-	int32_t current_ref;
 	int16_t angle_diff;
 	int32_t bias;
 	int32_t round;
-	int16_t rate_raw;
-	int32_t angle_raw;
-	int16_t rate_filtered;
-	//float rate_filtered;
-	int32_t angle_filtered;
-	//float angle_filtered;
+	int32_t angle_ecd;
 	float rate_deg;
 	float rate_rad;
 	float angle_deg;

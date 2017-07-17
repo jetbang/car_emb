@@ -22,16 +22,11 @@
 
 static void GetPeriphsStateRef(const CBUS_t* cbus)
 {
-	/*
-	FS_Det(&cmd.fs, FS_SONAR_F, FS_Get(&cbus->fs, FS_SONAR_F));
-	FS_Det(&cmd.fs, FS_SONAR_M, FS_Get(&cbus->fs, FS_SONAR_M));
-	FS_Det(&cmd.fs, FS_SONAR_L, FS_Get(&cbus->fs, FS_SONAR_L));
-	FS_Det(&cmd.fs, FS_SONAR_R, FS_Get(&cbus->fs, FS_SONAR_R));
-	*/
 }
 
 static void GetChassisStateRef(const CBUS_t* cbus)
 {
+	/*
 	float pxr = cbus->cp.x / CBUS_VALUE_SCALE;
 	float pyr = cbus->cp.y / CBUS_VALUE_SCALE;
 	float pzr = cbus->cp.z / CBUS_VALUE_SCALE;
@@ -65,10 +60,12 @@ static void GetChassisStateRef(const CBUS_t* cbus)
 	//cmd.cv.z = cbus->cv.z / CBUS_VALUE_SCALE;
 	LIMIT(cmd.cv.z, -cfg.vel.z, cfg.vel.z);
 	cmd.cp.z += cmd.cv.z * SYS_CTL_TSC;
+	*/
 }
 
 static void GetGrabberStateRef(const CBUS_t* cbus)
 {
+	/*
 	float per = cbus->gp.e / CBUS_VALUE_SCALE;
 	float pcr = cbus->gp.c / CBUS_VALUE_SCALE;
 	float ver = cbus->gv.e / CBUS_VALUE_SCALE;
@@ -94,6 +91,7 @@ static void GetGrabberStateRef(const CBUS_t* cbus)
 	LIMIT(cmd.gv.c, -cfg.vel.c, cfg.vel.c);
 	cmd.gp.c += cmd.gv.c * SYS_CTL_TSC;
 	LIMIT(cmd.gp.c, cfg.pos.cl, cfg.pos.ch);
+	*/
 }
 
 void Cci_Init(void)

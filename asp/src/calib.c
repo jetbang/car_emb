@@ -78,13 +78,31 @@ void Calib_SetMag(MagParam_t* MagParam, const MagCalib_t* MagCalib)
 	MagParam->mz_offset = MagCalib->mz_offset / MAG_CALIB_VALUE_SCALE;
 }
 
+void Calib_GetSys(SysCalib_t* SysCalib, const SysParam_t* SysParam)
+{
+	SysCalib->x = SysParam->x * SYS_CALIB_VALUE_SCALE;
+	SysCalib->y = SysParam->y * SYS_CALIB_VALUE_SCALE;
+	SysCalib->z = SysParam->z * SYS_CALIB_VALUE_SCALE;
+	SysCalib->p = SysParam->p * SYS_CALIB_VALUE_SCALE;
+	SysCalib->t = SysParam->t * SYS_CALIB_VALUE_SCALE;
+}
+
+void Calib_SetSys(SysParam_t* SysParam, const SysCalib_t* SysCalib)
+{
+	SysParam->x = SysCalib->x / SYS_CALIB_VALUE_SCALE;
+	SysParam->y = SysCalib->y / SYS_CALIB_VALUE_SCALE;
+	SysParam->z = SysCalib->z / SYS_CALIB_VALUE_SCALE;
+	SysParam->p = SysCalib->p / SYS_CALIB_VALUE_SCALE;
+	SysParam->t = SysCalib->t / SYS_CALIB_VALUE_SCALE;
+}
+
 void Calib_GetVel(VelCalib_t* VelCalib, const VelParam_t* VelParam)
 {
 	VelCalib->x = VelParam->x * VEL_CALIB_VALUE_SCALE;
 	VelCalib->y = VelParam->y * VEL_CALIB_VALUE_SCALE;
 	VelCalib->z = VelParam->z * VEL_CALIB_VALUE_SCALE;
-	VelCalib->e = VelParam->e * VEL_CALIB_VALUE_SCALE;
-	VelCalib->c = VelParam->c * VEL_CALIB_VALUE_SCALE;
+	VelCalib->p = VelParam->p * VEL_CALIB_VALUE_SCALE;
+	VelCalib->t = VelParam->t * VEL_CALIB_VALUE_SCALE;
 }
 
 void Calib_SetVel(VelParam_t* VelParam, const VelCalib_t* VelCalib)
@@ -92,8 +110,8 @@ void Calib_SetVel(VelParam_t* VelParam, const VelCalib_t* VelCalib)
 	VelParam->x = VelCalib->x / VEL_CALIB_VALUE_SCALE;
 	VelParam->y = VelCalib->y / VEL_CALIB_VALUE_SCALE;
 	VelParam->z = VelCalib->z / VEL_CALIB_VALUE_SCALE;
-	VelParam->e = VelCalib->e / VEL_CALIB_VALUE_SCALE;
-	VelParam->c = VelCalib->c / VEL_CALIB_VALUE_SCALE;
+	VelParam->p = VelCalib->p / VEL_CALIB_VALUE_SCALE;
+	VelParam->t = VelCalib->t / VEL_CALIB_VALUE_SCALE;
 }
 
 void Calib_GetMec(MecCalib_t* MecCalib, const MecParam_t* MecParam)
@@ -114,18 +132,14 @@ void Calib_SetMec(MecParam_t* MecParam, const MecCalib_t* MecCalib)
 
 void Calib_GetPos(PosCalib_t* PosCalib, const PosParam_t* PosParam)
 {
-	PosCalib->ch = PosParam->ch * POS_CALIB_VALUE_SCALE;
-	PosCalib->cl = PosParam->cl * POS_CALIB_VALUE_SCALE;
-	PosCalib->eh = PosParam->eh * POS_CALIB_VALUE_SCALE;
-	PosCalib->el = PosParam->el * POS_CALIB_VALUE_SCALE;
+	PosCalib->p = PosParam->p * POS_CALIB_VALUE_SCALE;
+	PosCalib->t = PosParam->t * POS_CALIB_VALUE_SCALE;
 }
 
 void Calib_SetPos(PosParam_t* PosParam, const PosCalib_t* PosCalib)
 {
-	PosParam->ch = PosCalib->ch / POS_CALIB_VALUE_SCALE;
-	PosParam->cl = PosCalib->cl / POS_CALIB_VALUE_SCALE;
-	PosParam->eh = PosCalib->eh / POS_CALIB_VALUE_SCALE;
-	PosParam->el = PosCalib->el / POS_CALIB_VALUE_SCALE;
+	PosParam->p = PosCalib->p / POS_CALIB_VALUE_SCALE;
+	PosParam->t = PosCalib->t / POS_CALIB_VALUE_SCALE;
 }
 
 

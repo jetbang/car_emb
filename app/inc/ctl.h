@@ -38,8 +38,8 @@ typedef struct
 	ChassisState_t cc;
 	MecanumState_t mv;
 	MecanumState_t mc;
-	GrabberState_t gv;
-	GrabberState_t gc;
+	GimbalsState_t gv;
+	GimbalsState_t gc;
 }Ctl_t;
 
 typedef struct
@@ -51,7 +51,8 @@ typedef struct
 
 typedef struct
 {
-	PID_t e;
+	PID_t p;
+	PID_t t;
 }Gcl_t; // Grabber control loop
 
 typedef struct

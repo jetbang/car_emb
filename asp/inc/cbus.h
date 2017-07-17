@@ -37,12 +37,10 @@ typedef struct
 
 typedef struct
 {
-	int16_t e;
-	int16_t c;
-}GrabberState_c; // Grabber state control typedef
+	int16_t p;
+	int16_t t;
+}GimbalsState_c; // Grabber state control typedef
 
-#define CBUS_FLAG_BIT_INI (1u<<31) // Initialization flag bit
-#define CBUS_FLAG_BIT_MOD (1u<<30) // Control mode flag bit
 #define CBUS_VALUE_SCALE 1e3f
 
 #pragma pack(1)
@@ -52,8 +50,8 @@ typedef struct
 	uint32_t fs; // Flag bits
 	ChassisState_c cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
 	ChassisState_c cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
-	GrabberState_c gv; // Grabber velocity, unit: linear: mm/s, angular: 1e-3rad/s
-	GrabberState_c gp; // Grabber position, unit: linear: mm, angular: rad
+	GimbalsState_c gv; // Grabber velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	GimbalsState_c gp; // Grabber position, unit: linear: mm, angular: rad
 }CBUS_t;
 
 #pragma pack()

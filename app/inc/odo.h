@@ -29,19 +29,16 @@ extern "C" {
 #include "bsp.h"
 #include "can.h"
 #include "mec.h"
-#include "srs.h"
 
 typedef struct
 {
 	PeriphsState_t fs;
 	MecanumState_t mp;
 	MecanumState_t mv;
-	MecanumState_t mc;
 	ChassisState_t cp;
 	ChassisState_t cv;
-	GrabberState_t gp;
-	GrabberState_t gv;
-	GrabberState_t gc;
+	GimbalsState_t gp;
+	GimbalsState_t gv;
 }Odo_t;
 
 void Odo_Init(void);

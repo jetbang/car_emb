@@ -31,7 +31,6 @@ static void RmpGeneraterCtl(void)
 
 static void PeriphsStateCtl(void)
 {
-	FS_Cpy(&ctl.fs, cmd.fs, FS_ALL);
 }
 
 static void ChassisStateCtl(void)
@@ -43,18 +42,19 @@ static void ChassisStateCtl(void)
 	//ctl.cv.y = PID_Calc(&pid.cp.y, cmd.cp.y, odo.cp.y);
 	//ctl.cv.z = PID_Calc(&pid.cp.z, cmd.cp.z, odo.cp.z);
 	ctl.cc.x = PID_Calc(&pid.cv.x, ctl.cv.x, odo.cv.x) * rmp.out;
-	ctl.cc.y = PID_Calc(&pid.cv.y, ctl.cv.y, odo.cv.y) * rmp.out;;
-	ctl.cc.z = PID_Calc(&pid.cv.z, ctl.cv.z, odo.cv.z) * rmp.out;;
+	ctl.cc.y = PID_Calc(&pid.cv.y, ctl.cv.y, odo.cv.y) * rmp.out;
+	ctl.cc.z = PID_Calc(&pid.cv.z, ctl.cv.z, odo.cv.z) * rmp.out;
 	
 	Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
 	Mec_Decomp((float*)&ctl.cc, (float*)&ctl.mc);
 }
 
-static void GrabberStateCtl(void)
+static void GimbalsStateCtl(void)
 {
-	ctl.gv.e = PID_Calc(&pid.gp.e, cmd.gp.e, odo.gp.e);
-	ctl.gc.e = PID_Calc(&pid.gv.e, ctl.gv.e, odo.gv.e) * rmp.out;;
-	ctl.gc.c = map(cmd.gp.c, cfg.pos.cl, cfg.pos.ch, CLAW_PWM_L, CLAW_PWM_H); // Direct PWM control (1000~2000)/2500, map rad to pwm duty cycle
+	ctl.gv.p = PID_Calc(&pid.gv.p, cmd.gp.p, odo.gp.p) * rmp.out;
+	ctl.gv.t = PID_Calc(&pid.gv.t, cmd.gp.t, odo.gp.t) * rmp.out;
+	ctl.gc.p = PID_Calc(&pid.gv.p, ctl.gv.p, odo.gv.p) * rmp.out;
+	ctl.gc.t = PID_Calc(&pid.gv.t, ctl.gv.t, odo.gv.t) * rmp.out;
 }
 
 static void Rmp_Init(Rmp_t* rmp)
@@ -138,8 +138,10 @@ void Ctl_Init(void)
 	Cpl_Init(&pid.cp.y);
 	Cpl_Init(&pid.cp.z);
 	
-	Gvl_Init(&pid.gv.e);
-	Gpl_Init(&pid.gp.e);
+	Gvl_Init(&pid.gv.p);
+	Gvl_Init(&pid.gv.t);
+	Gpl_Init(&pid.gp.p);
+	Gpl_Init(&pid.gp.t);
 	
 	memset(&ctl, 0, sizeof(Ctl_t));
 }
@@ -152,7 +154,7 @@ void Ctl_Proc(void)
 	RmpGeneraterCtl();
 	PeriphsStateCtl();
 	ChassisStateCtl();
-	GrabberStateCtl();
+	GimbalsStateCtl();
 }
 
 void Ctl_Zero(void)
@@ -169,5 +171,7 @@ void Ctl_Zero(void)
 	memset(&ctl.cc, 0, sizeof(ChassisState_t));
 	memset(&ctl.mv, 0, sizeof(MecanumState_t));
 	memset(&ctl.mc, 0, sizeof(MecanumState_t));
+	memset(&ctl.gv, 0, sizeof(GimbalsState_t));
+	memset(&ctl.gc, 0, sizeof(GimbalsState_t));
 }
 

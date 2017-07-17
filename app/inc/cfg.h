@@ -107,15 +107,11 @@ typedef struct
 
 #define VEL_TRA_DEF 42.0f //3.0f //10.0f // m/s // 3
 #define VEL_ROT_DEF 110.0f //9.3f //30.0f // rad/s  // 9.3
-#define VEL_ELE_DEF 1.00f // m/s
-#define VEL_CLA_DEF 30.0f // rad/s
 #define VEL_CFG_DEF \
 { \
 	.x = VEL_TRA_DEF, \
 	.y = VEL_TRA_DEF, \
 	.z = VEL_ROT_DEF, \
-	.e = VEL_ELE_DEF, \
-	.c = VEL_CLA_DEF, \
 }
 
 #define RMP_CNT_DEF 1000 //250*${SYS_CTL_TMS}
@@ -144,10 +140,8 @@ typedef struct
 
 #define POS_CFG_DEF \
 { \
-	.el = -0.610f, \
-	.eh = 0.0f, \
-	.cl = 0, \
-	.ch = 2.0f, \
+	.p = 0.0f, \
+	.t = 0.0f, \
 }
 
 #define CVL_CFG_DEF \

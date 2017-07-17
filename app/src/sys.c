@@ -61,10 +61,9 @@ void MS_Set(MecanumState_t* ms, float w1, float w2, float w3, float w4)
 	ms->w4 = w4;
 }
 
-void GS_Set(GrabberState_t* gs, float e, float c)
+void GS_Set(GimbalsState_t* gs, float p, float t)
 {
-	gs->e = e;
-	gs->c = c;
+	gs->p = p;
+	gs->t = t;
 }
-
 

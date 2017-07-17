@@ -46,17 +46,9 @@ void Motor_Process(Motor_t* motor, uint32_t id, uint8_t* data)
 	motor->frame_cnt++;
 	motor->angle_fdb[0] = motor->angle_fdb[1];
 	motor->angle_fdb[1] = (data[0] << 8) | data[1];
-	motor->current_fdb = (data[2] << 8) | data[3];
-	motor->current_ref = (data[4] << 8) | data[5];
-	motor->rate_fdb = motor->current_fdb;
-	if (motor->frame_cnt < 2) {
-		Ekf_Init(&motor->rate_ekf, MOTOR_RATE_EKF_Q, MOTOR_RATE_EKF_R);
-		Ekf_Init(&motor->angle_ekf, MOTOR_ANGLE_EKF_Q, MOTOR_ANGLE_EKF_R);
-		//Med_Init(&motor->rate_med);
-		//Med_Init(&motor->angle_med);
-		//Maf_Init(&motor->rate_maf, motor->rate_buf, MOTOR_RATE_BUF_LEN);
-		//Maf_Init(&motor->angle_maf, motor->angle_buf, MOTOR_ANGLE_BUF_LEN);
-	}
+	motor->rate_fdb = (data[2] << 8) | data[3];
+	motor->rate_deg = MOTOR_RATE_DEG_RECIP * motor->rate_fdb;
+	motor->rate_rad = MOTOR_RATE_RAD_RECIP * motor->rate_fdb;
 	if (motor->frame_cnt < MOTOR_INIT_FRAME_CNT) {
 		motor->bias = motor->angle_fdb[1];
 		motor->round = 0;
@@ -71,24 +63,9 @@ void Motor_Process(Motor_t* motor, uint32_t id, uint8_t* data)
 	} else {
 		//motor->rate_raw = motor->angle_diff;
 	}
-	motor->rate = motor->rate_fdb * 0.1365333f;
-	Ekf_Proc(&motor->rate_ekf, motor->rate);
-	//Med_Proc(&motor->rate_med, motor->rate_raw);
-	//Maf_Proc(&motor->rate_maf, motor->rate_med.val);
-	//motor->rate_filtered = (int32_t)motor->rate_maf.avg;
-	//motor->rate_filtered = (int16_t)motor->rate_ekf.e;
-	motor->rate_filtered = (int16_t)motor->rate;
-	motor->rate_deg = MOTOR_RATE_DEG_RECIP * motor->rate_filtered;
-	motor->rate_rad = MOTOR_RATE_RAD_RECIP * motor->rate_filtered;
-	motor->angle_raw = (motor->angle_fdb[1] - motor->bias) + motor->round * MOTOR_ECD_MOD;
-	Ekf_Proc(&motor->angle_ekf, motor->angle_raw);
-	//Med_Proc(&motor->angle_med, motor->angle_raw);
-	//Maf_Proc(&motor->angle_maf, motor->angle_med.val);
-	//motor->angle_filtered = (int32_t)motor->angle_maf.avg;
-	motor->angle_filtered = (int32_t)motor->angle_ekf.e;
-	//motor->angle_filtered = motor->angle_ekf.e;
-	motor->angle_deg = MOTOR_ANGLE_DEG_RECIP * motor->angle_filtered;
-	motor->angle_rad = MOTOR_ANGLE_RAD_RECIP * motor->angle_filtered;
+	motor->angle_ecd = (motor->angle_fdb[1] - motor->bias) + motor->round * MOTOR_ECD_MOD;
+	motor->angle_deg = MOTOR_ANGLE_DEG_RECIP * motor->angle_ecd;
+	motor->angle_rad = MOTOR_ANGLE_RAD_RECIP * motor->angle_ecd;
 }
 
 uint8_t ZGyro_Ready(const ZGyro_t* zgyro)

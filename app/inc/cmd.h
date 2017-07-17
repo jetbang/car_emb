@@ -37,8 +37,8 @@ typedef struct
 	ChassisState_t cp; // Chassis position reference
 	MecanumState_t mv; // Mecanum velocity reference (Auto-Wired)
 	MecanumState_t mp; // Mecanum position reference (Auto-Wired)
-	GrabberState_t gv; // Grabber velocity dynamic reference
-	GrabberState_t gp; // Grabber position reference
+	GimbalsState_t gv; // Grabber velocity dynamic reference
+	GimbalsState_t gp; // Grabber position reference
 }Cmd_t;
 
 void Cmd_Init(void);

@@ -41,7 +41,7 @@ static void Cal_SetGpeh(void)
 	GM_CMD(0, 0);
 	Maf_Reset(&maf); // Reset maf
 	gm_startup_delay_cnt = 0;
-	cfg.pos.eh = odo.gp.e;
+	//cfg.pos.eh = odo.gp.e;
 	Flag_Set(&calFlag, CAL_FLAG_GPEH);
 }
 
@@ -51,7 +51,7 @@ static void Cal_SetGpel(void)
 	GM_CMD(0, 0);
 	Maf_Reset(&maf); // Reset maf
 	gm_startup_delay_cnt = 0;
-	cfg.pos.el = odo.gp.e;
+	//cfg.pos.el = odo.gp.e;
 	Flag_Set(&calFlag, CAL_FLAG_GPEL);
 }
 
@@ -61,7 +61,7 @@ static void Cal_ProcGpe(void)
 	if (!Cal_HasFlag(CAL_FLAG_GPEL)) {
 		if (!KEY_L_IS_PRESSED()) {
 			GM_CMD(0, CAL_GM_DRV_CURRENT * (-CAL_GM_UP_DIR));
-			Maf_Proc(&maf, ABSVAL(odo.gv.e));
+			//Maf_Proc(&maf, ABSVAL(odo.gv.e));
 			if (gm_startup_delay_cnt < CAL_GM_START_UP_DELAY) {
 				gm_startup_delay_cnt++;
 			} 
@@ -79,7 +79,7 @@ static void Cal_ProcGpe(void)
 	else if (!Cal_HasFlag(CAL_FLAG_GPEH)) {
 		if (!KEY_H_IS_PRESSED()) {
 			GM_CMD(0, CAL_GM_DRV_CURRENT * CAL_GM_UP_DIR);
-			Maf_Proc(&maf, ABSVAL(odo.gv.e));
+			//Maf_Proc(&maf, ABSVAL(odo.gv.e));
 			if (gm_startup_delay_cnt < CAL_GM_START_UP_DELAY) {
 				gm_startup_delay_cnt++;
 			}
@@ -98,13 +98,11 @@ static void Cal_ProcGpe(void)
 
 static void Cal_SetGpch(void)
 {
-	cfg.pos.ch = map(CLAW_PWM_H, 1000, 2000, 0, PI);
 	Cal_SetFlag(CAL_FLAG_GPCH);
 }
 
 static void Cal_SetGpcl(void)
 {
-	cfg.pos.cl = map(CLAW_PWM_L, 1000, 2000, 0, PI);
 	Cal_SetFlag(CAL_FLAG_GPCL);
 }
 
