@@ -23,6 +23,7 @@ extern "C" {
 
 #include "mpu6500_spi.h"
 #include "ist8310.h"
+#include "delay.h"
 
 #define MPU6500_SELF_TEST_XG        (0x00)
 #define MPU6500_SELF_TEST_YG        (0x01)

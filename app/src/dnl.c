@@ -15,10 +15,6 @@
  */
  
 #include "dnl.h"
-#include "upl.h"
-#include "cmd.h"
-#include "dci.h"
-#include "fun.h"
 
 /*****************************************/
 /*        Down-Link Communication        */
@@ -27,6 +23,8 @@
 static uint8_t buf[2][DNL_BUF_SIZE];
 static FIFO_t fifo;
 
+static RcpMsg_t rcpMsg;
+static HcpMsg_t hcpMsg;
 static DBusMsg_t dbusMsg;
 static CBusMsg_t cbusMsg;
 
@@ -34,17 +32,18 @@ static void Dnl_ProcRcpMsg(const RcpMsg_t* rcpMsg)
 {
 	Wdg_Feed(WDG_IDX_RCP);
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		Rcp_Dec(&dbus.rcp, rcpMsg->data);
-		Rci_Proc(&dbus.rcp);
+		//Rcp_Dec(&dbus.rcp, rcpMsg->data);
+		//Rci_Proc(&dbus.rcp);
 	}
 }
+
 
 static void Dnl_ProcHcpMsg(const HcpMsg_t* hcpMsg)
 {
 	Wdg_Feed(WDG_IDX_HCP);
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		Hcp_Dec(&dbus.hcp, hcpMsg->data);
-		Hci_Proc(&dbus.hcp);
+		//Hcp_Dec(&dbus.hcp, hcpMsg->data);
+		//Hci_Proc(&dbus.hcp);
 	}
 }
 
@@ -144,13 +143,13 @@ void Dnl_Proc(void)
 		FIFO_Push(&fifo, buf[1], len);
 	}
 	// Check if any message received
-	if (Msg_Pop(&fifo, buf[1], &msg_head_rcp, &cbusMsg)) {
-		Dnl_ProcRcpMsg(&cbusMsg);
+	if (Msg_Pop(&fifo, buf[1], &msg_head_rcp, &rcpMsg)) {
+		Dnl_ProcRcpMsg(&rcpMsg);
 	}
-	else if (Msg_Pop(&fifo, buf[1], &msg_head_hcp, &cbusMsg)) {
-		Dnl_ProcHcpMsg(&cbusMsg);
+	else if (Msg_Pop(&fifo, buf[1], &msg_head_hcp, &hcpMsg)) {
+		Dnl_ProcHcpMsg(&hcpMsg);
 	}
-	if (Msg_Pop(&fifo, buf[1], &msg_head_dbus, &dbusMsg)) {
+	else if (Msg_Pop(&fifo, buf[1], &msg_head_dbus, &dbusMsg)) {
 		Dnl_ProcDBusMsg(&dbusMsg);
 	}
 	else if (Msg_Pop(&fifo, buf[1], &msg_head_cbus, &cbusMsg)) {

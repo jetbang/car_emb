@@ -29,8 +29,11 @@ extern "C" {
 #include <string.h>
 
 #include "calib.h"
+#include "crc16.h"
 #include "fos.h"
 #include "fun.h"
+
+#define CFG_INIT_CRC 0xa5a6
 
 #define CFG_FLAG_IMU                (1u<<0)
 #define CFG_FLAG_MAG                (1u<<1)
@@ -75,6 +78,7 @@ typedef struct
 	PIDCfg_t cpl; // Chasis position loop
 	PIDCfg_t gvl; // Gimbal velocity loop
 	PIDCfg_t gpl; // Gimbal position loop
+	uint16_t crc;
 }Cfg_t; // Application Configuration
 
 #pragma pack()
@@ -105,8 +109,8 @@ typedef struct
 	.mz_offset = 0, \
 }
 
-#define VEL_TRA_DEF 42.0f //3.0f //10.0f // m/s // 3
-#define VEL_ROT_DEF 110.0f //9.3f //30.0f // rad/s  // 9.3
+#define VEL_TRA_DEF 3.0f //3.0f //10.0f // m/s // 3
+#define VEL_ROT_DEF 8.0f //9.3f //30.0f // rad/s  // 9.3
 #define VEL_CFG_DEF \
 { \
 	.x = VEL_TRA_DEF, \
@@ -146,12 +150,12 @@ typedef struct
 
 #define CVL_CFG_DEF \
 { \
-	.kp = 100, \
+	.kp = 800, \
 	.ki = 0, \
 	.kd = 0, \
 	.db = 0, \
 	.it = 0, \
-	.Emax = 3000, \
+	.Emax = 8000, \
 	.Pmax = 4950, \
 	.Imax = 3500, \
 	.Dmax = 1500, \

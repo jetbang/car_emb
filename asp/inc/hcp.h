@@ -17,6 +17,10 @@
 #ifndef __HCP_H__
 #define __HCP_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #define HCP_FRAME_LEN 12
@@ -81,6 +85,10 @@ typedef struct
 void Hcp_Enc(const Hcp_t* hcp, uint8_t* buf);
 void Hcp_Dec(Hcp_t* hcp, const uint8_t* buf);
 void Hcp_Init(Hcp_t* hcp);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

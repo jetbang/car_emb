@@ -28,18 +28,18 @@ static void GetFunctionalStateFdb(void)
 
 static void GetMecanumVelocityFdb(void)
 {
-	odo.mv.w1 = motor[0].rate_rad;
-	odo.mv.w2 = motor[1].rate_rad;
-	odo.mv.w3 = motor[2].rate_rad;
-	odo.mv.w4 = motor[3].rate_rad;
+	odo.mv.w1 = motor[0].rate_rad / MOTOR_REDUCTION_RATIAL;
+	odo.mv.w2 = motor[1].rate_rad / MOTOR_REDUCTION_RATIAL;
+	odo.mv.w3 = motor[2].rate_rad / MOTOR_REDUCTION_RATIAL;
+	odo.mv.w4 = motor[3].rate_rad / MOTOR_REDUCTION_RATIAL;
 }
 
 static void GetMecanumPositionFdb(void)
 {
-	odo.mp.w1 = motor[0].angle_rad;
-	odo.mp.w2 = motor[1].angle_rad;
-	odo.mp.w3 = motor[2].angle_rad;
-	odo.mp.w4 = motor[3].angle_rad;
+	odo.mp.w1 = motor[0].angle_rad / MOTOR_REDUCTION_RATIAL;
+	odo.mp.w2 = motor[1].angle_rad / MOTOR_REDUCTION_RATIAL;
+	odo.mp.w3 = motor[2].angle_rad / MOTOR_REDUCTION_RATIAL;
+	odo.mp.w4 = motor[3].angle_rad / MOTOR_REDUCTION_RATIAL;
 }
 
 static void GetChassisVelocityFdb(void)
@@ -52,7 +52,12 @@ static void GetChassisPositionFdb(void)
 {
 	//Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
 	//odo.cp.z = zgyro.angle_rad;
-
+	float dx = odo.cv.x * SYS_CTL_TSC;
+	float dy = odo.cv.y * SYS_CTL_TSC;
+	float dz = odo.cv.z * SYS_CTL_TSC;
+	odo.cp.x += dx;
+	odo.cp.y += dy;
+	odo.cp.z += dz;
 }
 
 static void GetGimbalsVelocityFdb(void)

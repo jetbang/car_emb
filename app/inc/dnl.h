@@ -37,21 +37,6 @@ extern "C" {
 void Dnl_Init(void);
 void Dnl_Proc(void);
 
-/*
-extern KylinMsg_t kylinMsg;
-extern SubscMsg_t subscMsg;
-extern VirtualDBUS_t vdbus;
-extern VirtualCBUS_t vcbus;
-extern CalibMsg_t calibMsg;
-
-extern PIDCalib_t pidCalib;
-extern IMUCalib_t imuCalib;
-extern MagCalib_t magCalib;
-extern VelCalib_t velCalib;
-extern MecCalib_t mecCalib;
-extern PosCalib_t posCalib;
-*/
-
 #ifdef __cplusplus
 }
 #endif

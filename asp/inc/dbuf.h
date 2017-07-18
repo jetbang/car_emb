@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __DBUSF_H__
-#define __DBUSF_H__
+#ifndef __DBUF_H__
+#define __DBUF_H__
 
 #ifdef __cplusplus
 extern "C" {

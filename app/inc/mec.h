@@ -35,8 +35,7 @@ extern "C" {
 #include "cfg.h"
 #include "mecanum.h"
 
-#define SCREW_PITCH 1e-2 // 0.01m, 10mm
-#define SCREW_PITCH_RECIP 1.591549e-3f // m/rad
+#define MOTOR_REDUCTION_RATIAL 19.0f
 
 void Mec_Config(float lx, float ly, float r1, float r2);
 void Mec_Synthe(const float* w, float* v);

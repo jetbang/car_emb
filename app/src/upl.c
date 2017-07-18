@@ -33,7 +33,7 @@ static MotorMsg_t motorMsg;
 static void Upl_PushDBusMsg(void)
 {
 	dbusMsg.frame_id++;
-	Rcp_Enc(&dbus.rcp, dbusMsg.data);
+	//Rcp_Enc(&dbus.rcp, dbusMsg.data);
 	Msg_Push(&fifo, buf[1], &msg_head_dbus, &dbusMsg);
 }
 

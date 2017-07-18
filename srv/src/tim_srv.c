@@ -23,7 +23,7 @@ void TickTimCallback(void)
 
 void SyncTimCallback(void)
 {
-	Sch_Proc();
+	//Sch_Proc();
 }
 
 

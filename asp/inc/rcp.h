@@ -17,6 +17,10 @@
 #ifndef __RCP_H__
 #define __RCP_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #define RCP_FRAME_LEN 6
@@ -44,6 +48,10 @@ typedef struct
 void Rcp_Enc(const Rcp_t* rcp, uint8_t* buf);
 void Rcp_Dec(Rcp_t* rcp, const uint8_t* buf);
 void Rcp_Init(Rcp_t* rcp);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

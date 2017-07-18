@@ -1,0 +1,5 @@
+r
+loadbin Debug/car_emb.bin 0x08000000
+r
+go
+exit

@@ -29,15 +29,13 @@ void KOS_Boot(void)
 	Sch_Init();
 	
 	// Arrange scheduled tasks, @{SYS_CTL_TMS} ms/exec
-	Sch_Arrange(App_Proc, SYS_CTL_TMS);
-	Sch_Arrange(Snd_Proc, SND_PLAY_TMS / 2);
+	//Sch_Arrange(App_Proc, SYS_CTL_TMS);
+	//Sch_Arrange(Snd_Proc, SND_PLAY_TMS / 2);
 	//Sch_Arrange(Srs_Proc, SRS_TRIG_TMS / 2);
 	//Sch_Arrange(Pwr_Proc, PWR_SAMPLE_TMS); // Power manager disabled
 	
 	// BSP configuration
 	Bsp_Config();
-	
-	//ZGYRO_RST();
 	
 	// Action initialization
 	Act_Init();
@@ -49,8 +47,8 @@ void KOS_Boot(void)
 void KOS_Stop(void)
 {
 	// Dismiss application process
-	Sch_Dismiss(App_Proc);
-	Sch_Dismiss(Snd_Proc);
+	//Sch_Dismiss(App_Proc);
+	//Sch_Dismiss(Snd_Proc);
 	//Sch_Dismiss(Pwr_Proc);
 	
 	//Reset all active peripherals

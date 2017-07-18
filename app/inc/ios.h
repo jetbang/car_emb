@@ -30,7 +30,7 @@ extern "C" {
 #include "wdg.h"
 
 #define IOS_DBG_DEV dbi
-#define IOS_COM_DEV btm //tty
+#define IOS_COM_DEV tty
 
 #ifdef __GNUC__
 #define PUTCHAR_PROTOTYPE int __io_putchar(int c)
