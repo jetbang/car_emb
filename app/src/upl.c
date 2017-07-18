@@ -26,10 +26,10 @@ static FIFO_t fifo;
 static MsgType_t msgType = MSG_TYPE_KYLIN;
 
 static KylinMsg_t kylinMsg;
-static Sr04sMsg_t sr04sMsg;
+//static Sr04sMsg_t sr04sMsg;
 static ZGyroMsg_t zgyroMsg;
 //static IMU9XMsg_t imu9xMsg;
-static PosCalibMsg_t posCalibMsg;
+//static PosCalibMsg_t posCalibMsg;
 static VirtualRC_t virtualRC;
 
 static void Upl_PushKylinMsg(void)
@@ -51,6 +51,7 @@ static void Upl_PushKylinMsg(void)
 	Msg_Push(&fifo, buf[1], &msg_head_kylin, &kylinMsg);
 }
 
+/*
 static void Upl_PushSr04sMsg(void)
 {
 	sr04sMsg.frame_id++;
@@ -60,6 +61,7 @@ static void Upl_PushSr04sMsg(void)
 	sr04sMsg.right = srs[SR04_IDX_RIGHT].mm_filtered;
 	Msg_Push(&fifo, buf[1], &msg_head_sr04s, &sr04sMsg);
 }
+*/
 
 static void Upl_PushZGyroMsg(void)
 {
@@ -69,6 +71,7 @@ static void Upl_PushZGyroMsg(void)
 	Msg_Push(&fifo, buf[1], &msg_head_zgyro, &zgyroMsg);
 }
 
+/*
 static void Upl_PushPosCalib(void)
 {
 	posCalibMsg.frame_id++;
@@ -78,6 +81,7 @@ static void Upl_PushPosCalib(void)
 	posCalibMsg.data.el = cfg.pos.el * POS_CALIB_VALUE_SCALE;
 	Msg_Push(&fifo, buf[1], &msg_head_pos_calib, &posCalibMsg);
 }
+*/
 
 static void Upl_PushVirtualRC(void)
 {
@@ -115,9 +119,10 @@ void Upl_Proc(void)
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_kylin.attr.length + MSG_LEN_EXT) {
 				Upl_PushKylinMsg();
 				Upl_SendMsg();
-				msgType = MSG_TYPE_SR04S;
+				msgType = MSG_TYPE_ZGYRO;
 			}
 			break;
+			/*
 		case MSG_TYPE_SR04S:
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_sr04s.attr.length + MSG_LEN_EXT) {
 				Upl_PushSr04sMsg();
@@ -125,13 +130,15 @@ void Upl_Proc(void)
 				msgType = MSG_TYPE_ZGYRO;
 			}
 			break;
+			*/
 		case MSG_TYPE_ZGYRO:
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_zgyro.attr.length + MSG_LEN_EXT) {
 				Upl_PushZGyroMsg();
 				Upl_SendMsg();
-				msgType = MSG_TYPE_POS_CALIB;
+				msgType = MSG_TYPE_VRC;
 			}
 			break;
+			/*
 		case MSG_TYPE_POS_CALIB:
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_pos_calib.attr.length + MSG_LEN_EXT) {
 				Upl_PushPosCalib();
@@ -139,6 +146,7 @@ void Upl_Proc(void)
 				msgType = MSG_TYPE_VRC;
 			}
 			break;
+			*/
 		case MSG_TYPE_VRC:
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_vrc.attr.length + MSG_LEN_EXT) {
 				Upl_PushVirtualRC();

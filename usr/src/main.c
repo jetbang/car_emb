@@ -187,7 +187,6 @@ int main()
 		Dnl_Proc();
 		if (Clk_GetUsTick() % 2000 == 0) {
 			Upl_Proc();
-			
 		}
 		
 		

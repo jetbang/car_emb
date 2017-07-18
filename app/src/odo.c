@@ -82,6 +82,12 @@ static void GetMecanumCurrentsFdb(void)
 	*/
 }
 
+static void GetChassisVelocityFdb(void)
+{
+	Mec_Synthe((float*)&odo.mv, (float*)&odo.cv);
+	//odo.cv.z = zgyro.rate_rad;
+}
+
 static void GetChassisPositionFdb(void)
 {
 	//Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
@@ -89,12 +95,6 @@ static void GetChassisPositionFdb(void)
 	odo.cp.x += odo.cv.x * SYS_CTL_TSC;
 	odo.cp.y += odo.cv.y * SYS_CTL_TSC;
 	odo.cp.z += odo.cv.z * SYS_CTL_TSC;
-}
-
-static void GetChassisVelocityFdb(void)
-{
-	Mec_Synthe((float*)&odo.mv, (float*)&odo.cv);
-	//odo.cv.z = zgyro.rate_rad;
 }
 
 static float odo_gp_c = 0;
