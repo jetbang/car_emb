@@ -28,7 +28,13 @@ static void vSndThreadFun(void* pvParam)
 {
 	while (1) {
 		Snd_Proc();
-		vTaskDelay(10);
+		if (Clk_GetUsTick() < 1.4e6) {
+			Snd_Play();
+			vTaskDelay(50);
+		} else {
+			Snd_Stop();
+			vTaskDelay(200);
+		}
 	}
 }
 
@@ -69,7 +75,6 @@ static void vAppTaskCreate(void)
 	xTaskCreate(vDnlThreadFun, "vDnlThreadFun", 128, NULL, 2, &xDnlTaskHandle);
 	xTaskCreate(vUplThreadFun, "vUplThreadFun", 128, NULL, 2, &xUplTaskHandle);
 	xTaskCreate(vCtlThreadFun, "vCtlThreadFun", 128, NULL, 3, &xCtlTaskHandle);
-
 }
 
 int main()
@@ -78,15 +83,6 @@ int main()
 	
 	// Boot KOS
 	KOS_Boot();
-	
-	// Play startup music
-	Snd_Play();
-
-	// Wait for startup music
-	Delay_Ms(1000);
-
-	// Stop startup music
-	Snd_Stop();
 	
 	vAppTaskCreate();
 	vTaskStartScheduler();
