@@ -23,45 +23,31 @@
 static uint8_t buf[2][UPL_BUF_SIZE];
 static FIFO_t fifo;
 
-static MsgType_t msgType = MSG_TYPE_KYLIN;
+static MsgType_t msgType = MSG_TYPE_DBUS;
 
-static KylinMsg_t kylinMsg;
-//static Sr04sMsg_t sr04sMsg;
+static DBusMsg_t dbusMsg;
+static OdomMsg_t odomMsg;
 static ZGyroMsg_t zgyroMsg;
-//static IMU9XMsg_t imu9xMsg;
-//static PosCalibMsg_t posCalibMsg;
-static VirtualRC_t virtualRC;
+static MotorMsg_t motorMsg;
 
-static void Upl_PushKylinMsg(void)
+static void Upl_PushDBusMsg(void)
 {
-	kylinMsg.frame_id++;
-	kylinMsg.cbus.fs = odo.fs;
-	Flag_Cpy(&kylinMsg.cbus.fs, odo.fs, 0x000003ff);
-	Flag_Cpy(&kylinMsg.cbus.fs, Wdg_GetErr() << (32 - WDG_NUM), 0xfffffc00);
-	kylinMsg.cbus.cv.x = odo.cv.x * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.cv.y = odo.cv.y * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.cv.z = odo.cv.z * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.cp.x = odo.cp.x * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.cp.y = odo.cp.y * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.cp.z = odo.cp.z * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.gv.e = odo.gv.e * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.gp.e = odo.gp.e * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.gv.c = odo.gv.c * KYLIN_MSG_VALUE_SCALE;
-	kylinMsg.cbus.gp.c = odo.gp.c * KYLIN_MSG_VALUE_SCALE;
-	Msg_Push(&fifo, buf[1], &msg_head_kylin, &kylinMsg);
+	dbusMsg.frame_id++;
+	Rcp_Enc(&dbus.rcp, dbusMsg.data);
+	Msg_Push(&fifo, buf[1], &msg_head_dbus, &dbusMsg);
 }
 
-/*
-static void Upl_PushSr04sMsg(void)
+static void Upl_PushOdomMsg(void)
 {
-	sr04sMsg.frame_id++;
-	sr04sMsg.fixed = srs[SR04_IDX_FIXED].mm_filtered;
-	sr04sMsg.moble = srs[SR04_IDX_MOBLE].mm_filtered;
-	sr04sMsg.left = srs[SR04_IDX_LEFT].mm_filtered;
-	sr04sMsg.right = srs[SR04_IDX_RIGHT].mm_filtered;
-	Msg_Push(&fifo, buf[1], &msg_head_sr04s, &sr04sMsg);
+	odomMsg.frame_id++;
+	odomMsg.vx = odo.cv.x * ODOM_MSG_VALUE_SCALE;
+	odomMsg.vy = odo.cv.y * ODOM_MSG_VALUE_SCALE;
+	odomMsg.vz = odo.cv.z * ODOM_MSG_VALUE_SCALE;
+	odomMsg.px = odo.cp.x * ODOM_MSG_VALUE_SCALE;
+	odomMsg.py = odo.cp.y * ODOM_MSG_VALUE_SCALE;
+	odomMsg.pz = odo.cp.z * ODOM_MSG_VALUE_SCALE;
+	Msg_Push(&fifo, buf[1], &msg_head_odom, &odomMsg);
 }
-*/
 
 static void Upl_PushZGyroMsg(void)
 {
@@ -71,32 +57,13 @@ static void Upl_PushZGyroMsg(void)
 	Msg_Push(&fifo, buf[1], &msg_head_zgyro, &zgyroMsg);
 }
 
-/*
-static void Upl_PushPosCalib(void)
+static void Upl_PushMotorMsg(void)
 {
-	posCalibMsg.frame_id++;
-	posCalibMsg.data.ch = map(CLAW_PWM_H, 1000, 2000, 0, PI) * POS_CALIB_VALUE_SCALE;
-	posCalibMsg.data.cl = map(CLAW_PWM_L, 1000, 2000, 0, PI) * POS_CALIB_VALUE_SCALE;
-	posCalibMsg.data.eh = cfg.pos.eh * POS_CALIB_VALUE_SCALE;
-	posCalibMsg.data.el = cfg.pos.el * POS_CALIB_VALUE_SCALE;
-	Msg_Push(&fifo, buf[1], &msg_head_pos_calib, &posCalibMsg);
+	motorMsg.frame_id++;
+	motorMsg.angle = zgyro.angle;
+	motorMsg.rate = zgyro.rate;
+	Msg_Push(&fifo, buf[1], &msg_head_motor, &motorMsg);
 }
-*/
-
-static void Upl_PushVirtualRC(void)
-{
-	virtualRC.frame_id++;
-	Rcp_Enc(&dbus.rcp, virtualRC.buf);
-	Msg_Push(&fifo, buf[1], &msg_head_vrc, &virtualRC);
-}
-
-/*
-static void Upl_PushIMU9X(void)
-{
-	imu9xMsg.frame_id++;
-	//imu9xMsg.ax = 
-}
-*/
 
 static void Upl_SendMsg(void)
 {
@@ -114,48 +81,41 @@ void Upl_Init(void)
 
 void Upl_Proc(void)
 {
+	uint8_t i = 0;
 	switch (msgType) {
-		case MSG_TYPE_KYLIN:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_kylin.attr.length + MSG_LEN_EXT) {
-				Upl_PushKylinMsg();
+		case MSG_TYPE_DBUS:
+			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_dbus.attr.length + MSG_LEN_EXT) {
+				Upl_PushDBusMsg();
 				Upl_SendMsg();
 				msgType = MSG_TYPE_ZGYRO;
 			}
 			break;
-			/*
-		case MSG_TYPE_SR04S:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_sr04s.attr.length + MSG_LEN_EXT) {
-				Upl_PushSr04sMsg();
+		case MSG_TYPE_ODOM:
+			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_odom.attr.length + MSG_LEN_EXT) {
+				Upl_PushOdomMsg();
 				Upl_SendMsg();
 				msgType = MSG_TYPE_ZGYRO;
 			}
 			break;
-			*/
 		case MSG_TYPE_ZGYRO:
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_zgyro.attr.length + MSG_LEN_EXT) {
 				Upl_PushZGyroMsg();
 				Upl_SendMsg();
-				msgType = MSG_TYPE_VRC;
+				msgType = MSG_TYPE_MOTOR;
 			}
 			break;
-			/*
-		case MSG_TYPE_POS_CALIB:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_pos_calib.attr.length + MSG_LEN_EXT) {
-				Upl_PushPosCalib();
-				Upl_SendMsg();
-				msgType = MSG_TYPE_VRC;
+		case MSG_TYPE_MOTOR:
+			for (i = 0; i < MOTOR_NUM; i++) {
+
 			}
-			break;
-			*/
-		case MSG_TYPE_VRC:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_vrc.attr.length + MSG_LEN_EXT) {
-				Upl_PushVirtualRC();
+			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_motor.attr.length + MSG_LEN_EXT) {
+				Upl_PushMotorMsg();
 				Upl_SendMsg();
-				msgType = MSG_TYPE_KYLIN;
+				msgType = MSG_TYPE_DBUS;
 			}
 			break;
 		default:
-			msgType = MSG_TYPE_KYLIN;
+			msgType = MSG_TYPE_DBUS;
 		break;
 	}
 }

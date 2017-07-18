@@ -167,49 +167,11 @@ int main()
 
 	while(1)
 	{
-		//Dnl_Proc();
-		//Delay_Ms(2);
-		//CM_CMD(500, -500, 500, 500);
-		//if (motor[1].rate_fdb > 0) {
-		//	LED_GREEN_ON();
-		//} else {
-		//	LED_GREEN_OFF();
-		//}
-		//Delay_Ms(2);
-		//Act_Proc();
-		//Delay_Ms(2);
-		//float v = map(dbus.rcp.ch[1], CH_MIN, CH_MAX, -5000, 5000);//cmd.cv.y * 100;
-		//CM_CMD(v, v, v, v);
-		//CM_CMD(5000, 5000, 5000, 5000);
-		//CM_CMD(1000,0,0,0);
-		//Delay_Ms(10);
-		//Srs_Proc();
 		Dnl_Proc();
 		if (Clk_GetUsTick() % 2000 == 0) {
 			Upl_Proc();
 			
 		}
-		
-		
-		//if (Clk_GetUsTick() % 2000 == 0) {
-			//printf("m:\t%f\t%f\t%f\t%f\n", odo.mp.w1, odo.mp.w2, odo.mp.w3, odo.mp.w4);
-			//printf("m:\t%d\t%d\t%d\t%d\n", motor[0].angle_filtered, motor[1].angle_filtered, motor[2].angle_filtered, motor[3].angle_filtered);
-			//printf("m:\t%f\t%f\t%f\t%f\n", motor[0].angle_rad, motor[1].angle_rad, motor[2].angle_rad, motor[3].angle_rad);
-			//printf("m1: %d\t%d\t%d\n", motor[0].rate_raw, motor[0].rate_filtered, motor[0].rate_filtered - motor[0].rate_raw);
-			//Dbg_Cfg();
-			//printf("ex:\t%f\t%f\t%f\n", cmd.cp.x, odo.cp.x, (cmd.cp.x - odo.cp.x));
-			//printf("ey:\t%f\t%f\t%f\n", cmd.cp.y, odo.cp.y, (cmd.cp.y - odo.cp.y));
-			//printf("ez:\t%f\t%f\t%f\n", cmd.cp.z, odo.cp.z, (cmd.cp.z - odo.cp.z));
-			//printf("%f\n", cfg.vel.x);
-			//frame_id = motor[0].frame_cnt;
-		
-		//if (Clk_GetUsTick() - last_time > 10000) {
-		//	last_time = Clk_GetUsTick();
-		//	if (MPU6500_Read(&imu_data)) {
-		//		printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n", imu_data.ax, imu_data.ay, imu_data.az, imu_data.temp, imu_data.gx, imu_data.gy, imu_data.gz);
-		//	}
-		//}
-		
   }
 }
 

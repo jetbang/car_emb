@@ -49,7 +49,7 @@ extern "C" {
 typedef uint32_t CfgVer_t;
 typedef uint32_t CfgFlg_t;
 
-typedef IMUParam_t IMUCfg_t;
+typedef ImuParam_t ImuCfg_t;
 typedef MagParam_t MagCfg_t;
 typedef PIDParam_t PIDCfg_t;
 typedef VelParam_t VelCfg_t;
@@ -65,7 +65,7 @@ typedef struct
 {
 	CfgVer_t ver; // Firmware version
 	CfgFlg_t flg; // Configuration flags
-	IMUCfg_t imu; // IMU offset configuration
+	ImuCfg_t imu; // IMU offset configuration
 	MagCfg_t mag; // Mag offset configuration
 	RmpCfg_t rmp; // Ramp configuration
 	VelCfg_t vel; // Velocity configuration
@@ -149,6 +149,7 @@ typedef struct
 	.kp = 100, \
 	.ki = 0, \
 	.kd = 0, \
+	.db = 0, \
 	.it = 0, \
 	.Emax = 3000, \
 	.Pmax = 4950, \

@@ -16,26 +16,22 @@
  
 #include "msg.h"
 
-const MsgHead_t msg_head_vrc = MSG_HEAD_VRC;
-const MsgHead_t msg_head_vhc = MSG_HEAD_VHC;
-const MsgHead_t msg_head_vdbus = MSG_HEAD_VDBUS;
-const MsgHead_t msg_head_vcbus = MSG_HEAD_CBUS;
+const MsgHead_t msg_head_rcp = MSG_HEAD_RCP;
+const MsgHead_t msg_head_hcp = MSG_HEAD_HCP;
+const MsgHead_t msg_head_odom = MSG_HEAD_ODOM;
+const MsgHead_t msg_head_dbus = MSG_HEAD_DBUS;
+const MsgHead_t msg_head_cbus = MSG_HEAD_CBUS;
 const MsgHead_t msg_head_zgyro = MSG_HEAD_ZGYRO;
-const MsgHead_t msg_head_imu9x = MSG_HEAD_IMU9X;
 const MsgHead_t msg_head_motor = MSG_HEAD_MOTOR;
-const MsgHead_t msg_head_odome = MSG_HEAD_ODOME;
-const MsgHead_t msg_head_grasp = MSG_HEAD_GRASP;
 const MsgHead_t msg_head_statu = MSG_HEAD_STATU;
 const MsgHead_t msg_head_subsc = MSG_HEAD_SUBSC;
 const MsgHead_t msg_head_calib = MSG_HEAD_CALIB;
-const MsgHead_t msg_head_kylin = MSG_HEAD_KYLIN;
 const MsgHead_t msg_head_pid_calib = MSG_HEAD_PID_CALIB;
 const MsgHead_t msg_head_imu_calib = MSG_HEAD_IMU_CALIB;
 const MsgHead_t msg_head_mag_calib = MSG_HEAD_MAG_CALIB;
 const MsgHead_t msg_head_vel_calib = MSG_HEAD_VEL_CALIB;
 const MsgHead_t msg_head_mec_calib = MSG_HEAD_MEC_CALIB;
 const MsgHead_t msg_head_pos_calib = MSG_HEAD_POS_CALIB;
-const MsgHead_t msg_head_sr04s = MSG_HEAD_SR04S;
 
 /**
  * @brief Push a single message to message buffer. 

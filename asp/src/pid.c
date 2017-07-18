@@ -16,17 +16,19 @@
  
 #include "pid.h"
 
-void PID_Config(PID_t* pid, float kp, float ki, float kd, float it, float Emax, float Pmax, float Imax, float Dmax, float Omax)
+#define ABS(VAL) (VAL < 0 ? (-VAL) : VAL)
+void PID_Config(PID_t* pid, float kp, float ki, float kd, float db, float it, float Emax, float Pmax, float Imax, float Dmax, float Omax)
 {
-	pid->kp = kp;
-	pid->ki = ki;
-	pid->kd = kd;
-	pid->it = it;
-	pid->Emax = Emax;
-	pid->Pmax = Pmax;
-	pid->Imax = Imax;
-	pid->Dmax = Dmax;
-	pid->Omax = Omax;
+	pid->kp = ABS(kp);
+	pid->ki = ABS(ki);
+	pid->kd = ABS(kd);
+	pid->db = ABS(db);
+	pid->it = ABS(it);
+	pid->Emax = ABS(Emax);
+	pid->Pmax = ABS(Pmax);
+	pid->Imax = ABS(Imax);
+	pid->Dmax = ABS(Dmax);
+	pid->Omax = ABS(Omax);
 }
 
 void PID_Reset(PID_t *pid)
@@ -42,12 +44,21 @@ void PID_Reset(PID_t *pid)
 #define LIMIT(val,min,max) do { val = val > max ? max : val < min ? min : val; } while (0)
 float PID_Calc(PID_t* pid, float ref, float fdb)
 {
+	float abserr = 0;
 	pid->error[0] = pid->error[1];
 	pid->error[1] = ref - fdb; // calculate error
+	abserr = ABS(pid->error[1]);
 	LIMIT(pid->error[1], -pid->Emax, pid->Emax);
+	if (abserr < pid->db) {
+		pid->Pout = 0;
+		pid->Iout = 0;
+		pid->Dout = 0;
+		pid->out = 0;
+		return pid->out;
+	}
 	pid->Pout = pid->kp * pid->error[1]; // P
 	LIMIT(pid->Pout, -pid->Pmax, pid->Pmax); // limit P
-	if (pid->error[1] < pid->it) {
+	if (abserr < pid->it) {
 		pid->Iout += pid->ki * pid->error[1]; // I
 		LIMIT(pid->Iout, -pid->Imax, pid->Imax); // limit I
 	} else {

@@ -25,6 +25,8 @@ void Calib_GetPID(PIDCalib_t* PIDCalib, const PIDParam_t* PIDParam)
 	PIDCalib->kp = PIDParam->kp * PID_CALIB_VALUE_SCALE;
 	PIDCalib->ki = PIDParam->ki * PID_CALIB_VALUE_SCALE;
 	PIDCalib->kd = PIDParam->kd * PID_CALIB_VALUE_SCALE;
+	PIDCalib->db = PIDParam->db * PID_CALIB_VALUE_SCALE;
+	PIDCalib->it = PIDParam->it * PID_CALIB_VALUE_SCALE;
 	PIDCalib->Emax = PIDParam->Emax * PID_CALIB_VALUE_SCALE;
 	PIDCalib->Pmax = PIDParam->Pmax * PID_CALIB_VALUE_SCALE;
 	PIDCalib->Imax = PIDParam->Imax * PID_CALIB_VALUE_SCALE;
@@ -37,6 +39,8 @@ void Calib_SetPID(PIDParam_t* PIDParam, const PIDCalib_t* PIDCalib)
 	PIDParam->kp = PIDCalib->kp / PID_CALIB_VALUE_SCALE;
 	PIDParam->ki = PIDCalib->ki / PID_CALIB_VALUE_SCALE;
 	PIDParam->kd = PIDCalib->kd / PID_CALIB_VALUE_SCALE;
+	PIDParam->db = PIDCalib->db / PID_CALIB_VALUE_SCALE;
+	PIDParam->it = PIDCalib->it / PID_CALIB_VALUE_SCALE;
 	PIDParam->Emax = PIDCalib->Emax / PID_CALIB_VALUE_SCALE;
 	PIDParam->Pmax = PIDCalib->Pmax / PID_CALIB_VALUE_SCALE;
 	PIDParam->Imax = PIDCalib->Imax / PID_CALIB_VALUE_SCALE;
@@ -44,7 +48,7 @@ void Calib_SetPID(PIDParam_t* PIDParam, const PIDCalib_t* PIDCalib)
 	PIDParam->Omax = PIDCalib->Omax / PID_CALIB_VALUE_SCALE;
 }
 
-void Calib_GetIMU(IMUCalib_t* IMUCalib, const IMUParam_t* IMUParam)
+void Calib_GetImu(ImuCalib_t* IMUCalib, const ImuParam_t* IMUParam)
 {
 	IMUCalib->ax_offset = IMUParam->ax_offset * IMU_CALIB_VALUE_SCALE;
 	IMUCalib->ay_offset = IMUParam->ay_offset * IMU_CALIB_VALUE_SCALE;
@@ -54,7 +58,7 @@ void Calib_GetIMU(IMUCalib_t* IMUCalib, const IMUParam_t* IMUParam)
 	IMUCalib->gz_offset = IMUParam->gz_offset * IMU_CALIB_VALUE_SCALE;
 }
 
-void Calib_SetIMU(IMUParam_t* IMUParam, const IMUCalib_t* IMUCalib)
+void Calib_SetImu(ImuParam_t* IMUParam, const ImuCalib_t* IMUCalib)
 {
 	IMUParam->ax_offset = IMUCalib->ax_offset / IMU_CALIB_VALUE_SCALE;
 	IMUParam->ay_offset = IMUCalib->ay_offset / IMU_CALIB_VALUE_SCALE;

@@ -81,6 +81,5 @@ WdgErr_t Wdg_HitErr(WdgErr_t mask)
 WdgErr_t Wdg_IsOkay(void)
 {
 	return !(Wdg_HitErr(WDG_ERR_SIGNAL) || Wdg_HasErr(WDG_ERR_MOTORS));
-	//return 1;
 }
 

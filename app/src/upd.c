@@ -24,8 +24,8 @@ void Upd_Init(void)
 {
 	memcpy(&cmd.cp, &odo.cp, sizeof(ChassisState_t));
 	memcpy(&cmd.cv, &odo.cv, sizeof(ChassisState_t));
-	memcpy(&cmd.gp, &odo.gp, sizeof(GrabberState_t));
-	memcpy(&cmd.gv, &odo.gv, sizeof(GrabberState_t));
+	memcpy(&cmd.gp, &odo.gp, sizeof(GimbalsState_t));
+	memcpy(&cmd.gv, &odo.gv, sizeof(GimbalsState_t));
 	memcpy(&cmd.fs, &odo.fs, sizeof(PeriphsState_t));
 }
 
@@ -34,21 +34,21 @@ void Upd_Proc(void)
 	switch (Wsm_GetWs()) {
 		case WORKING_STATE_STOP:
 			Act_Init(); // Stop any kind of movement
-		  Odo_Proc(); // Odometry process
+			Odo_Proc(); // Odometry process
 			Upd_Init(); // Initialize updater
-		  Cmd_Proc(); // Command process
+			Cmd_Proc(); // Command process
 			break;
 		case WORKING_STATE_PREPARE:
 			Act_Init(); // Sensor data prefilter, stop any kind of movement
-		  Odo_Proc(); // Odometry process
+			Odo_Proc(); // Odometry process
 			Upd_Init(); // Initialize updater
-		  Cmd_Proc(); // Command process
+			Cmd_Proc(); // Command process
 			break;
 		case WORKING_STATE_CALIB:
 			Odo_Proc(); // Odometer process
 			Cal_Proc(); // Auto-calibration
-		  Upd_Init(); // Initialize updater
-		  Cmd_Proc(); // Command process
+			Upd_Init(); // Initialize updater
+			Cmd_Proc(); // Command process
 			break;
 		case WORKING_STATE_NORMAL:
 			if (Wsm_GetLastWs() != WORKING_STATE_NORMAL) {
@@ -70,9 +70,9 @@ void Upd_Proc(void)
 			break;
 		case WORKING_STATE_OVERLOAD:
 			Act_Init(); // Stop any kind of movement
-		  Odo_Proc(); // Odometry process
+			Odo_Proc(); // Odometry process
 			Upd_Init(); // Initialize updater
-		  Cmd_Proc(); // Command process
+			Cmd_Proc(); // Command process
 			break;
 		default:
 			break;

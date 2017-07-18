@@ -74,7 +74,7 @@ void Cfg_Init(void)
 	Cfg_t tmp = CFG_DEF;
 	Cfg_Load(&cfg);
 	if (!Cfg_GetFlag(CFG_FLAG_IMU)) {
-		memcpy(&cfg.imu, &tmp.imu, sizeof(IMUCfg_t));
+		memcpy(&cfg.imu, &tmp.imu, sizeof(ImuCfg_t));
 	}
 	if (!Cfg_GetFlag(CFG_FLAG_MAG)) {
 		memcpy(&cfg.mag, &tmp.mag, sizeof(MagCfg_t));

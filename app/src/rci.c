@@ -24,12 +24,6 @@ static Rcf_t rcf;
 
 static void GetPeriphsStateRef(const Rcp_t* rcp)
 {
-	/*
-	FS_Set(&cmd.fs, FS_SONAR_F);
-	FS_Set(&cmd.fs, FS_SONAR_M);
-	FS_Set(&cmd.fs, FS_SONAR_L);
-	FS_Set(&cmd.fs, FS_SONAR_R);
-	*/
 }
 
 static void GetChassisStateRef(const Rcp_t* rcp)
@@ -44,12 +38,12 @@ static void GetChassisStateRef(const Rcp_t* rcp)
 
 static void GetGrabberStateRef(const Rcp_t* rcp)
 {
-	cmd.gv.e = map(rcp->ch[3], CH_MIN, CH_MAX, -cfg.vel.e, cfg.vel.e); // m/s
-	cmd.gp.e -= cmd.gv.e * SYS_CTL_TSC; // Integral velocity to get position, unit: m
-	LIMIT(cmd.gp.e, cfg.pos.el, cfg.pos.eh); // Constrain elevator position
-	cmd.gv.c = Rci_Sw(SW_IDX_L) == SW_UP ? cfg.vel.c : Rci_Sw(SW_IDX_L) == SW_DN ? -cfg.vel.c : 0; // rad/s
-	cmd.gp.c += cmd.gv.c * SYS_CTL_TSC; // Integral velocity to get position, unit: rad
-	LIMIT(cmd.gp.c, cfg.pos.cl, cfg.pos.ch); // Constrain grabber position
+	cmd.gv.p = map(rcp->ch[2], CH_MIN, CH_MAX, -cfg.vel.p, cfg.vel.p);
+	cmd.gp.p -= cmd.gv.p * SYS_CTL_TSC; // Integral velocity to get position
+	LIMIT(cmd.gp.p, -cfg.pos.p, cfg.pos.p); // Constrain elevator position
+	cmd.gv.t = map(rcp->ch[3], CH_MIN, CH_MAX, -cfg.vel.t, cfg.vel.t);
+	cmd.gp.t += cmd.gv.t * SYS_CTL_TSC; // Integral velocity to get position
+	LIMIT(cmd.gp.t, cfg.pos.t, cfg.pos.t); // Constrain grabber position
 }
 
 void Rci_Init(void)
