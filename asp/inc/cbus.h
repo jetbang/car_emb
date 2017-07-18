@@ -49,8 +49,8 @@ typedef struct
 {
 	uint32_t fs; // Flag bits
 	ChassisState_c cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
-	ChassisState_c cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
-	GimbalsState_c gv; // Grabber velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	//ChassisState_c cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
+	//GimbalsState_c gv; // Grabber velocity, unit: linear: mm/s, angular: 1e-3rad/s
 	GimbalsState_c gp; // Grabber position, unit: linear: mm, angular: rad
 }CBUS_t;
 

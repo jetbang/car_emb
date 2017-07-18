@@ -28,9 +28,9 @@ static void vSndThreadFun(void* pvParam)
 {
 	while (1) {
 		Snd_Proc();
-		if (Clk_GetUsTick() < 1.4e6) {
+		if (Clk_GetUsTick() < 8e5) {
 			Snd_Play();
-			vTaskDelay(50);
+			vTaskDelay(60);
 		} else {
 			Snd_Stop();
 			vTaskDelay(200);

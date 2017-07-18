@@ -25,7 +25,7 @@ extern "C" {
 
 #include "fun.h"
 
-#define SYS_CTL_TMS 4 // ms
+#define SYS_CTL_TMS 2 // ms
 #define SYS_CTL_TSC (SYS_CTL_TMS/1e3f)
 
 typedef uint32_t PeriphsState_t; // Peripherals state flag bits

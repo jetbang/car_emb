@@ -26,6 +26,14 @@ static void GetPeriphsStateRef(const CBUS_t* cbus)
 
 static void GetChassisStateRef(const CBUS_t* cbus)
 {
+	cmd.cv.x = cbus->cv.x / CBUS_VALUE_SCALE;
+	cmd.cv.y = cbus->cv.y / CBUS_VALUE_SCALE;
+	cmd.cv.z = cbus->cv.z / CBUS_VALUE_SCALE;
+
+	LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
+	LIMIT(cmd.cv.y, -cfg.vel.y, cfg.vel.y);
+	LIMIT(cmd.cv.z, -cfg.vel.z, cfg.vel.z);
+
 	/*
 	float pxr = cbus->cp.x / CBUS_VALUE_SCALE;
 	float pyr = cbus->cp.y / CBUS_VALUE_SCALE;
@@ -65,6 +73,13 @@ static void GetChassisStateRef(const CBUS_t* cbus)
 
 static void GetGrabberStateRef(const CBUS_t* cbus)
 {
+	cmd.gp.p = cbus->gp.p;
+	cmd.gp.t = cbus->gp.t;
+
+	LIMIT(cmd.gv.p, -cfg.vel.p, cfg.vel.p);
+	LIMIT(cmd.gv.t, -cfg.vel.t, cfg.vel.t);
+	LIMIT(cmd.gp.p, -cfg.pos.p, cfg.pos.p);
+	LIMIT(cmd.gp.t, -cfg.pos.t, cfg.pos.t);
 	/*
 	float per = cbus->gp.e / CBUS_VALUE_SCALE;
 	float pcr = cbus->gp.c / CBUS_VALUE_SCALE;

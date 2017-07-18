@@ -32,8 +32,8 @@ static void Dnl_ProcRcpMsg(const RcpMsg_t* rcpMsg)
 {
 	Wdg_Feed(WDG_IDX_RCP);
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		//Rcp_Dec(&dbus.rcp, rcpMsg->data);
-		//Rci_Proc(&dbus.rcp);
+		Rcp_Dec(&dbus.rcp, rcpMsg->data);
+		Rci_Proc(&dbus.rcp);
 	}
 }
 
@@ -42,8 +42,8 @@ static void Dnl_ProcHcpMsg(const HcpMsg_t* hcpMsg)
 {
 	Wdg_Feed(WDG_IDX_HCP);
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		//Hcp_Dec(&dbus.hcp, hcpMsg->data);
-		//Hci_Proc(&dbus.hcp);
+		Hcp_Dec(&dbus.hcp, hcpMsg->data);
+		Hci_Proc(&dbus.hcp);
 	}
 }
 
