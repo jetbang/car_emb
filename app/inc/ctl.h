@@ -42,11 +42,15 @@ typedef struct
 	GrabberState_t gc;
 }Ctl_t;
 
+#define CCL_NUM 4
 typedef struct
 {
+	/*
 	PID_t x;
 	PID_t y;
 	PID_t z;
+	*/
+	PID_t w[CCL_NUM];
 }Ccl_t; // Chassis control loop
 
 typedef struct

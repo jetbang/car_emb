@@ -1,0 +1,5 @@
+r
+loadbin Debug/gnd-emb.bin 0x08000000
+r
+go
+exit

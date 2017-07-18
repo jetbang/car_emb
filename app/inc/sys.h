@@ -51,12 +51,13 @@ typedef struct
 	float z;
 }ChassisState_t;
 
-typedef struct
+typedef union
 {
-	float w1;
-	float w2;
-	float w3;
-	float w4;
+	float w[4];
+	struct
+	{
+		float w1, w2, w3, w4;
+	};
 }MecanumState_t;
 
 typedef struct

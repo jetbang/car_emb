@@ -43,7 +43,7 @@ static void PeriphsStateAct(void)
 
 static void ChassisStateAct(void)
 {
-	CM_CMD(ctl.mc.w1, ctl.mc.w2, ctl.mc.w3, ctl.mc.w4);
+	CM_CMD(ctl.mc.w[0], ctl.mc.w[1], ctl.mc.w[2], ctl.mc.w[3]);
 }
 
 static void GrabberStateAct(void)

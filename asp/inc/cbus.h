@@ -30,10 +30,17 @@ extern "C" {
 
 typedef struct
 {
+	int32_t x;
+	int32_t y;
+	int32_t z;
+}ChassisState_p; // Chassis state control typedef
+
+typedef struct
+{
 	int16_t x;
 	int16_t y;
 	int16_t z;
-}ChassisState_c; // Chassis state control typedef
+}ChassisState_v; // Chassis state control typedef
 
 typedef struct
 {
@@ -50,8 +57,8 @@ typedef struct
 typedef struct
 {
 	uint32_t fs; // Flag bits
-	ChassisState_c cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
-	ChassisState_c cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
+	ChassisState_v cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	ChassisState_p cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
 	GrabberState_c gv; // Grabber velocity, unit: linear: mm/s, angular: 1e-3rad/s
 	GrabberState_c gp; // Grabber position, unit: linear: mm, angular: rad
 }CBUS_t;

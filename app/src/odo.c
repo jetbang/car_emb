@@ -37,14 +37,14 @@ static void GetFunctionalStateFdb(void)
 	FS_Det(&odo.fs, FS_SONAR_R, srs[SR04_IDX_RIGHT].state != SR04_STATE_STOP);
 	*/
 }
-
+#define MOTOR_REDUCTION_RATION 19.0f
 static void GetMecanumPositionFdb(void)
 {
+	uint8_t i = 0;
+	for (i = 0; i < 4; i++) {
+		odo.mp.w[i] = motor[i].angle_rad / MOTOR_REDUCTION_RATION;
+	}
 	
-	odo.mp.w1 = motor[0].angle_rad;
-	odo.mp.w2 = motor[1].angle_rad;
-	odo.mp.w3 = motor[2].angle_rad;
-	odo.mp.w4 = motor[3].angle_rad;
 	
 	/*
 	odo.mp.w1 = motor[0].angle_filtered * MOTOR_ANGLE_RAD_RECIP;
@@ -56,24 +56,39 @@ static void GetMecanumPositionFdb(void)
 
 static void GetMecanumVelocityFdb(void)
 {
-	odo.mv.w1 = motor[0].rate_rad;
-	odo.mv.w2 = motor[1].rate_rad;
-	odo.mv.w3 = motor[2].rate_rad;
-	odo.mv.w4 = motor[3].rate_rad;
+	uint8_t i = 0;
+	for (i = 0; i < 4; i++) {
+		odo.mv.w[i] = motor[i].rate_rad / MOTOR_REDUCTION_RATION;
+	}
+	/*
+	odo.mv.w1 = motor[0].rate_rad / MOTOR_REDUCTION_RATION;
+	odo.mv.w2 = motor[1].rate_rad / MOTOR_REDUCTION_RATION;
+	odo.mv.w3 = motor[2].rate_rad / MOTOR_REDUCTION_RATION;
+	odo.mv.w4 = motor[3].rate_rad / MOTOR_REDUCTION_RATION;
+	*/
 }
 
 static void GetMecanumCurrentsFdb(void)
 {
+	uint8_t i = 0;
+	for (i = 0; i < 4; i++) {
+		odo.mc.w[i] = motor[i].current_ref / MOTOR_REDUCTION_RATION;
+	}
+	/*
 	odo.mc.w1 = motor[0].current_ref;
 	odo.mc.w2 = motor[1].current_ref;
 	odo.mc.w3 = motor[2].current_ref;
 	odo.mc.w4 = motor[3].current_ref;
+	*/
 }
 
 static void GetChassisPositionFdb(void)
 {
-	Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
+	//Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
 	//odo.cp.z = zgyro.angle_rad;
+	odo.cp.x += odo.cv.x * SYS_CTL_TSC;
+	odo.cp.y += odo.cv.y * SYS_CTL_TSC;
+	odo.cp.z += odo.cv.z * SYS_CTL_TSC;
 }
 
 static void GetChassisVelocityFdb(void)
@@ -114,8 +129,9 @@ void Odo_Proc(void)
 	GetMecanumPositionFdb();
 	GetMecanumVelocityFdb();
 	GetMecanumCurrentsFdb();
-	GetChassisPositionFdb();
 	GetChassisVelocityFdb();
+	GetChassisPositionFdb();
+
 	GetGrabberPositionFdb();
 	GetGrabberVelocityFdb();
 	GetGrabberCurrentsFdb();

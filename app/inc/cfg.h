@@ -105,8 +105,8 @@ typedef struct
 	.mz_offset = 0, \
 }
 
-#define VEL_TRA_DEF 42.0f //3.0f //10.0f // m/s // 3
-#define VEL_ROT_DEF 110.0f //9.3f //30.0f // rad/s  // 9.3
+#define VEL_TRA_DEF 3.0f //3.0f //10.0f // m/s // 3
+#define VEL_ROT_DEF 8.0f //9.3f //30.0f // rad/s  // 9.3
 #define VEL_ELE_DEF 1.00f // m/s
 #define VEL_CLA_DEF 30.0f // rad/s
 #define VEL_CFG_DEF \
@@ -152,7 +152,7 @@ typedef struct
 
 #define CVL_CFG_DEF \
 { \
-	.kp = 100, \
+	.kp = 1000, \
 	.ki = 0, \
 	.kd = 0, \
 	.it = 0, \

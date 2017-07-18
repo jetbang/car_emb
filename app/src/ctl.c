@@ -36,18 +36,26 @@ static void PeriphsStateCtl(void)
 
 static void ChassisStateCtl(void)
 {
+	uint8_t i = 0;
+
 	ctl.cv.x = cmd.cv.x;
 	ctl.cv.y = cmd.cv.y;
 	ctl.cv.z = cmd.cv.z;
+
+	Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
+
+	for (i = 0; i < CCL_NUM; i++) {
+		ctl.mc.w[i] = PID_Calc(&pid.cv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
+	}
 	//ctl.cv.x = PID_Calc(&pid.cp.x, cmd.cp.x, odo.cp.x);
 	//ctl.cv.y = PID_Calc(&pid.cp.y, cmd.cp.y, odo.cp.y);
 	//ctl.cv.z = PID_Calc(&pid.cp.z, cmd.cp.z, odo.cp.z);
-	ctl.cc.x = PID_Calc(&pid.cv.x, ctl.cv.x, odo.cv.x) * rmp.out;
-	ctl.cc.y = PID_Calc(&pid.cv.y, ctl.cv.y, odo.cv.y) * rmp.out;;
-	ctl.cc.z = PID_Calc(&pid.cv.z, ctl.cv.z, odo.cv.z) * rmp.out;;
+	//ctl.cc.x = PID_Calc(&pid.cv.x, ctl.cv.x, odo.cv.x) * rmp.out;
+	//ctl.cc.y = PID_Calc(&pid.cv.y, ctl.cv.y, odo.cv.y) * rmp.out;;
+	//ctl.cc.z = PID_Calc(&pid.cv.z, ctl.cv.z, odo.cv.z) * rmp.out;;
 	
-	Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
-	Mec_Decomp((float*)&ctl.cc, (float*)&ctl.mc);
+
+	//Mec_Decomp((float*)&ctl.cc, (float*)&ctl.mc);
 }
 
 static void GrabberStateCtl(void)
@@ -128,8 +136,14 @@ static void Gpl_Init(PID_t* pid)
 /**********************************************/
 void Ctl_Init(void)
 {
+	uint8_t i = 0;
+	for (i = 0 ; i < CCL_NUM; i++) {
+		Cvl_Init(&pid.cv.w[i]);
+		Cpl_Init(&pid.cp.w[i]);
+	}
 	Rmp_Init(&rmp);
 	
+	/*
 	Cvl_Init(&pid.cv.x);
 	Cvl_Init(&pid.cv.y);
 	Cvl_Init(&pid.cv.z);
@@ -137,6 +151,7 @@ void Ctl_Init(void)
 	Cpl_Init(&pid.cp.x);
 	Cpl_Init(&pid.cp.y);
 	Cpl_Init(&pid.cp.z);
+	*/
 	
 	Gvl_Init(&pid.gv.e);
 	Gpl_Init(&pid.gp.e);
@@ -157,6 +172,7 @@ void Ctl_Proc(void)
 
 void Ctl_Zero(void)
 {
+	/*
 	Cvl_Init(&pid.cv.x);
 	Cvl_Init(&pid.cv.y);
 	Cvl_Init(&pid.cv.z);
@@ -164,7 +180,12 @@ void Ctl_Zero(void)
 	Cpl_Init(&pid.cp.x);
 	Cpl_Init(&pid.cp.y);
 	Cpl_Init(&pid.cp.z);
-	
+	*/
+	uint8_t i = 0;
+	for (i = 0 ; i < CCL_NUM; i++) {
+		Cvl_Init(&pid.cv.w[i]);
+		Cpl_Init(&pid.cp.w[i]);
+	}
 	memset(&ctl.cv, 0, sizeof(ChassisState_t));
 	memset(&ctl.cc, 0, sizeof(ChassisState_t));
 	memset(&ctl.mv, 0, sizeof(MecanumState_t));
