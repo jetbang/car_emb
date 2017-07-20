@@ -94,7 +94,8 @@ static void GetChassisPositionFdb(void)
 	//odo.cp.z = zgyro.angle_rad;
 	odo.cp.x += odo.cv.x * SYS_CTL_TSC;
 	odo.cp.y += odo.cv.y * SYS_CTL_TSC;
-	odo.cp.z += odo.cv.z * SYS_CTL_TSC;
+	//odo.cp.z += odo.cv.z * SYS_CTL_TSC;
+	odo.cp.z = zgyro.angle_rad;
 }
 
 static float odo_gp_c = 0;
