@@ -215,6 +215,16 @@ typedef struct
 	PosCalib_t data;
 }PosCalibMsg_t;
 
+typedef struct
+{
+	uint32_t frame_id;
+	uint8_t  flag; //0:invalid 1:valid
+	uint32_t x;
+	uint32_t y;
+	uint32_t z;
+	uint32_t compass;
+}UwbMsg_t;
+
 #define WRAP_U8(V) ((uint8_t)V)
 #define WRAP_U16(V) ((uint16_t)V)
 #define WRAP_U32(V) ((uint32_t)V)
@@ -239,6 +249,7 @@ typedef struct
 #define MSG_ID_MEC_CALIB WRAP_U8(0x12)
 #define MSG_ID_POS_CALIB WRAP_U8(0x13)
 #define MSG_ID_SR04S WRAP_U8(0x14)
+#define MSG_ID_UWB WRAP_U8(0x15)
 
 #define MSG_LEN_VRC sizeof(VirtualRC_t)
 #define MSG_LEN_VHC sizeof(VirtualHC_t)
@@ -260,7 +271,8 @@ typedef struct
 #define MSG_LEN_MEC_CALIB sizeof(MecCalibMsg_t)
 #define MSG_LEN_POS_CALIB sizeof(PosCalibMsg_t)
 #define MSG_LEN_SR04S sizeof(Sr04sMsg_t)
-	
+#define MSG_LEN_UWB sizeof(UwbMsg_t)
+
 #define MSG_TOKEN_VRC WRAP_U16(0x1234)
 #define MSG_TOKEN_VHC WRAP_U16(0x2345)
 #define MSG_TOKEN_VDBUS WRAP_U16(0x3456)
@@ -281,6 +293,7 @@ typedef struct
 #define MSG_TOKEN_MEC_CALIB WRAP_U16(0xa987)
 #define MSG_TOKEN_POS_CALIB WRAP_U16(0x9876)
 #define MSG_TOKEN_SR04S WRAP_U16(0x8765)
+#define MSG_TOKEN_UWB WRAP_U16(0x7654)
 
 #define MSG_HEAD_VALUE(ID,LEN,TOKEN) ((WRAP_U32(TOKEN)<<16) | (WRAP_U32(LEN)<<8) | WRAP_U32(ID))
 #define MSG_HEAD_VALUE_OF(NAME) MSG_HEAD_VALUE(MSG_ID_##NAME,MSG_LEN_##NAME,MSG_TOKEN_##NAME)
@@ -305,6 +318,7 @@ typedef struct
 #define MSG_HEAD_VALUE_MEC_CALIB MSG_HEAD_VALUE_OF(MEC_CALIB)
 #define MSG_HEAD_VALUE_POS_CALIB MSG_HEAD_VALUE_OF(POS_CALIB)
 #define MSG_HEAD_VALUE_SR04S MSG_HEAD_VALUE_OF(SR04S)
+#define MSG_HEAD_VALUE_UWB MSG_HEAD_VALUE_OF(UWB)
 
 #define MSG_HEAD_VRC { MSG_HEAD_VALUE_VRC }
 #define MSG_HEAD_VHC { MSG_HEAD_VALUE_VHC }
@@ -326,6 +340,7 @@ typedef struct
 #define MSG_HEAD_MEC_CALIB { MSG_HEAD_VALUE_MEC_CALIB }
 #define MSG_HEAD_POS_CALIB { MSG_HEAD_VALUE_POS_CALIB }
 #define MSG_HEAD_SR04S { MSG_HEAD_VALUE_SR04S }
+#define MSG_HEAD_UWB { MSG_HEAD_VALUE_UWB }
 
 #define MSG_TYPE_IDX_VRC 0u
 #define MSG_TYPE_IDX_VHC 1u
@@ -347,6 +362,7 @@ typedef struct
 #define MSG_TYPE_IDX_MEC_CALIB 17u
 #define MSG_TYPE_IDX_POS_CALIB 18u
 #define MSG_TYPE_IDX_SR04S 19u
+#define MSG_TYPE_IDX_UWB 20u
 
 typedef enum
 {
@@ -370,6 +386,7 @@ typedef enum
 	MSG_TYPE_MEC_CALIB = 1u << MSG_TYPE_IDX_MEC_CALIB,
 	MSG_TYPE_POS_CALIB = 1u << MSG_TYPE_IDX_POS_CALIB,
 	MSG_TYPE_SR04S = 1u << MSG_TYPE_IDX_SR04S,
+	MSG_TYPE_UWB = 1u << MSG_TYPE_IDX_UWB,
 }MsgType_t;
 
 #pragma pack()
@@ -414,6 +431,7 @@ extern const MsgHead_t msg_head_vel_calib;
 extern const MsgHead_t msg_head_mec_calib;
 extern const MsgHead_t msg_head_pos_calib;
 extern const MsgHead_t msg_head_sr04s;
+extern const MsgHead_t msg_head_uwb;
 
 #ifdef __cplusplus
 }

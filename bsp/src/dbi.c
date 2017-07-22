@@ -15,6 +15,7 @@
  */
  
 #include "dbi.h"
+#include "judge_sys.h"
 
 const Hal_Uart_t dbi = HAL_UART_DEF(Dbi);
 
@@ -35,6 +36,7 @@ void Dbi_Config(void)
 			   );
 
     USART_ITConfig(DBI_USART, USART_IT_RXNE, ENABLE);
+    USART_ITConfig(DBI_USART, USART_IT_IDLE, ENABLE);
 
     NVIC_Config(DBI_NVIC, DBI_NVIC_PRE_PRIORITY, DBI_NVIC_SUB_PRIORITY);
 
@@ -113,6 +115,20 @@ int Dbi_Read(uint8_t* buf, uint32_t len)
 	}
 }
 
+int Dbi_Peek(uint8_t* buf, uint32_t len)
+{
+	uint32_t available = FIFO_GetUsed(&rx_fifo);
+	if (!available) {
+		return -1;
+	} else {
+		if (len > available) len = available;
+		DBI_DISABLE_IT_RXNE();
+		FIFO_Peek(&rx_fifo, buf, len);
+		DBI_ENABLE_IT_RXNE();
+		return len;
+	}
+}
+
 int Dbi_Write(const uint8_t* buf, uint32_t len)
 {
 	uint32_t available = FIFO_GetFree(&tx_fifo);
@@ -175,6 +191,12 @@ void DBI_IRQ_HANDLER(void)
 		}
 		FIFO_Push(&rx_fifo, &rx_data, 1);
 		DbiRxCallback(rx_data);
-	}       
+	}
+	else if (USART_GetITStatus(DBI_USART, USART_IT_IDLE) != RESET)
+	{
+		(void)DBI_USART->DR;
+		(void)DBI_USART->SR;
+		//judgementDataHandler();
+	}
 }
 

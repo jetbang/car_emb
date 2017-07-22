@@ -58,6 +58,7 @@ uint32_t Dbi_GetTxFifoFree(void);
 int Dbi_ReadByte(void);
 int Dbi_WriteByte(uint8_t b);
 int Dbi_Read(uint8_t* buf, uint32_t len);
+int Dbi_Peek(uint8_t* buf, uint32_t len);
 int Dbi_Write(const uint8_t* buf, uint32_t len);
 
 void Dbi_PutCh(uint8_t c);

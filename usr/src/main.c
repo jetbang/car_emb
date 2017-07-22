@@ -141,6 +141,45 @@ static void vAppTaskCreate(void)
 //MPU_Data_t imu_data;
 
 //static uint32_t last_time = 0;
+
+/*
+static void vJudThreadFun(void* pvParam)
+{
+	while (1) {
+		judgementDataHandler();
+		vTaskDelay(20);
+	}
+}
+*/
+
+static void vDnlThreadFun(void* pvParam)
+{
+	while (1) {
+		Dnl_Proc();
+		vTaskDelay(20);
+	}
+}
+
+static void vUplThreadFun(void* pvParam)
+{
+	while (1) {
+		judgementDataHandler();
+		Upl_Proc();
+		vTaskDelay(10);
+	}
+}
+
+//static TaskHandle_t xJudTaskHandle = NULL;
+static TaskHandle_t xDnlTaskHandle = NULL;
+static TaskHandle_t xUplTaskHandle = NULL;
+
+static void vAppTaskCreate(void)
+{
+	//xTaskCreate(vJudThreadFun, "vJudThreadFun", 128, NULL, 1, &xJudTaskHandle);
+	xTaskCreate(vDnlThreadFun, "vDnlThreadFun", 128, NULL, 1, &xDnlTaskHandle);
+	xTaskCreate(vUplThreadFun, "vUplThreadFun", 128, NULL, 1, &xUplTaskHandle);
+}
+
 int main()
 {
 	//__set_PRIMASK(1); // Close global interrupt
@@ -160,8 +199,8 @@ int main()
 	// Stop startup music
 	Snd_Stop();
 	
-	//vAppTaskCreate();
-	//vTaskStartScheduler();
+	vAppTaskCreate();
+	vTaskStartScheduler();
 	
 	//Cfg_Reset();
 
@@ -184,11 +223,22 @@ int main()
 		//CM_CMD(1000,0,0,0);
 		//Delay_Ms(10);
 		//Srs_Proc();
-		Dnl_Proc();
-		if (Clk_GetUsTick() % 2000 == 0) {
-			Upl_Proc();
+		/*
+		if (dbi.GetRxFifoUsed() >= sizeof(tFrameHeader)) {
+			dbi.Peek(judge_buf, sizeof(tFrameHeader));
+			judgementDataHandler();
+			LED_RED_TOG();
 		}
-		
+		*/
+		//if (dbi.GetRxFifoUsed() > 0) {
+		//	btm.WriteByte(dbi.ReadByte());
+		//}
+
+		//judgementDataHandler();
+		//Dnl_Proc();
+		//if (Clk_GetUsTick() % 2000 == 0) {
+		//	Upl_Proc();
+		//}
 		
 		//if (Clk_GetUsTick() % 2000 == 0) {
 			//printf("m:\t%f\t%f\t%f\t%f\n", odo.mp.w1, odo.mp.w2, odo.mp.w3, odo.mp.w4);

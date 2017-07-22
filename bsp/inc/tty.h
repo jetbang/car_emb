@@ -59,6 +59,7 @@ uint32_t Tty_GetTxFifoFree(void);
 int Tty_ReadByte(void);
 int Tty_WriteByte(uint8_t b);
 int Tty_Read(uint8_t* buf, uint32_t len);
+int Tty_Peek(uint8_t* buf, uint32_t len);
 int Tty_Write(const uint8_t* buf, uint32_t len);
 
 void Tty_PutCh(uint8_t c);

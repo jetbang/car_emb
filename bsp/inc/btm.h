@@ -28,7 +28,7 @@ extern "C" {
 #define BTM_TX_PIN PD5
 #define BTM_RX_PIN PD6
 #define BTM_USART USART2
-#define BTM_USART_BR 9600
+#define BTM_USART_BR 115200
 #define BTM_USART_WL 8
 #define BTM_USART_PA 'N'
 #define BTM_USART_SB 1
@@ -58,6 +58,7 @@ uint32_t Btm_GetTxFifoFree(void);
 int Btm_ReadByte(void);
 int Btm_WriteByte(uint8_t b);
 int Btm_Read(uint8_t* buf, uint32_t len);
+int Btm_Peek(uint8_t* buf, uint32_t len);
 int Btm_Write(const uint8_t* buf, uint32_t len);
 
 void Btm_PutCh(uint8_t c);

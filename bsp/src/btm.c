@@ -113,6 +113,20 @@ int Btm_Read(uint8_t* buf, uint32_t len)
 	}
 }
 
+int Btm_Peek(uint8_t* buf, uint32_t len)
+{
+	uint32_t available = FIFO_GetUsed(&rx_fifo);
+	if (!available) {
+		return -1;
+	} else {
+		if (len > available) len = available;
+		BTM_DISABLE_IT_RXNE();
+		FIFO_Peek(&rx_fifo, buf, len);
+		BTM_ENABLE_IT_RXNE();
+		return len;
+	}
+}
+
 int Btm_Write(const uint8_t* buf, uint32_t len)
 {
 	uint32_t available = FIFO_GetFree(&tx_fifo);

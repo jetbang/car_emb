@@ -36,6 +36,7 @@ const MsgHead_t msg_head_vel_calib = MSG_HEAD_VEL_CALIB;
 const MsgHead_t msg_head_mec_calib = MSG_HEAD_MEC_CALIB;
 const MsgHead_t msg_head_pos_calib = MSG_HEAD_POS_CALIB;
 const MsgHead_t msg_head_sr04s = MSG_HEAD_SR04S;
+const MsgHead_t msg_head_uwb = MSG_HEAD_UWB;
 
 /**
  * @brief Push a single message to message buffer. 

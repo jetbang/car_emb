@@ -39,6 +39,7 @@ typedef struct
 	int (*ReadByte)(void);
 	int (*WriteByte)(uint8_t);
 	int (*Read)(uint8_t*, uint32_t);
+	int (*Peek)(uint8_t*, uint32_t);
 	int (*Write)(const uint8_t*, uint32_t);
 	void (*PutCh)(uint8_t);
 	uint8_t (*GetCh)(void);
@@ -56,6 +57,7 @@ typedef struct
 	.ReadByte      = &DEV##_ReadByte,      \
 	.WriteByte     = &DEV##_WriteByte,     \
 	.Read          = &DEV##_Read,          \
+	.Peek          = &DEV##_Peek,          \
 	.Write         = &DEV##_Write,         \
 	.PutCh         = &DEV##_PutCh,         \
 	.GetCh         = &DEV##_GetCh,         \

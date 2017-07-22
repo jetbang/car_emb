@@ -113,6 +113,20 @@ int Tty_Read(uint8_t* buf, uint32_t len)
 	}
 }
 
+int Tty_Peek(uint8_t* buf, uint32_t len)
+{
+	uint32_t available = FIFO_GetUsed(&rx_fifo);
+	if (!available) {
+		return -1;
+	} else {
+		if (len > available) len = available;
+		TTY_DISABLE_IT_RXNE();
+		FIFO_Peek(&rx_fifo, buf, len);
+		TTY_ENABLE_IT_RXNE();
+		return len;
+	}
+}
+
 int Tty_Write(const uint8_t* buf, uint32_t len)
 {
 	uint32_t available = FIFO_GetFree(&tx_fifo);

@@ -15,6 +15,7 @@
  */
  
 #include "upl.h"
+#include "judge_sys.h"
 
 /*****************************************/
 /*         Up-Link Communication         */
@@ -22,6 +23,8 @@
 
 static uint8_t buf[2][UPL_BUF_SIZE];
 static FIFO_t fifo;
+
+static uint32_t lastUwbFrameCnt = 0;
 
 static MsgType_t msgType = MSG_TYPE_KYLIN;
 
@@ -31,6 +34,7 @@ static ZGyroMsg_t zgyroMsg;
 //static IMU9XMsg_t imu9xMsg;
 //static PosCalibMsg_t posCalibMsg;
 static VirtualRC_t virtualRC;
+static UwbMsg_t uwbMsg;
 
 static void Upl_PushKylinMsg(void)
 {
@@ -69,6 +73,18 @@ static void Upl_PushZGyroMsg(void)
 	zgyroMsg.angle = zgyro.angle;
 	zgyroMsg.rate = zgyro.rate;
 	Msg_Push(&fifo, buf[1], &msg_head_zgyro, &zgyroMsg);
+}
+
+static void Upl_PushUwbMsg(void)
+{
+	uwbMsg.frame_id++;
+	uwbMsg.flag = testGameInfo.gpsData.flag;
+	uwbMsg.x = testGameInfo.gpsData.x;
+	uwbMsg.y = testGameInfo.gpsData.y;
+	uwbMsg.z = testGameInfo.gpsData.z;
+	uwbMsg.compass = testGameInfo.gpsData.compass;
+	lastUwbFrameCnt = uwbFrameCnt;
+	Msg_Push(&fifo, buf[1], &msg_head_uwb, &uwbMsg);
 }
 
 /*
@@ -151,6 +167,15 @@ void Upl_Proc(void)
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_vrc.attr.length + MSG_LEN_EXT) {
 				Upl_PushVirtualRC();
 				Upl_SendMsg();
+				msgType = MSG_TYPE_UWB;
+			}
+			break;
+		case MSG_TYPE_UWB:
+			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_uwb.attr.length + MSG_LEN_EXT) {
+				if (uwbFrameCnt != lastUwbFrameCnt) {
+					Upl_PushUwbMsg();
+					Upl_SendMsg();
+				}
 				msgType = MSG_TYPE_KYLIN;
 			}
 			break;
