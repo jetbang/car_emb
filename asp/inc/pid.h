@@ -21,13 +21,12 @@
 extern "C" {
 #endif
 	
-#include <stdint.h>
-	
 typedef struct
 {
 	float kp;
 	float ki;
 	float kd;
+	float db;  // Dead band
 	float it;  // Integral threshold
 	float Emax;
 	float Pmax;
@@ -42,7 +41,7 @@ typedef struct
 	float out;
 }PID_t;
 
-void PID_Config(PID_t* pid, float kp, float ki, float kd, float it, float Emax, float Pmax, float Imax, float Dmax, float Omax);
+void PID_Config(PID_t* pid, float kp, float ki, float kd, float db, float it, float Emax, float Pmax, float Imax, float Dmax, float Omax);
 float PID_Calc(PID_t* pid, float ref, float fdb);
 void PID_Reset(PID_t* pid);
 

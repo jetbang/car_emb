@@ -35,27 +35,22 @@ typedef struct
 {
 	PeriphsState_t fs;
 	ChassisState_t cv;
-	ChassisState_t cc;
 	MecanumState_t mv;
 	MecanumState_t mc;
-	GrabberState_t gv;
-	GrabberState_t gc;
+	PantiltState_t gv;
+	PantiltState_t gc;
 }Ctl_t;
 
 #define CCL_NUM 4
 typedef struct
 {
-	/*
-	PID_t x;
-	PID_t y;
-	PID_t z;
-	*/
 	PID_t w[CCL_NUM];
 }Ccl_t; // Chassis control loop
 
 typedef struct
 {
-	PID_t e;
+	PID_t p;
+	PID_t t;
 }Gcl_t; // Grabber control loop
 
 typedef struct

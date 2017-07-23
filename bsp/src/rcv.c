@@ -44,8 +44,8 @@ void Rcv_Config(void)
 	NVIC_Config(RCV_NVIC, RCV_NVIC_PRE_PRIORITY, RCV_NVIC_SUB_PRIORITY);
     
 	USART_ITConfig(RCV_USART, USART_IT_IDLE, ENABLE); // 14mspf
-  USART_Cmd(RCV_USART, ENABLE);
 
+	USART_Cmd(RCV_USART, ENABLE);
 }
 
 void Rcv_EnableIT(void)
@@ -62,14 +62,11 @@ void RCV_IRQ_HANDLER(void)
 {
 	if(USART_GetITStatus(RCV_USART, USART_IT_IDLE) != RESET)
 	{
-		uint8_t* dbuf = buf[0];
+		uint8_t* pbuf = buf[0];
 
 		uint16_t rx_len = 0;
 
 		//clear the idle pending flag
-		//USART_ClearITPendingBit(RCV_USART, USART_IT_IDLE);
-		//USART_ClearFlag(RCV_USART, USART_FLAG_IDLE);
-		
 		(void)RCV_USART->SR;
 		(void)RCV_USART->DR;
 		
@@ -79,18 +76,18 @@ void RCV_IRQ_HANDLER(void)
 		//Target is Memory0
 		if(DMA_GetCurrentMemoryTarget(RCV_DMA_STREAM) == 0)
 		{
-			dbuf = buf[0];
+			pbuf = buf[0];
 			RCV_DMA_STREAM->CR |= (uint32_t)(DMA_SxCR_CT);        //enable the current selected memory is Memory 1
 		}
 		else
 		{
-			dbuf = buf[1];
+			pbuf = buf[1];
 			RCV_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
 		}
 		DMA_Cmd(RCV_DMA_STREAM, ENABLE);
 		if(rx_len == RCV_FRAME_LEN)
 		{
-			RcvCallback(dbuf);
+			RcvIdleCallback(pbuf);
 		}
 	}       
 }

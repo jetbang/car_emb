@@ -36,7 +36,7 @@ static void PeriphsStateCtl(void)
 
 static void ChassisStateCtl(void)
 {
-	uint8_t i = 0;
+	static uint8_t i = 0;
 
 	ctl.cv.x = cmd.cv.x;
 	ctl.cv.y = cmd.cv.y;
@@ -47,22 +47,14 @@ static void ChassisStateCtl(void)
 	for (i = 0; i < CCL_NUM; i++) {
 		ctl.mc.w[i] = PID_Calc(&pid.cv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
 	}
-	//ctl.cv.x = PID_Calc(&pid.cp.x, cmd.cp.x, odo.cp.x);
-	//ctl.cv.y = PID_Calc(&pid.cp.y, cmd.cp.y, odo.cp.y);
-	//ctl.cv.z = PID_Calc(&pid.cp.z, cmd.cp.z, odo.cp.z);
-	//ctl.cc.x = PID_Calc(&pid.cv.x, ctl.cv.x, odo.cv.x) * rmp.out;
-	//ctl.cc.y = PID_Calc(&pid.cv.y, ctl.cv.y, odo.cv.y) * rmp.out;;
-	//ctl.cc.z = PID_Calc(&pid.cv.z, ctl.cv.z, odo.cv.z) * rmp.out;;
-	
-
-	//Mec_Decomp((float*)&ctl.cc, (float*)&ctl.mc);
 }
 
-static void GrabberStateCtl(void)
+static void PantiltStateCtl(void)
 {
-	ctl.gv.e = PID_Calc(&pid.gp.e, cmd.gp.e, odo.gp.e);
-	ctl.gc.e = PID_Calc(&pid.gv.e, ctl.gv.e, odo.gv.e) * rmp.out;;
-	ctl.gc.c = map(cmd.gp.c, cfg.pos.cl, cfg.pos.ch, CLAW_PWM_L, CLAW_PWM_H); // Direct PWM control (1000~2000)/2500, map rad to pwm duty cycle
+	ctl.gv.p = PID_Calc(&pid.gp.p, cmd.gp.p, odo.gp.p);
+	ctl.gv.t = PID_Calc(&pid.gp.t, cmd.gp.t, odo.gp.t);
+	ctl.gc.p = PID_Calc(&pid.gv.p, ctl.gv.p, odo.gv.p) * rmp.out;
+	ctl.gc.t = PID_Calc(&pid.gv.t, ctl.gv.t, odo.gv.t) * rmp.out;;
 }
 
 static void Rmp_Init(Rmp_t* rmp)
@@ -77,6 +69,7 @@ static void Cpl_Init(PID_t* pid)
 		 cfg.cpl.kp, 
 		 cfg.cpl.ki, 
 		 cfg.cpl.kd, 
+		 cfg.cpl.db,
 		 cfg.cpl.it,
 		 cfg.cpl.Emax,
 		 cfg.cpl.Pmax, 
@@ -92,6 +85,7 @@ static void Cvl_Init(PID_t* pid)
 		 cfg.cvl.kp, 
 		 cfg.cvl.ki, 
 		 cfg.cvl.kd, 
+		 cfg.cvl.db,
 		 cfg.cvl.it,
 		 cfg.cvl.Emax,
 		 cfg.cvl.Pmax, 
@@ -107,6 +101,7 @@ static void Gvl_Init(PID_t* pid)
 		 cfg.gvl.kp, 
 		 cfg.gvl.ki, 
 		 cfg.gvl.kd, 
+		 cfg.gvl.db,
 		 cfg.gvl.it,
 		 cfg.gvl.Emax,
 		 cfg.gvl.Pmax, 
@@ -122,6 +117,7 @@ static void Gpl_Init(PID_t* pid)
 		 cfg.gpl.kp, 
 		 cfg.gpl.ki, 
 		 cfg.gpl.kd, 
+		 cfg.gpl.db,
 		 cfg.gpl.it,
 		 cfg.gpl.Emax,
 		 cfg.gpl.Pmax, 
@@ -137,25 +133,19 @@ static void Gpl_Init(PID_t* pid)
 void Ctl_Init(void)
 {
 	uint8_t i = 0;
+
+	Rmp_Init(&rmp);
+
 	for (i = 0 ; i < CCL_NUM; i++) {
 		Cvl_Init(&pid.cv.w[i]);
 		Cpl_Init(&pid.cp.w[i]);
 	}
-	Rmp_Init(&rmp);
-	
-	/*
-	Cvl_Init(&pid.cv.x);
-	Cvl_Init(&pid.cv.y);
-	Cvl_Init(&pid.cv.z);
-	
-	Cpl_Init(&pid.cp.x);
-	Cpl_Init(&pid.cp.y);
-	Cpl_Init(&pid.cp.z);
-	*/
-	
-	Gvl_Init(&pid.gv.e);
-	Gpl_Init(&pid.gp.e);
-	
+
+	Gvl_Init(&pid.gv.p);
+	Gpl_Init(&pid.gp.p);
+	Gvl_Init(&pid.gv.t);
+	Gpl_Init(&pid.gp.t);
+
 	memset(&ctl, 0, sizeof(Ctl_t));
 }
 
@@ -167,28 +157,6 @@ void Ctl_Proc(void)
 	RmpGeneraterCtl();
 	PeriphsStateCtl();
 	ChassisStateCtl();
-	GrabberStateCtl();
-}
-
-void Ctl_Zero(void)
-{
-	/*
-	Cvl_Init(&pid.cv.x);
-	Cvl_Init(&pid.cv.y);
-	Cvl_Init(&pid.cv.z);
-	
-	Cpl_Init(&pid.cp.x);
-	Cpl_Init(&pid.cp.y);
-	Cpl_Init(&pid.cp.z);
-	*/
-	uint8_t i = 0;
-	for (i = 0 ; i < CCL_NUM; i++) {
-		Cvl_Init(&pid.cv.w[i]);
-		Cpl_Init(&pid.cp.w[i]);
-	}
-	memset(&ctl.cv, 0, sizeof(ChassisState_t));
-	memset(&ctl.cc, 0, sizeof(ChassisState_t));
-	memset(&ctl.mv, 0, sizeof(MecanumState_t));
-	memset(&ctl.mc, 0, sizeof(MecanumState_t));
+	PantiltStateCtl();
 }
 

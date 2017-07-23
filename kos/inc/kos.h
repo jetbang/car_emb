@@ -30,6 +30,7 @@ extern "C" {
 	
 void KOS_Boot(void);
 void KOS_Stop(void);
+void KOS_Spin(void);
 
 #ifdef __cplusplus
 }

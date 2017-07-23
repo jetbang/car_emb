@@ -37,8 +37,8 @@ void Pwr_Proc(void)
 {
 	uint32_t i = 0;
 	for ( i = 0; i < PWR_MOTOR_MAF_GRP_N; i++) {
-		Maf_Proc(&maf[PWR_MOTOR_MAF_IDX_V][i], ABSVAL(motor[i].rate_filtered));
-		Maf_Proc(&maf[PWR_MOTOR_MAF_IDX_C][i], ABSVAL(motor[i].current_ref));
+		//Maf_Proc(&maf[PWR_MOTOR_MAF_IDX_V][i], ABSVAL(motor[i].rate_filtered));
+		//Maf_Proc(&maf[PWR_MOTOR_MAF_IDX_C][i], ABSVAL(motor[i].current_ref));
 		if (maf[PWR_MOTOR_MAF_IDX_V][i].avg < PWR_MOTOR_DEAD_LOCK_SPEED_TH && maf[PWR_MOTOR_MAF_IDX_C][i].avg > PWR_MOTOR_CURRENT_OVERLOAD_TH) {
 			Pwr_SetOLFlag(i);
 		}

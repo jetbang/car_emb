@@ -18,7 +18,7 @@
 #define __CBUS_H__
 
 /**************************************************/
-/*             Kylinbot Control Bus               */
+/*                  Control Bus                   */
 /**************************************************/
 
 #ifdef __cplusplus
@@ -27,6 +27,8 @@ extern "C" {
 
 #include <stdint.h>
 #include <string.h>
+
+#define CBUS_SIZE sizeof(CBUS_t)
 
 typedef struct
 {
@@ -44,12 +46,11 @@ typedef struct
 
 typedef struct
 {
-	int16_t e;
-	int16_t c;
-}GrabberState_c; // Grabber state control typedef
+	int16_t p;
+	int16_t t;
+	int16_t z;
+}PantiltState_c; // Pantilt state control typedef
 
-#define CBUS_FLAG_BIT_INI (1u<<31) // Initialization flag bit
-#define CBUS_FLAG_BIT_MOD (1u<<30) // Control mode flag bit
 #define CBUS_VALUE_SCALE 1e3f
 
 #pragma pack(1)
@@ -59,13 +60,13 @@ typedef struct
 	uint32_t fs; // Flag bits
 	ChassisState_v cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
 	ChassisState_p cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
-	GrabberState_c gv; // Grabber velocity, unit: linear: mm/s, angular: 1e-3rad/s
-	GrabberState_c gp; // Grabber position, unit: linear: mm, angular: rad
-}CBUS_t;
+	PantiltState_c gv; // Pantilt velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	PantiltState_c gp; // Pantilt position, unit: linear: mm, angular: rad
+}CBus_t;
 
 #pragma pack()
 
-void CBUS_Init(CBUS_t* cbus);
+void CBus_Init(CBus_t* cbus);
 
 #ifdef __cplusplus
 }

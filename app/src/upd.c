@@ -24,8 +24,8 @@ void Upd_Init(void)
 {
 	memcpy(&cmd.cp, &odo.cp, sizeof(ChassisState_t));
 	memcpy(&cmd.cv, &odo.cv, sizeof(ChassisState_t));
-	memcpy(&cmd.gp, &odo.gp, sizeof(GrabberState_t));
-	memcpy(&cmd.gv, &odo.gv, sizeof(GrabberState_t));
+	memcpy(&cmd.gp, &odo.gp, sizeof(PantiltState_t));
+	memcpy(&cmd.gv, &odo.gv, sizeof(PantiltState_t));
 	memcpy(&cmd.fs, &odo.fs, sizeof(PeriphsState_t));
 }
 

@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef __COM_SRV_H__
-#define __COM_SRV_H__
+#ifndef __ERR_H__
+#define __ERR_H__
 
-#ifdef __cplusplus
+#ifdef __cpluplus
 extern "C" {
 #endif
 
-#include "com.h"
-#include "top.h"
+#include "wdg.h"
+#include "act.h"
 
-#ifdef __cplusplus
+void Err_Init(void);
+void Err_Proc(void);
+
+#ifdef __cpluplus
 }
 #endif
 
 #endif
-
-

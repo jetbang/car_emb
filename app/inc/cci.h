@@ -39,7 +39,7 @@ extern "C" {
 #define CCI_DPC_TH 1e-6f //0.3f // Grabber claw position difference threshold
 	
 void Cci_Init(void);
-void Cci_Proc(const CBUS_t* cbus);
+void Cci_Proc(const CBus_t* cbus);
 
 #ifdef __cplusplus
 }

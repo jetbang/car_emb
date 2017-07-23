@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __COM_SRV_H__
-#define __COM_SRV_H__
+#ifndef __CRC8_H__
+#define __CRC8_H__
 
-#ifdef __cplusplus
+#ifdef __cpluplus
 extern "C" {
 #endif
 
-#include "com.h"
-#include "top.h"
+#include <stdint.h>
+#include <string.h>
 
-#ifdef __cplusplus
+extern uint8_t CRC8Calc(const uint8_t* msg, uint16_t len, uint8_t crc8);
+extern uint8_t CRC8Check(const uint8_t* msg, uint16_t len, uint8_t crc8);
+extern uint8_t CRC8Append(uint8_t* msg, uint16_t len, uint8_t crc8);
+
+#ifdef __cpluplus
 }
 #endif
 
 #endif
-
 

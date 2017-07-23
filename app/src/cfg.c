@@ -72,7 +72,10 @@ void Cfg_SetSyncFlag(uint8_t flag)
 void Cfg_Init(void)
 {
 	Cfg_t tmp = CFG_DEF;
-	Cfg_Load(&cfg);
+	Cfg_Load(&tmp);
+	if (!CRC16Check(&tmp, sizeof(Cfg_t), CFG_CRC_DEF)) {
+		return;
+	}
 	if (!Cfg_GetFlag(CFG_FLAG_IMU)) {
 		memcpy(&cfg.imu, &tmp.imu, sizeof(IMUCfg_t));
 	}
@@ -117,6 +120,7 @@ void Cfg_Proc(void)
 void Cfg_Reset(void)
 {
 	Cfg_t tmp = CFG_DEF;
+	CRC16Append(&tmp, sizeof(Cfg_t), CFG_CRC_DEF);
 	Cfg_Save(&tmp);
 	Cfg_Init();
 }

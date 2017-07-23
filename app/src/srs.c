@@ -138,15 +138,6 @@ void Srs_Fall(uint32_t i)
 
 void Sr04_Proc(uint8_t i, uint8_t trigger)
 {
-	if (i == SR04_IDX_FIXED) {
-		Wdg_Feed(WDG_IDX_SR04F);
-	} else if (i == SR04_IDX_MOBLE) {
-		Wdg_Feed(WDG_IDX_SR04M);
-	} else if (i == SR04_IDX_LEFT) {
-		Wdg_Feed(WDG_IDX_SR04L);
-	} else if (i == SR04_IDX_RIGHT) {
-		Wdg_Feed(WDG_IDX_SR04R);
-	}
 	if (i < SR04_NUM) {
 		// Rising edge trigger -> start echo
 		if (trigger == 1) {

@@ -36,6 +36,7 @@ extern "C" {
 #define RCV_NVIC IRQ(USART1)
 #define RCV_NVIC_PRE_PRIORITY 0
 #define RCV_NVIC_SUB_PRIORITY 1
+
 #define RCV_DMA_STREAM DMA2_Stream2
 #define RCV_DMA_CHANNEL DMA_Channel_4
 
@@ -49,7 +50,7 @@ void Rcv_Config(void);
 void Rcv_EnableIT(void);
 void Rcv_DisableIT(void);
 
-void RcvCallback(const uint8_t* dbuf);
+void RcvIdleCallback(const uint8_t* pbuf);
 
 #ifdef __cplusplus
 }

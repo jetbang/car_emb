@@ -17,12 +17,12 @@
 #include "cbus.h"
 
 /**************************************************/
-/*             Kylinbot Control Bus               */
+/*                  Control Bus                   */
 /**************************************************/
 
-void CBUS_Init(CBUS_t* cbus)
+void CBus_Init(CBus_t* cbus)
 {
-	memset(cbus, 0, sizeof(CBUS_t));
+	memset(cbus, 0, sizeof(CBus_t));
 }
 
 

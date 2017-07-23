@@ -37,13 +37,20 @@ void KOS_Boot(void)
 	// BSP configuration
 	Bsp_Config();
 	
-	//ZGYRO_RST();
-	
 	// Action initialization
 	Act_Init();
 	
 	// Start timer
 	Tim_Start();
+
+	// Play startup music
+	Snd_Play();
+
+	// Wait for startup music
+	Delay_Ms(1000);
+
+	// Stop startup music
+	Snd_Stop();
 }
 
 void KOS_Stop(void)
@@ -57,4 +64,11 @@ void KOS_Stop(void)
 	Act_Init();
 }
 
+void KOS_Spin(void)
+{
+	Dnl_Proc();
+	if (Clk_GetUsTick() % 2000 == 0) {
+		Upl_Proc();
+	}
+}
 

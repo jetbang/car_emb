@@ -30,6 +30,7 @@ extern "C" {
 #include "calib.h"  // Calibration
 #include "cbus.h"  // Control Bus
 #include "crc16.h" // 16bit CRC
+#include "crc8.h" // 8bit CRC
 #include "dbuf.h"  // DBUS Filter
 #include "dbus.h"  // DBUS Protocol (DBUS = RCP + HCP)
 #include "ekf.h"   // Kalman Filter
@@ -38,6 +39,7 @@ extern "C" {
 #include "gdf.h"   // Gaussian Distribution Function
 #include "hcf.h"   // Host Control Filter
 #include "hcp.h"   // Host Control Protocol
+#include "jud.h"   // Judge System Protocol
 #include "linkednode.h"   // Linked Node Data Structure and Algorithm
 #include "linkedlist.h"   // Linked List Data Structure and Algorithm
 #include "maf.h"       // Moving Average Filter

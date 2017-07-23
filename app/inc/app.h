@@ -56,6 +56,7 @@ extern "C" {
 #include "ctl.h" // Logic Controller
 #include "dbg.h" // Debug Function Calls
 #include "dci.h" // DBUS Control interface
+#include "err.h" // Error handler
 #include "fos.h" // Flash Operating System
 #include "fun.h" // Helper functions
 #include "hci.h" // Host Control Interface
@@ -68,6 +69,7 @@ extern "C" {
 #include "snd.h" // Sound System
 #include "srs.h" // HC-SR04 Sonar Sensors
 #include "sys.h" // System-wide Variable Types and Functions
+#include "top.h" // Top Judge system
 #include "upd.h" // System Updater
 #include "wdg.h" // Watch Dog
 #include "wsm.h" // Working State Machine

@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef __COM_SRV_H__
-#define __COM_SRV_H__
+#include "err.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "com.h"
-#include "top.h"
-
-#ifdef __cplusplus
+void Err_Init(void)
+{
+	// TODO
 }
-#endif
 
-#endif
-
+void Err_Proc(void)
+{
+	if (Wdg_IsOkay()) {
+		LED_GREEN_ON();
+		LED_RED_OFF();
+	}
+}
 

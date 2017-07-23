@@ -14,20 +14,36 @@
  * limitations under the License.
  */
 
-#ifndef __COM_SRV_H__
-#define __COM_SRV_H__
+#ifndef __TOP_H__
+#define __TOP_H__
 
-#ifdef __cplusplus
+#ifdef __cpluplus
 extern "C" {
 #endif
 
-#include "com.h"
-#include "top.h"
+#include "jud.h"
+#include "wdg.h"
 
-#ifdef __cplusplus
+typedef struct
+{
+	JudFrameHeader_t frameHeader;
+	JudCmdId_t cmdId;
+	JudGameInfo_t gameInfo;
+	JudRTBloodChange_t RTBloodChange;
+	JudRTShootData_t RTShootData;
+}Top_t;
+
+void Top_Init(void);
+void Top_Proc(uint8_t* pbuf);
+
+void JudGameInfoCallback(JudGameInfo_t* gameInfo);
+void JudRTBloodChangeCallback(JudRTBloodChange_t* bloodChange);
+void JudRTShootDataCallback(JudRTShootData_t* shootData);
+
+extern Top_t top;
+
+#ifdef __cpluplus
 }
 #endif
 
 #endif
-
-

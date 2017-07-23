@@ -15,7 +15,6 @@
  */
  
 #include "dbi.h"
-#include "judge_sys.h"
 
 const Hal_Uart_t dbi = HAL_UART_DEF(Dbi);
 
@@ -24,8 +23,13 @@ static FIFO_t tx_fifo;
 static uint8_t rx_buf[DBI_RX_FIFO_SIZE];
 static uint8_t tx_buf[DBI_TX_FIFO_SIZE];
 
+static uint8_t buf[2][DBI_DMA_BUF_SIZE];
+
 void Dbi_Config(void)
 {
+	FIFO_Init(&rx_fifo, rx_buf, DBI_RX_FIFO_SIZE);
+	FIFO_Init(&tx_fifo, tx_buf, DBI_TX_FIFO_SIZE);
+
     USART_Bind(DBI_RX_PIN, DBI_TX_PIN,
 			   DBI_USART,
 			   DBI_USART_BR,
@@ -35,13 +39,23 @@ void Dbi_Config(void)
 			   DBI_USART_FC
 			   );
 
+    USART_DMACmd(DBI_USART, USART_DMAReq_Rx, ENABLE);
+
+	DMA_Config(DBI_DMA_STREAM,
+			   DBI_DMA_CHANNEL,
+			   (u32)&DBI_USART->DR,
+			   (u32)buf[0], 0,
+			   DBI_DMA_BUF_SIZE);
+
+	DMA_DoubleBufferModeConfig(DBI_DMA_STREAM, (u32)buf[1], DMA_Memory_0);
+	DMA_DoubleBufferModeCmd(DBI_DMA_STREAM, ENABLE);
+
+	DMA_Cmd(DBI_DMA_STREAM, ENABLE);
+
+	NVIC_Config(DBI_NVIC, DBI_NVIC_PRE_PRIORITY, DBI_NVIC_SUB_PRIORITY);
+
     USART_ITConfig(DBI_USART, USART_IT_RXNE, ENABLE);
     USART_ITConfig(DBI_USART, USART_IT_IDLE, ENABLE);
-
-    NVIC_Config(DBI_NVIC, DBI_NVIC_PRE_PRIORITY, DBI_NVIC_SUB_PRIORITY);
-
-    FIFO_Init(&rx_fifo, rx_buf, DBI_RX_FIFO_SIZE);
-    FIFO_Init(&tx_fifo, tx_buf, DBI_TX_FIFO_SIZE);
 
     USART_Cmd(DBI_USART, ENABLE);
 }
@@ -194,9 +208,33 @@ void DBI_IRQ_HANDLER(void)
 	}
 	else if (USART_GetITStatus(DBI_USART, USART_IT_IDLE) != RESET)
 	{
+		uint8_t* pbuf = buf[0];
+
 		(void)DBI_USART->DR;
 		(void)DBI_USART->SR;
-		//judgementDataHandler();
+
+		uint16_t rx_len = 0;
+
+		//clear the idle pending flag
+		(void)DBI_USART->SR;
+		(void)DBI_USART->DR;
+
+		DMA_Cmd(DBI_DMA_STREAM, DISABLE);
+		rx_len = DBI_DMA_BUF_SIZE - DMA_GetCurrDataCounter(DBI_DMA_STREAM);
+		DBI_DMA_STREAM->NDTR = (uint16_t)DBI_DMA_BUF_SIZE;     //relocate the DMA memory pointer to the beginning position
+		//Target is Memory0
+		if(DMA_GetCurrentMemoryTarget(DBI_DMA_STREAM) == 0)
+		{
+			pbuf = buf[0];
+			DBI_DMA_STREAM->CR |= (uint32_t)(DMA_SxCR_CT);        //enable the current selected memory is Memory 1
+		}
+		else
+		{
+			pbuf = buf[1];
+			DBI_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
+		}
+		DMA_Cmd(DBI_DMA_STREAM, ENABLE);
+		DbiIdleCallback(pbuf);
 	}
 }
 

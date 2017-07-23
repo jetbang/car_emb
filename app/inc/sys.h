@@ -30,19 +30,11 @@ extern "C" {
 
 typedef uint32_t PeriphsState_t; // Peripherals state flag bits
 
-#define FS_KEY_H        (((uint32_t)1u)<<0)
-#define FS_KEY_L        (((uint32_t)1u)<<1)
-#define FS_KEY_M        (((uint32_t)1u)<<2)
-#define FS_KEY_N        (((uint32_t)1u)<<3)
-#define FS_LED_RED      (((uint32_t)1u)<<4)
-#define FS_LED_GREEN    (((uint32_t)1u)<<5)
-#define FS_SONAR_F      (((uint32_t)1u)<<6)
-#define FS_SONAR_M      (((uint32_t)1u)<<7)
-#define FS_SONAR_L      (((uint32_t)1u)<<8)
-#define FS_SONAR_R      (((uint32_t)1u)<<9)
+#define FS_FRIC        (1u<<0)
+#define FS_SPIN        (1u<<1)
 
-#define FS_ALL      		(FS_KEY_H|FS_KEY_L|FS_KEY_M|FS_LED_RED|FS_LED_GREEN|FS_SONAR_F|FS_SONAR_M|FS_SONAR_L|FS_SONAR_R)
-#define FS_NON       		((uint32_t)0)
+#define FS_ALL         (FS_FRIC|FS_SPIN)
+#define FS_NON         ((uint32_t)0)
 
 typedef struct
 {
@@ -54,17 +46,14 @@ typedef struct
 typedef union
 {
 	float w[4];
-	struct
-	{
-		float w1, w2, w3, w4;
-	};
 }MecanumState_t;
 
 typedef struct
 {
-	float e;
-	float c;
-}GrabberState_t;
+	float p;
+	float t;
+	float z;
+}PantiltState_t;
 
 PeriphsState_t FS_Get(const PeriphsState_t* fs, PeriphsState_t mask);
 void FS_Set(PeriphsState_t* fs, PeriphsState_t mask);
@@ -75,7 +64,7 @@ void FS_Det(PeriphsState_t* fs, Flag_t mask, uint32_t condition);
 
 void CS_Set(ChassisState_t* cs, float x, float y, float z);
 void MS_Set(MecanumState_t* ms, float w1, float w2, float w3, float w4);
-void GS_Set(GrabberState_t* gs, float e, float c);
+void GS_Set(PantiltState_t* gs, float p, float t, float z);
 
 #ifdef __cplusplus
 }

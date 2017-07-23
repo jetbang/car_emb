@@ -20,18 +20,21 @@
 /*            CBUS Control Interface             */
 /*************************************************/
 
-static void GetPeriphsStateRef(const CBUS_t* cbus)
+static void GetPeriphsStateRef(const CBus_t* cbus)
 {
-	/*
-	FS_Det(&cmd.fs, FS_SONAR_F, FS_Get(&cbus->fs, FS_SONAR_F));
-	FS_Det(&cmd.fs, FS_SONAR_M, FS_Get(&cbus->fs, FS_SONAR_M));
-	FS_Det(&cmd.fs, FS_SONAR_L, FS_Get(&cbus->fs, FS_SONAR_L));
-	FS_Det(&cmd.fs, FS_SONAR_R, FS_Get(&cbus->fs, FS_SONAR_R));
-	*/
 }
 
-static void GetChassisStateRef(const CBUS_t* cbus)
+static void GetChassisStateRef(const CBus_t* cbus)
 {
+	cmd.cv.x = cbus->cv.x / CBUS_VALUE_SCALE;
+	cmd.cv.y = cbus->cv.y / CBUS_VALUE_SCALE;
+	cmd.cv.z = cbus->cv.z / CBUS_VALUE_SCALE;
+
+	LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
+	LIMIT(cmd.cv.y, -cfg.vel.y, cfg.vel.y);
+	LIMIT(cmd.cv.z, -cfg.vel.z, cfg.vel.z);
+
+	/*
 	float pxr = cbus->cp.x / CBUS_VALUE_SCALE;
 	float pyr = cbus->cp.y / CBUS_VALUE_SCALE;
 	float pzr = cbus->cp.z / CBUS_VALUE_SCALE;
@@ -65,46 +68,57 @@ static void GetChassisStateRef(const CBUS_t* cbus)
 	//cmd.cv.z = cbus->cv.z / CBUS_VALUE_SCALE;
 	LIMIT(cmd.cv.z, -cfg.vel.z, cfg.vel.z);
 	cmd.cp.z += cmd.cv.z * SYS_CTL_TSC;
+	*/
 }
 
-static void GetGrabberStateRef(const CBUS_t* cbus)
+static void GetPantiltStateRef(const CBus_t* cbus)
 {
+	cmd.gp.p = cbus->gp.p;
+	cmd.gp.t = cbus->gp.t;
+
+	LIMIT(cmd.gv.p, -cfg.vel.p, cfg.vel.p);
+	LIMIT(cmd.gv.t, -cfg.vel.t, cfg.vel.t);
+	LIMIT(cmd.gp.p, -cfg.pos.p, cfg.pos.p);
+	LIMIT(cmd.gp.t, -cfg.pos.t, cfg.pos.t);
+
+	/*
 	float per = cbus->gp.e / CBUS_VALUE_SCALE;
 	float pcr = cbus->gp.c / CBUS_VALUE_SCALE;
 	float ver = cbus->gv.e / CBUS_VALUE_SCALE;
 	float vcr = cbus->gv.c / CBUS_VALUE_SCALE;
 	float dpe = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? per - odo.gp.e : per;
 	float dpc = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? per - odo.gp.c : pcr;
-	
+
 	LIMIT(per, cfg.pos.el, cfg.pos.eh);
 	LIMIT(pcr, cfg.pos.cl, cfg.pos.ch);
-	
+
 	LIMIT_ABS(ver, cfg.vel.e);
 	LIMIT_ABS(vcr, cfg.vel.c);
-	
+
 	cmd.gv.e = map(dpe, -CCI_DPE_TH, CCI_DPE_TH, -1, 1) * ver;
 	cmd.gv.c = map(dpc, -CCI_DPC_TH, CCI_DPC_TH, -1, 1) * vcr;
-	
+
 	//cmd.gv.e = cbus->gv.e / CBUS_VALUE_SCALE;
 	LIMIT(cmd.gv.e, -cfg.vel.e, cfg.vel.e);
 	cmd.gp.e += cmd.gv.e * SYS_CTL_TSC;
 	LIMIT(cmd.gp.e, cfg.pos.el, cfg.pos.eh);
-	
+
 	//cmd.gv.c = cbus->gv.c / CBUS_VALUE_SCALE;
 	LIMIT(cmd.gv.c, -cfg.vel.c, cfg.vel.c);
 	cmd.gp.c += cmd.gv.c * SYS_CTL_TSC;
 	LIMIT(cmd.gp.c, cfg.pos.cl, cfg.pos.ch);
+	*/
 }
 
 void Cci_Init(void)
 {
 }
 
-void Cci_Proc(const CBUS_t* cbus)
+void Cci_Proc(const CBus_t* cbus)
 {
 	GetPeriphsStateRef(cbus);
 	GetChassisStateRef(cbus);
-	GetGrabberStateRef(cbus);
+	GetPantiltStateRef(cbus);
 }
 
 

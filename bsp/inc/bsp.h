@@ -28,7 +28,6 @@ extern "C" {
 #include "can2.h"
 #include "dbi.h"
 #include "ist8310.h"
-#include "judge_sys.h"
 #include "key.h"
 #include "led.h"
 #include "mpu6500.h"

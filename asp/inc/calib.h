@@ -32,14 +32,15 @@ extern "C" {
 #define PID_CALIB_TYPE_CHASSIS_VELOCITY 0x01
 #define PID_CALIB_TYPE_GRABBER_VELOCITY 0x02
 #define PID_CALIB_TYPE_GRABBER_POSITION 0x03
-#define PID_CALIB_VALUE_SCALE 10.0f
+#define PID_CALIB_VALUE_SCALE 1.0f
 typedef struct
 {
 	uint8_t type;
 	uint16_t kp;
 	uint16_t ki;
 	uint16_t kd;
-	uint16_t it; // Integral threshold, compute integral when error < it
+	uint16_t db; // Dead band, cut off output when abs error < db
+	uint16_t it; // Integral threshold, compute integral when abs error < it
 	uint16_t Emax; // Error max
 	uint16_t Pmax; // Component P output max
 	uint16_t Imax; // Component I output max
@@ -52,7 +53,8 @@ typedef struct
 	float kp;
 	float ki;
 	float kd;
-	float it; // Integral threshold, compute integral when error < it
+	float db; // Dead band, cut off output when abs error < db
+	float it; // Integral threshold, compute integral when abs error < it
 	float Emax; // Error max
 	float Pmax; // Component P output max
 	float Imax; // Component I output max
@@ -96,24 +98,28 @@ typedef struct
 	float mz_offset;
 }MagParam_t; // Mag offset Parameters
 
-#define VEL_CALIB_VALUE_SCALE 1e3f
+#define SYS_CALIB_VALUE_SCALE 1e3f
 typedef struct
 {
-	uint16_t x; // Chasis velocity x max, mm/s
-	uint16_t y; // Chasis velocity y max, mm/s
-	uint16_t z; // Chasis velocity z max, 1e-3rad/s
-	uint16_t e; // Elevator velocity max, mm/s
-	uint16_t c; // Claw velocity max, 1e-3rad/s
-}VelCalib_t; // Velocity Calibration
+	uint16_t x; //
+	uint16_t y; //
+	uint16_t z; //
+	uint16_t p; //
+	uint16_t t; //
+}SysCalib_t; // System Calibration
 
 typedef struct
 {
-	float x; // Chasis velocity x max, m/s
-	float y; // Chasis velocity y max, m/s
-	float z; // Chasis velocity z max, rad/s
-	float e; // Elevator velocity max, m/s
-	float c; // Claw velocity max, rad/s
-}VelParam_t; // Velocity Parameters
+	float x; //
+	float y; //
+	float z; //
+	float p; //
+	float t; //
+}SysParam_t; // System Parameters
+
+#define VEL_CALIB_VALUE_SCALE SYS_CALIB_VALUE_SCALE
+typedef SysCalib_t VelCalib_t; // Velocity Calibration
+typedef SysParam_t VelParam_t; // Velocity Parameters
 
 /*******************************************/
 /*     Coordinate Transforming System      */
@@ -146,18 +152,14 @@ typedef struct
 #define POS_CALIB_VALUE_SCALE 1e3f
 typedef struct
 {
-	int16_t el; // Elevator position high, unit: mm
-	int16_t eh; // Elevator position low, unit: mm
-	int16_t cl; // Claw position low, unit: 1e-3*rad
-	int16_t ch; // Calw position high, unit: 1e-3*rad
+	int16_t p; //
+	int16_t t; //
 }PosCalib_t; // Position Calibration
 
 typedef struct
 {
-	float el; // Elevator position high, unit: m
-	float eh; // Elevator position low, unit: m
-	float cl; // Claw position low, unit: rad
-	float ch; // Calw position high, unit: rad
+	float p; //
+	float t; //
 }PosParam_t; // Position Parameters
 
 typedef struct
@@ -190,6 +192,8 @@ void Calib_GetIMU(IMUCalib_t* IMUCalib, const IMUParam_t* IMUParam);
 void Calib_SetIMU(IMUParam_t* IMUParam, const IMUCalib_t* IMUCalib);
 void Calib_GetMag(MagCalib_t* MagCalib, const MagParam_t* MagParam);
 void Calib_SetMag(MagParam_t* MagParam, const MagCalib_t* MagCalib);
+void Calib_GetSys(SysCalib_t* SysCalib, const SysParam_t* SysParam);
+void Calib_SetSys(SysParam_t* SysParam, const SysCalib_t* SysCalib);
 void Calib_GetVel(VelCalib_t* VelCalib, const VelParam_t* VelParam);
 void Calib_SetVel(VelParam_t* VelParam, const VelCalib_t* VelCalib);
 void Calib_GetMec(MecCalib_t* MecCalib, const MecParam_t* MecParam);

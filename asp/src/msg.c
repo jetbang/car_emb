@@ -16,27 +16,28 @@
  
 #include "msg.h"
 
+const MsgHead_t msg_head_imu = MSG_HEAD_IMU;
+const MsgHead_t msg_head_mag = MSG_HEAD_MAG;
+const MsgHead_t msg_head_uwb = MSG_HEAD_UWB;
+const MsgHead_t msg_head_odo = MSG_HEAD_ODO;
+const MsgHead_t msg_head_ptz = MSG_HEAD_PTZ;
 const MsgHead_t msg_head_vrc = MSG_HEAD_VRC;
 const MsgHead_t msg_head_vhc = MSG_HEAD_VHC;
+const MsgHead_t msg_head_ahrs = MSG_HEAD_AHRS;
+const MsgHead_t msg_head_cbus = MSG_HEAD_CBUS;
 const MsgHead_t msg_head_vdbus = MSG_HEAD_VDBUS;
-const MsgHead_t msg_head_vcbus = MSG_HEAD_CBUS;
 const MsgHead_t msg_head_zgyro = MSG_HEAD_ZGYRO;
-const MsgHead_t msg_head_imu9x = MSG_HEAD_IMU9X;
 const MsgHead_t msg_head_motor = MSG_HEAD_MOTOR;
-const MsgHead_t msg_head_odome = MSG_HEAD_ODOME;
-const MsgHead_t msg_head_grasp = MSG_HEAD_GRASP;
 const MsgHead_t msg_head_statu = MSG_HEAD_STATU;
 const MsgHead_t msg_head_subsc = MSG_HEAD_SUBSC;
 const MsgHead_t msg_head_calib = MSG_HEAD_CALIB;
-const MsgHead_t msg_head_kylin = MSG_HEAD_KYLIN;
 const MsgHead_t msg_head_pid_calib = MSG_HEAD_PID_CALIB;
 const MsgHead_t msg_head_imu_calib = MSG_HEAD_IMU_CALIB;
 const MsgHead_t msg_head_mag_calib = MSG_HEAD_MAG_CALIB;
 const MsgHead_t msg_head_vel_calib = MSG_HEAD_VEL_CALIB;
 const MsgHead_t msg_head_mec_calib = MSG_HEAD_MEC_CALIB;
 const MsgHead_t msg_head_pos_calib = MSG_HEAD_POS_CALIB;
-const MsgHead_t msg_head_sr04s = MSG_HEAD_SR04S;
-const MsgHead_t msg_head_uwb = MSG_HEAD_UWB;
+
 
 /**
  * @brief Push a single message to message buffer. 
@@ -52,17 +53,16 @@ uint32_t Msg_Push(FIFO_t* fifo, void* buf, const void* head, const void* body)
 	uint32_t len = phead->attr.length + MSG_LEN_EXT;
 	if (FIFO_GetFree(fifo) < len) {
 		return 0;
-	} else {
-		len = 0;
-		memcpy(buf, head, sizeof(MsgHead_t));
-		len += sizeof(MsgHead_t);
-		memcpy((uint8_t*)buf + len, body, phead->attr.length);
-		len += phead->attr.length;
-		CRC16Append(buf, len + 2, phead->attr.token);
-		len += 2;
-		FIFO_Push(fifo, buf, len);
-		return len;
 	}
+	len = 0;
+	memcpy(buf, head, sizeof(MsgHead_t));
+	len += sizeof(MsgHead_t);
+	memcpy((uint8_t*)buf + len, body, phead->attr.length);
+	len += phead->attr.length;
+	CRC16Append(buf, len + 2, phead->attr.token);
+	len += 2;
+	FIFO_Push(fifo, buf, len);
+	return len;
 }
 
 /**
@@ -75,29 +75,28 @@ uint32_t Msg_Push(FIFO_t* fifo, void* buf, const void* head, const void* body)
  */
 uint32_t Msg_Pop(FIFO_t* fifo, void* buf, const void* head, void* body)
 {
+	MsgHead_t mhead;
 	const MsgHead_t* phead = (MsgHead_t*)head;
 	uint32_t len = phead->attr.length + MSG_LEN_EXT;
 	if (FIFO_GetUsed(fifo) < len) {
 		return 0;
-	} else {
-		MsgHead_t mhead;
-		FIFO_Peek(fifo, (uint8_t*)&mhead, sizeof(MsgHead_t));
-		if (mhead.attr.id != phead->attr.id) {
-			return 0;
-		} else if (mhead.attr.length != phead->attr.length) {
-			return 0;
-		} else if (mhead.attr.token != phead->attr.token) {
-			return 0;
-		} else {
-			FIFO_Peek(fifo, buf, len);
-			if (CRC16Check(buf, len, phead->attr.token)) {
-				memcpy(body, (uint8_t*)buf + sizeof(MsgHead_t), phead->attr.length);
-				FIFO_Pop(fifo, buf, len);
-				return len;
-			} else {
-				return 0;
-			}
-		}
 	}
+	FIFO_Peek(fifo, (uint8_t*)&mhead, sizeof(MsgHead_t));
+	if (mhead.attr.id != phead->attr.id) {
+		return 0;
+	}
+	if (mhead.attr.length != phead->attr.length) {
+		return 0;
+	}
+	if (mhead.attr.token != phead->attr.token) {
+		return 0;
+	}
+	FIFO_Peek(fifo, buf, len);
+	if (!CRC16Check(buf, len, phead->attr.token)) {
+		return 0;
+	}
+	memcpy(body, (uint8_t*)buf + sizeof(MsgHead_t), phead->attr.length);
+	FIFO_Pop(fifo, buf, len);
+	return len;
 }
 

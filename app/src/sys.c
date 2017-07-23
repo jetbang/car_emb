@@ -55,16 +55,17 @@ void CS_Set(ChassisState_t* cs, float x, float y, float z)
 
 void MS_Set(MecanumState_t* ms, float w1, float w2, float w3, float w4)
 {
-	ms->w1 = w1;
-	ms->w2 = w2;
-	ms->w3 = w3;
-	ms->w4 = w4;
+	ms->w[0] = w1;
+	ms->w[1] = w2;
+	ms->w[2] = w3;
+	ms->w[3] = w4;
 }
 
-void GS_Set(GrabberState_t* gs, float e, float c)
+void GS_Set(PantiltState_t* gs, float p, float t, float z)
 {
-	gs->e = e;
-	gs->c = c;
+	gs->p = p;
+	gs->t = t;
+	gs->z = z;
 }
 
 

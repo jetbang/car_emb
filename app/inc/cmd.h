@@ -33,17 +33,15 @@ extern "C" {
 typedef struct
 {
 	PeriphsState_t fs; // Functional state control bits reference
-	ChassisState_t cv; // Chassis velocity reference
 	ChassisState_t cp; // Chassis position reference
+	ChassisState_t cv; // Chassis velocity reference
 	MecanumState_t mv; // Mecanum velocity reference (Auto-Wired)
-	MecanumState_t mp; // Mecanum position reference (Auto-Wired)
-	GrabberState_t gv; // Grabber velocity dynamic reference
-	GrabberState_t gp; // Grabber position reference
+	PantiltState_t gv; // Pantilt velocity dynamic reference
+	PantiltState_t gp; // Pantilt position reference
 }Cmd_t;
 
 void Cmd_Init(void);
 void Cmd_Proc(void);
-void Cmd_Zero(void);
 
 extern Cmd_t cmd;
 

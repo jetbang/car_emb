@@ -23,8 +23,13 @@ static FIFO_t tx_fifo;
 static uint8_t rx_buf[TTY_RX_FIFO_SIZE];
 static uint8_t tx_buf[TTY_TX_FIFO_SIZE];
 
+static uint8_t buf[2][TTY_DMA_BUF_SIZE];
+
 void Tty_Config(void)
 {
+	FIFO_Init(&rx_fifo, rx_buf, TTY_RX_FIFO_SIZE);
+	FIFO_Init(&tx_fifo, tx_buf, TTY_TX_FIFO_SIZE);
+
     USART_Bind(TTY_RX_PIN, TTY_TX_PIN,
     		 TTY_USART,
 			   TTY_USART_BR,
@@ -34,14 +39,25 @@ void Tty_Config(void)
 			   TTY_USART_FC
 			   );
 
-    USART_ITConfig(TTY_USART, USART_IT_RXNE, ENABLE);
+    USART_DMACmd(TTY_USART, USART_DMAReq_Rx, ENABLE);
 
-    NVIC_Config(TTY_NVIC, TTY_NVIC_PRE_PRIORITY, TTY_NVIC_SUB_PRIORITY);
+	DMA_Config(TTY_DMA_STREAM,
+			   TTY_DMA_CHANNEL,
+			   (u32)&TTY_USART->DR,
+			   (u32)buf[0], 0,
+			   TTY_DMA_BUF_SIZE);
 
-    FIFO_Init(&rx_fifo, rx_buf, TTY_RX_FIFO_SIZE);
-    FIFO_Init(&tx_fifo, tx_buf, TTY_TX_FIFO_SIZE);
+	DMA_DoubleBufferModeConfig(TTY_DMA_STREAM, (u32)buf[1], DMA_Memory_0);
+	DMA_DoubleBufferModeCmd(TTY_DMA_STREAM, ENABLE);
 
-    USART_Cmd(TTY_USART, ENABLE);
+	DMA_Cmd(TTY_DMA_STREAM, ENABLE);
+
+	NVIC_Config(TTY_NVIC, TTY_NVIC_PRE_PRIORITY, TTY_NVIC_SUB_PRIORITY);
+
+	USART_ITConfig(TTY_USART, USART_IT_RXNE, ENABLE);
+	USART_ITConfig(TTY_USART, USART_IT_IDLE, ENABLE);
+
+	USART_Cmd(TTY_USART, ENABLE);
 }
 
 uint32_t Tty_GetRxFifoSize(void)
@@ -189,6 +205,36 @@ void TTY_IRQ_HANDLER(void)
 		}
 		FIFO_Push(&rx_fifo, &rx_data, 1);
 		TtyRxCallback(rx_data);
-	}       
+	}
+	else if (USART_GetITStatus(TTY_USART, USART_IT_IDLE) != RESET)
+	{
+		uint8_t* pbuf = buf[0];
+
+		(void)TTY_USART->DR;
+		(void)TTY_USART->SR;
+
+		uint16_t rx_len = 0;
+
+		//clear the idle pending flag
+		(void)TTY_USART->SR;
+		(void)TTY_USART->DR;
+
+		DMA_Cmd(TTY_DMA_STREAM, DISABLE);
+		rx_len = TTY_DMA_BUF_SIZE - DMA_GetCurrDataCounter(TTY_DMA_STREAM);
+		TTY_DMA_STREAM->NDTR = (uint16_t)TTY_DMA_BUF_SIZE;     //relocate the DMA memory pointer to the beginning position
+		//Target is Memory0
+		if(DMA_GetCurrentMemoryTarget(TTY_DMA_STREAM) == 0)
+		{
+			pbuf = buf[0];
+			TTY_DMA_STREAM->CR |= (uint32_t)(DMA_SxCR_CT);        //enable the current selected memory is Memory 1
+		}
+		else
+		{
+			pbuf = buf[1];
+			TTY_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
+		}
+		DMA_Cmd(TTY_DMA_STREAM, ENABLE);
+		TtyIdleCallback(pbuf);
+	}
 }
 

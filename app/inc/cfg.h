@@ -75,6 +75,7 @@ typedef struct
 	PIDCfg_t cpl; // Chasis position loop
 	PIDCfg_t gvl; // Gimbal velocity loop
 	PIDCfg_t gpl; // Gimbal position loop
+	uint16_t crc;
 }Cfg_t; // Application Configuration
 
 #pragma pack()
@@ -105,17 +106,17 @@ typedef struct
 	.mz_offset = 0, \
 }
 
-#define VEL_TRA_DEF 3.0f //3.0f //10.0f // m/s // 3
-#define VEL_ROT_DEF 8.0f //9.3f //30.0f // rad/s  // 9.3
-#define VEL_ELE_DEF 1.00f // m/s
-#define VEL_CLA_DEF 30.0f // rad/s
+#define VEL_TRA_DEF 3.0f // m/s
+#define VEL_ROT_DEF 8.0f // rad/s
+#define VEL_PAN_DEF 1.00f // rad/s
+#define VEL_TIL_DEF 1.0f // rad/s
 #define VEL_CFG_DEF \
 { \
 	.x = VEL_TRA_DEF, \
 	.y = VEL_TRA_DEF, \
 	.z = VEL_ROT_DEF, \
-	.e = VEL_ELE_DEF, \
-	.c = VEL_CLA_DEF, \
+	.p = VEL_PAN_DEF, \
+	.t = VEL_TIL_DEF, \
 }
 
 #define RMP_CNT_DEF 1000 //250*${SYS_CTL_TMS}
@@ -144,10 +145,8 @@ typedef struct
 
 #define POS_CFG_DEF \
 { \
-	.el = -0.610f, \
-	.eh = 0.0f, \
-	.cl = 0, \
-	.ch = 2.0f, \
+	.p = 1.0f, \
+	.t = 1.0f, \
 }
 
 #define CVL_CFG_DEF \
@@ -155,6 +154,7 @@ typedef struct
 	.kp = 1000, \
 	.ki = 0, \
 	.kd = 0, \
+	.db = 0, \
 	.it = 0, \
 	.Emax = 3000, \
 	.Pmax = 4950, \
@@ -168,6 +168,7 @@ typedef struct
 	.kp = 30, \
 	.ki = 0, \
 	.kd = 0, \
+	.db = 0, \
 	.it = 0, \
 	.Emax = 3000, \
 	.Pmax = 4950, \
@@ -181,6 +182,7 @@ typedef struct
 	.kp = 800, \
 	.ki = 0, \
 	.kd = 0, \
+	.db = 0, \
 	.it = 0, \
 	.Emax = 1000, \
 	.Pmax = 4950, \
@@ -194,6 +196,7 @@ typedef struct
 	.kp = 600, \
 	.ki = 0, \
 	.kd = 0, \
+	.db = 0, \
 	.it = 0, \
 	.Emax = 1000, \
 	.Pmax = 4900, \
@@ -201,6 +204,8 @@ typedef struct
 	.Dmax = 1500, \
 	.Omax = 1000, \
 }
+
+#define CFG_CRC_DEF 0xa5a6
 
 #define CFG_DEF \
 { \
@@ -216,6 +221,7 @@ typedef struct
 	CPL_CFG_DEF, \
 	GVL_CFG_DEF, \
 	GPL_CFG_DEF, \
+	CFG_CRC_DEF, \
 }
 
 CfgVer_t Cfg_GetVer(void);
