@@ -45,7 +45,7 @@ void Dci_Proc(const DBus_t* dbus)
 	}
 }
 
-void Rcv_Proc(const uint8_t* pbuf)
+void Rcv_Proc(const uint8_t* pbuf, const uint32_t len)
 {
 	Wdg_Feed(WDG_IDX_RCV);
 	DBus_Dec(&dbus, pbuf);

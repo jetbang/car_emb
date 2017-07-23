@@ -122,6 +122,6 @@ typedef union {
 
 #pragma pack()
 
-uint8_t Jud_Dec(const uint8_t* buf, void* header, void* cmdId);
+uint8_t Jud_Dec(const uint8_t* buf, const uint32_t len, void* header, void* cmdId);
 
 #endif

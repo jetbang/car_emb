@@ -43,6 +43,11 @@ void LedRed_Write(uint8_t newState)
 	GPIO_WRITE(LED_RED_PIN, newState);
 }
 
+void LedRed_Toggle(void)
+{
+	LED_RED_TOG();
+}
+
 uint8_t LedGreen_ReadIn(void)
 {
 	return GPIO_READ_IN(LED_GREEN_PIN);
@@ -58,3 +63,7 @@ void LedGreen_Write(uint8_t newState)
 	GPIO_WRITE(LED_GREEN_PIN, newState);
 }
 
+void LedGreen_Toggle(void)
+{
+	LED_GREEN_TOG();
+}

@@ -87,7 +87,7 @@ void RCV_IRQ_HANDLER(void)
 		DMA_Cmd(RCV_DMA_STREAM, ENABLE);
 		if(rx_len == RCV_FRAME_LEN)
 		{
-			RcvIdleCallback(pbuf);
+			RcvIdleCallback(pbuf, rx_len);
 		}
 	}       
 }

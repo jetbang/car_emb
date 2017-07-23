@@ -58,10 +58,10 @@ typedef struct
 typedef struct
 {
 	uint32_t fs; // Flag bits
-	ChassisState_v cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
 	ChassisState_p cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
-	PantiltState_c gv; // Pantilt velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	ChassisState_v cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
 	PantiltState_c gp; // Pantilt position, unit: linear: mm, angular: rad
+	PantiltState_c gv; // Pantilt velocity, unit: linear: mm/s, angular: 1e-3rad/s
 }CBus_t;
 
 #pragma pack()

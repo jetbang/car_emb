@@ -26,9 +26,9 @@ void DbiRxCallback(uint8_t data)
 	Dbi_Proc(data);
 }
 
-void DbiIdleCallback(uint8_t* pbuf)
+void DbiIdleCallback(const uint8_t* buf, const uint32_t len)
 {
-	Top_Proc(pbuf);
+	Top_Proc(buf, len);
 }
 
 void TtyRxCallback(uint8_t data)
@@ -36,9 +36,9 @@ void TtyRxCallback(uint8_t data)
 	Tty_Proc(data);
 }
 
-void TtyIdleCallback(uint8_t* pbuf)
+void TtyIdleCallback(const uint8_t* buf, const uint32_t len)
 {
-	// TODO
+	Top_Proc(buf, len);
 }
 
 

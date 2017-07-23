@@ -20,16 +20,6 @@
 /*          Hardware Abstract Layer - GPIO          */
 /****************************************************/
 
-void Hal_Gpio_ReadOnly_Init(Hal_Gpio_ReadOnly_t* gpio)
-{
-	memset(gpio, 0, sizeof(Hal_Gpio_ReadOnly_t));
-}
-
-void Hal_Gpio_WriteOnly_Init(Hal_Gpio_WriteOnly_t* gpio)
-{
-	memset(gpio, 0, sizeof(Hal_Gpio_WriteOnly_t));
-}
-
 void Hal_Gpio_Init(Hal_Gpio_t* gpio)
 {
 	memset(gpio, 0, sizeof(Hal_Gpio_t));

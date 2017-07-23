@@ -74,7 +74,7 @@ uint8_t Dbi_GetCh(void);
 void Dbi_Print(const char* str);
 
 void DbiRxCallback(uint8_t data);
-void DbiIdleCallback(uint8_t* pbuf);
+void DbiIdleCallback(const uint8_t* buf, const uint32_t len);
 
 extern const Hal_Uart_t dbi;
 

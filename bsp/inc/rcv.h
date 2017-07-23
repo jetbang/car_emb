@@ -50,7 +50,7 @@ void Rcv_Config(void);
 void Rcv_EnableIT(void);
 void Rcv_DisableIT(void);
 
-void RcvIdleCallback(const uint8_t* pbuf);
+void RcvIdleCallback(const uint8_t* buf, const uint32_t len);
 
 #ifdef __cplusplus
 }

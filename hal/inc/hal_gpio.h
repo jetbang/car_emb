@@ -31,19 +31,9 @@ extern "C" {
 typedef struct
 {
 	uint8_t (*ReadIn)(void);
-}Hal_Gpio_ReadOnly_t;
-
-typedef struct
-{
 	uint8_t (*ReadOut)(void);
 	void (*Write)(uint8_t newState);
-}Hal_Gpio_WriteOnly_t;
-
-typedef struct
-{
-	uint8_t (*ReadIn)(void);
-	uint8_t (*ReadOut)(void);
-	void (*Write)(uint8_t newState);
+	void (*Toggle)(void);
 }Hal_Gpio_t;
 	
 #define HAL_GPIO_DEF(DEV) \
@@ -51,10 +41,9 @@ typedef struct
 	.ReadIn = &DEV##_ReadIn, \
 	.ReadOut = &DEV##_ReadOut, \
 	.Write = &DEV##_Write, \
+	.Toggle = &DEV##_Toggle, \
 }
 
-void Hal_Gpio_ReadOnly_Init(Hal_Gpio_ReadOnly_t* gpio);
-void Hal_Gpio_WriteOnly_Init(Hal_Gpio_WriteOnly_t* gpio);
 void Hal_Gpio_Init(Hal_Gpio_t* gpio);
 
 #ifdef __cplusplus

@@ -46,10 +46,12 @@ void Led_Config(void);
 uint8_t LedRed_ReadIn(void);
 uint8_t LedRed_ReadOut(void);
 void LedRed_Write(uint8_t newState);
+void LedRed_Toggle(void);
 
 uint8_t LedGreen_ReadIn(void);
 uint8_t LedGreen_ReadOut(void);
 void LedGreen_Write(uint8_t newState);
+void LedGreen_Toggle(void);
 
 extern const Hal_Gpio_t ledR;
 extern const Hal_Gpio_t ledG;

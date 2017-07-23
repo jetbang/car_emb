@@ -75,7 +75,7 @@ uint8_t Tty_GetCh(void);
 void Tty_Print(const char* str);
 
 void TtyRxCallback(uint8_t data);
-void TtyIdleCallback(uint8_t* pbuf);
+void TtyIdleCallback(const uint8_t* buf, const uint32_t len);
 
 extern const Hal_Uart_t tty;
 

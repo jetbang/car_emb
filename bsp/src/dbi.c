@@ -210,9 +210,6 @@ void DBI_IRQ_HANDLER(void)
 	{
 		uint8_t* pbuf = buf[0];
 
-		(void)DBI_USART->DR;
-		(void)DBI_USART->SR;
-
 		uint16_t rx_len = 0;
 
 		//clear the idle pending flag
@@ -221,6 +218,7 @@ void DBI_IRQ_HANDLER(void)
 
 		DMA_Cmd(DBI_DMA_STREAM, DISABLE);
 		rx_len = DBI_DMA_BUF_SIZE - DMA_GetCurrDataCounter(DBI_DMA_STREAM);
+
 		DBI_DMA_STREAM->NDTR = (uint16_t)DBI_DMA_BUF_SIZE;     //relocate the DMA memory pointer to the beginning position
 		//Target is Memory0
 		if(DMA_GetCurrentMemoryTarget(DBI_DMA_STREAM) == 0)
@@ -234,7 +232,7 @@ void DBI_IRQ_HANDLER(void)
 			DBI_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
 		}
 		DMA_Cmd(DBI_DMA_STREAM, ENABLE);
-		DbiIdleCallback(pbuf);
+		DbiIdleCallback(pbuf, rx_len);
 	}
 }
 

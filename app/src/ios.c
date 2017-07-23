@@ -46,8 +46,9 @@ void Ios_SetOut(int (*out)(uint8_t))
  */
 int Ios_PutCh(uint8_t c)
 {
-	Dbi_PutCh(c);
-	Btm_PutCh(c);
+	//Dbi_PutCh(c);
+	//Btm_PutCh(c);
+	IOS_DBG_DEV.PutCh(c);
 	return c;
 }
 
@@ -57,7 +58,8 @@ int Ios_PutCh(uint8_t c)
  */
 int Ios_GetCh(void)
 {
-	return Dbi_GetCh();
+	//return Dbi_GetCh();
+	return IOS_DBG_DEV.GetCh();
 }
 
 /**

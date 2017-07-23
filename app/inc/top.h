@@ -34,7 +34,7 @@ typedef struct
 }Top_t;
 
 void Top_Init(void);
-void Top_Proc(uint8_t* pbuf);
+void Top_Proc(const uint8_t* buf, const uint32_t len);
 
 void JudGameInfoCallback(JudGameInfo_t* gameInfo);
 void JudRTBloodChangeCallback(JudRTBloodChange_t* bloodChange);

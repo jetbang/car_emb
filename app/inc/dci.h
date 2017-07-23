@@ -30,7 +30,7 @@
 void Dci_Init(void);
 void Dci_Proc(const DBus_t* dbus);
 
-void Rcv_Proc(const uint8_t* buf);
+void Rcv_Proc(const uint8_t* pbuf, const uint32_t len);
 
 extern DBus_t dbus;
 

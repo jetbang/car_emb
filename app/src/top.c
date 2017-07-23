@@ -16,6 +16,8 @@
 
 #include "top.h"
 
+#include "led.h"
+
 Top_t top;
 
 void Top_Init(void)
@@ -23,32 +25,33 @@ void Top_Init(void)
 	memset(&top, 0, sizeof(Top_t));
 }
 
-void Top_Proc(uint8_t* pbuf)
+void Top_Proc(const uint8_t* buf, const uint32_t len)
 {
-	if (Jud_Dec(pbuf, &top.frameHeader, &top.cmdId))
+	if (Jud_Dec(buf, len, &top.frameHeader, &top.cmdId))
 	{
 		uint8_t offset = JUD_HEADER_LEN + JUD_CMD_ID_LEN;
 		Wdg_Feed(WDG_IDX_JUDSYS);
+		//LED_GREEN_TOG();
 		switch (top.cmdId)
 		{
 			case JUD_CMD_ID_GAME_INFO:
 			{
 				if (top.frameHeader.dataLength != sizeof(JudGameInfo_t)) break;
-				memcpy(&top.gameInfo, pbuf + offset, top.frameHeader.dataLength);
+				memcpy(&top.gameInfo, buf + offset, top.frameHeader.dataLength);
 				JudGameInfoCallback(&top.gameInfo);
 				break;
 			}
 			case JUD_CMD_ID_RT_BLOOD_CHANGE:
 			{
 				if (top.frameHeader.dataLength != sizeof(JudRTBloodChange_t)) break;
-				memcpy(&top.RTBloodChange, pbuf + offset, top.frameHeader.dataLength);
+				memcpy(&top.RTBloodChange, buf + offset, top.frameHeader.dataLength);
 				JudRTBloodChangeCallback(&top.RTBloodChange);
 				break;
 			}
 			case JUD_CMD_ID_RT_SHOOT_DATA:
 			{
 				if (top.frameHeader.dataLength != sizeof(JudRTShootData_t)) break;
-				memcpy(&top.RTShootData, pbuf + offset, top.frameHeader.dataLength);
+				memcpy(&top.RTShootData, buf + offset, top.frameHeader.dataLength);
 				JudRTShootDataCallback(&top.RTShootData);
 				break;
 			}

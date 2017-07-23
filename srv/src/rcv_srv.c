@@ -16,8 +16,8 @@
 
 #include "rcv_srv.h"
 
-void RcvIdleCallback(const uint8_t* pbuf)
+void RcvIdleCallback(const uint8_t* pbuf, const uint32_t len)
 {
-	Rcv_Proc(pbuf);
+	Rcv_Proc(pbuf, len);
 }
 

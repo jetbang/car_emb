@@ -210,9 +210,6 @@ void TTY_IRQ_HANDLER(void)
 	{
 		uint8_t* pbuf = buf[0];
 
-		(void)TTY_USART->DR;
-		(void)TTY_USART->SR;
-
 		uint16_t rx_len = 0;
 
 		//clear the idle pending flag
@@ -234,7 +231,7 @@ void TTY_IRQ_HANDLER(void)
 			TTY_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
 		}
 		DMA_Cmd(TTY_DMA_STREAM, ENABLE);
-		TtyIdleCallback(pbuf);
+		TtyIdleCallback(pbuf, rx_len);
 	}
 }
 
