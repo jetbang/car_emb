@@ -47,7 +47,7 @@ extern "C" {
 #define DBI_NVIC_PRE_PRIORITY 1
 #define DBI_NVIC_SUB_PRIORITY 1
 
-#define DBI_DMA_STREAM DMA2_Stream1
+#define DBI_DMA_STREAM DMA1_Stream1
 #define DBI_DMA_CHANNEL DMA_Channel_4
 
 #define DBI_DMA_BUF_SIZE 100u

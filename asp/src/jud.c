@@ -16,30 +16,22 @@
 
 #include "jud.h"
 
-#include "led.h"
-#include "dbi.h"
-#include <stdio.h>
-
 uint8_t Jud_Dec(const uint8_t* buf, const uint32_t len, void* header, void* cmdId)
 {
 	const JudFrameHeader_t* pheader = (JudFrameHeader_t*)buf;
 	const uint8_t frameLength = JUD_GET_FRAME_LEN(pheader->dataLength);
 	if (len < frameLength)
 	{
-		printf("%d,%d,%d\n", len, frameLength, dbi.GetRxFifoUsed());
 		return 0;
 	}
-	//ledG.Toggle();
 	if (pheader->sof != JUD_SOF) {
 		return 0;
 	}
-	//ledG.Toggle();
 	if (!CRC8Check(buf, JUD_HEADER_LEN, JUD_CRC8_INIT)) {
 		return 0;
 	}
 	if (!CRC16Check(buf, frameLength, JUD_CRC16_INIT))
 	{
-		//ledG.Toggle();
 		return 0;
 	}
 	memcpy(header, buf, JUD_HEADER_LEN);

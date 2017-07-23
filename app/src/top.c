@@ -31,7 +31,6 @@ void Top_Proc(const uint8_t* buf, const uint32_t len)
 	{
 		uint8_t offset = JUD_HEADER_LEN + JUD_CMD_ID_LEN;
 		Wdg_Feed(WDG_IDX_JUDSYS);
-		//LED_GREEN_TOG();
 		switch (top.cmdId)
 		{
 			case JUD_CMD_ID_GAME_INFO:

@@ -21,6 +21,11 @@ void BtmRxCallback(uint8_t data)
 	Btm_Proc(data);
 }
 
+void BtmIdleCallback(const uint8_t* buf, const uint32_t len)
+{
+	Top_Proc(buf, len);
+}
+
 void DbiRxCallback(uint8_t data)
 {
 	Dbi_Proc(data);

@@ -43,15 +43,15 @@ typedef uint16_t JudCmdId_t;
 
 typedef struct
 {
-    uint8_t  sof;
+    uint8_t sof;
     uint16_t dataLength;
-    uint8_t  seq;
-    uint8_t  crc8;
+    uint8_t seq;
+    uint8_t crc8;
 } JudFrameHeader_t;
 
 typedef struct
 {
-	uint8_t  flag; // 0:invalid 1:valid
+	uint8_t flag; // 0:invalid 1:valid
     uint32_t x;
     uint32_t y;
     uint32_t z;

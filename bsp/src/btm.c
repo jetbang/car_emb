@@ -23,8 +23,13 @@ static FIFO_t tx_fifo;
 static uint8_t rx_buf[BTM_RX_FIFO_SIZE];
 static uint8_t tx_buf[BTM_TX_FIFO_SIZE];
 
+static uint8_t buf[2][BTM_DMA_BUF_SIZE];
+
 void Btm_Config(void)
 {
+	FIFO_Init(&rx_fifo, rx_buf, BTM_RX_FIFO_SIZE);
+	FIFO_Init(&tx_fifo, tx_buf, BTM_TX_FIFO_SIZE);
+
     USART_Bind(BTM_RX_PIN, BTM_TX_PIN,
     		 BTM_USART,
 			   BTM_USART_BR,
@@ -34,14 +39,25 @@ void Btm_Config(void)
 			   BTM_USART_FC
 			   );
 
-    USART_ITConfig(BTM_USART, USART_IT_RXNE, ENABLE);
+    USART_DMACmd(BTM_USART, USART_DMAReq_Rx, ENABLE);
 
-    NVIC_Config(BTM_NVIC, BTM_NVIC_PRE_PRIORITY, BTM_NVIC_SUB_PRIORITY);
+	DMA_Config(BTM_DMA_STREAM,
+			   BTM_DMA_CHANNEL,
+			   (u32)&BTM_USART->DR,
+			   (u32)buf[0], 0,
+			   BTM_DMA_BUF_SIZE);
 
-    FIFO_Init(&rx_fifo, rx_buf, BTM_RX_FIFO_SIZE);
-    FIFO_Init(&tx_fifo, tx_buf, BTM_TX_FIFO_SIZE);
+	DMA_DoubleBufferModeConfig(BTM_DMA_STREAM, (u32)buf[1], DMA_Memory_0);
+	DMA_DoubleBufferModeCmd(BTM_DMA_STREAM, ENABLE);
 
-    USART_Cmd(BTM_USART, ENABLE);
+	DMA_Cmd(BTM_DMA_STREAM, ENABLE);
+
+	NVIC_Config(BTM_NVIC, BTM_NVIC_PRE_PRIORITY, BTM_NVIC_SUB_PRIORITY);
+
+	USART_ITConfig(BTM_USART, USART_IT_RXNE, ENABLE);
+	USART_ITConfig(BTM_USART, USART_IT_IDLE, ENABLE);
+
+	USART_Cmd(BTM_USART, ENABLE);
 }
 
 uint32_t Btm_GetRxFifoSize(void)
@@ -180,7 +196,7 @@ void BTM_IRQ_HANDLER(void)
 				BTM_DISABLE_IT_TXE();
 			}
     }
-		else if (USART_GetITStatus(BTM_USART, USART_IT_RXNE) != RESET)
+	else if (USART_GetITStatus(BTM_USART, USART_IT_RXNE) != RESET)
     {
         uint8_t rx_data = USART_ReceiveData(BTM_USART);
         if (FIFO_IsFull(&rx_fifo)) {
@@ -190,6 +206,34 @@ void BTM_IRQ_HANDLER(void)
         FIFO_Push(&rx_fifo, &rx_data, 1);
         BtmRxCallback(rx_data);
     }
+	else if (USART_GetITStatus(BTM_USART, USART_IT_IDLE) != RESET)
+	{
+		uint8_t* pbuf = buf[0];
+
+		uint16_t rx_len = 0;
+
+		//clear the idle pending flag
+		(void)BTM_USART->SR;
+		(void)BTM_USART->DR;
+
+		DMA_Cmd(BTM_DMA_STREAM, DISABLE);
+		rx_len = BTM_DMA_BUF_SIZE - DMA_GetCurrDataCounter(BTM_DMA_STREAM);
+
+		BTM_DMA_STREAM->NDTR = (uint16_t)BTM_DMA_BUF_SIZE;     //relocate the DMA memory pointer to the beginning position
+		//Target is Memory0
+		if(DMA_GetCurrentMemoryTarget(BTM_DMA_STREAM) == 0)
+		{
+			pbuf = buf[0];
+			BTM_DMA_STREAM->CR |= (uint32_t)(DMA_SxCR_CT);        //enable the current selected memory is Memory 1
+		}
+		else
+		{
+			pbuf = buf[1];
+			BTM_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
+		}
+		DMA_Cmd(BTM_DMA_STREAM, ENABLE);
+		BtmIdleCallback(pbuf, rx_len);
+	}
 }
 
 
