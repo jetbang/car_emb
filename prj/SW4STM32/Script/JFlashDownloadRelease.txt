@@ -1,5 +1,5 @@
 r
-loadbin Release/gnd-emb.bin 0x08000000
+loadbin Release/car_emb.bin 0x08000000
 r
 go
 exit
