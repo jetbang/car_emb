@@ -484,7 +484,7 @@ void DMA_Config(DMA_Stream_TypeDef* DMAy_Streamx, u32 channel, u32 pba, u32 mba,
 	dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
 	dma.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-	dma.DMA_Mode = DMA_Mode_Circular;
+	dma.DMA_Mode = DMA_Mode_Normal; //DMA_Mode_Circular;
 	dma.DMA_Priority = DMA_Priority_Medium;
 	dma.DMA_FIFOMode = DMA_FIFOMode_Disable;
 	dma.DMA_FIFOThreshold = DMA_FIFOThreshold_1QuarterFull;

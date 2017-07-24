@@ -52,7 +52,6 @@ static void Dnl_ProcCBusMsg(const CBusMsg_t* cbusMsg)
 	Wdg_Feed(WDG_IDX_CBUS);
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
 		Cci_Proc(&cbusMsg->cbus);
-		//ledG.Toggle();
 	}
 }
 
@@ -165,7 +164,6 @@ void Dnl_Proc(void)
 	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_cbus, &cbusMsg)) {
 		Dnl_ProcCBusMsg(&cbusMsg);
-		//ledG.Toggle();
 	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_vdbus, &vdbusMsg)) {
 		Dnl_ProcVDBusMsg(&vdbusMsg);
@@ -200,6 +198,10 @@ void Dnl_Proc(void)
 		Dnl_ProcPosCalib(&posCalib);
 	}
 	*/
+
+	if (Wdg_HasErr(WDG_ERR_CBUS) && Rci_Sw(SW_IDX_R) == SW_DN) {
+		CS_Set(&cmd.cv, 0, 0, 0);
+	}
 }
 
 

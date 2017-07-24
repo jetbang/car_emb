@@ -128,6 +128,10 @@ void Can_Proc(uint32_t id, uint8_t* data)
 		Wdg_Feed(WDG_IDX_MOTOR6);
 		Motor_Process(&motor[5], id, data);
 		break;
+	case MOTOR7_FDB_CAN_MSG_ID:
+		Wdg_Feed(WDG_IDX_MOTOR7);
+		Motor_Process(&motor[6], id, data);
+		break;
 	default:
 		break;
 	}
@@ -135,8 +139,13 @@ void Can_Proc(uint32_t id, uint8_t* data)
 
 uint8_t Can_Ready(void)
 {
-	return ZGyro_Ready(&zgyro) && Motor_Ready(&motor[0]) && Motor_Ready(&motor[1])
-		&& Motor_Ready(&motor[2]) && Motor_Ready(&motor[3]) && Motor_Ready(&motor[5]);
+	return ZGyro_Ready(&zgyro) &&
+		   Motor_Ready(&motor[0]) &&
+		   Motor_Ready(&motor[1]) &&
+		   Motor_Ready(&motor[2]) &&
+		   Motor_Ready(&motor[3]) &&
+		   Motor_Ready(&motor[5]) &&
+		   Motor_Ready(&motor[6]);
 }
 
 

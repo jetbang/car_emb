@@ -16,8 +16,8 @@
  
 #include "led.h"
 
-const Hal_Gpio_t ledR = HAL_GPIO_DEF(LedRed);
-const Hal_Gpio_t ledG = HAL_GPIO_DEF(LedGreen);
+const Hal_Gpio_t ledr = HAL_GPIO_DEF(LedRed);
+const Hal_Gpio_t ledg = HAL_GPIO_DEF(LedGreen);
 
 void Led_Config(void)
 {

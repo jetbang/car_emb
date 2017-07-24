@@ -53,8 +53,8 @@ uint8_t LedGreen_ReadOut(void);
 void LedGreen_Write(uint8_t newState);
 void LedGreen_Toggle(void);
 
-extern const Hal_Gpio_t ledR;
-extern const Hal_Gpio_t ledG;
+extern const Hal_Gpio_t ledr;
+extern const Hal_Gpio_t ledg;
 
 #ifdef __cplusplus
 }

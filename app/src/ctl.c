@@ -36,7 +36,7 @@ static void PeriphsStateCtl(void)
 
 static void ChassisStateCtl(void)
 {
-	static uint8_t i = 0;
+	uint8_t i = 0;
 
 	ctl.cv.x = cmd.cv.x;
 	ctl.cv.y = cmd.cv.y;

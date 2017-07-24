@@ -50,10 +50,10 @@ extern "C" {
 #define TTY_DMA_STREAM DMA2_Stream1
 #define TTY_DMA_CHANNEL DMA_Channel_5
 
-#define TTY_DMA_BUF_SIZE 100u
+#define TTY_DMA_BUF_SIZE 128u
 
-#define TTY_RX_FIFO_SIZE 256u
-#define TTY_TX_FIFO_SIZE 256u
+#define TTY_RX_FIFO_SIZE 128u
+#define TTY_TX_FIFO_SIZE 128u
 
 void Tty_InitIO(void);
 void Tty_Config(void);

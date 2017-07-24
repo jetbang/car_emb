@@ -37,9 +37,9 @@ extern "C" {
 #include "wsm.h"
 #include "ios.h"
 
-#define UPL_TSK_TMS 10
+#define UPL_TSK_TMS 5
 
-#define UPL_BUF_SIZE 256u
+#define UPL_BUF_SIZE 128u
 
 void Upl_Init(void);
 void Upl_Proc(void);

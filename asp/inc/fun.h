@@ -52,6 +52,7 @@ void Flag_Det(Flag_t* flag, Flag_t mask, uint32_t condition);
 
 void isort(float* dst, uint32_t len, float val);
 void sort(const float* arr, float* dst, uint32_t len);
+float invSqrt(float x);
 
 #ifdef __cplusplus
 }

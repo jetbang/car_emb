@@ -29,6 +29,7 @@ extern "C" {
 #include <string.h>
 
 #include "calib.h"
+#include "crc16.h"
 #include "fos.h"
 #include "fun.h"
 
@@ -151,7 +152,7 @@ typedef struct
 
 #define CVL_CFG_DEF \
 { \
-	.kp = 1000, \
+	.kp = 1100, \
 	.ki = 0, \
 	.kd = 0, \
 	.db = 0, \

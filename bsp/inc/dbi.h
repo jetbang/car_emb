@@ -50,10 +50,10 @@ extern "C" {
 #define DBI_DMA_STREAM DMA1_Stream1
 #define DBI_DMA_CHANNEL DMA_Channel_4
 
-#define DBI_DMA_BUF_SIZE 100u
+#define DBI_DMA_BUF_SIZE 128u
 
-#define DBI_RX_FIFO_SIZE 256u
-#define DBI_TX_FIFO_SIZE 256u
+#define DBI_RX_FIFO_SIZE 128u
+#define DBI_TX_FIFO_SIZE 128u
 
 void Dbi_Config(void);
 

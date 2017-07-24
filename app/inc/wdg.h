@@ -34,7 +34,7 @@ extern "C" {
 
 typedef uint32_t WdgErr_t;
 	
-#define WDG_NUM              21u
+#define WDG_NUM              22u
 
 #define WDG_IDX_RCV          0u
 #define WDG_IDX_TTY          1u
@@ -53,10 +53,11 @@ typedef uint32_t WdgErr_t;
 #define WDG_IDX_MOTOR4       14u
 #define WDG_IDX_MOTOR5       15u
 #define WDG_IDX_MOTOR6       16u
-#define WDG_IDX_JUDSYS       17u
-#define WDG_IDX_JUDGIF       18u
-#define WDG_IDX_JUDRTB       19u
-#define WDG_IDX_JUDRTS       20u
+#define WDG_IDX_MOTOR7       17u
+#define WDG_IDX_JUDSYS       18u
+#define WDG_IDX_JUDGIF       19u
+#define WDG_IDX_JUDRTB       20u
+#define WDG_IDX_JUDRTS       21u
 
 #define WDG_ERR_RCV			 (1u<<WDG_IDX_RCV)
 #define WDG_ERR_TTY			 (1u<<WDG_IDX_TTY)
@@ -75,6 +76,7 @@ typedef uint32_t WdgErr_t;
 #define WDG_ERR_MOTOR4		 (1u<<WDG_IDX_MOTOR4)
 #define WDG_ERR_MOTOR5		 (1u<<WDG_IDX_MOTOR5)
 #define WDG_ERR_MOTOR6		 (1u<<WDG_IDX_MOTOR6)
+#define WDG_ERR_MOTOR7		 (1u<<WDG_IDX_MOTOR7)
 #define WDG_ERR_JUDSYS		 (1u<<WDG_IDX_JUDSYS)
 #define WDG_ERR_JUDGIF		 (1u<<WDG_IDX_JUDGIF)
 #define WDG_ERR_JUDRTB		 (1u<<WDG_IDX_JUDRTB)
@@ -98,6 +100,7 @@ typedef uint32_t WdgErr_t;
 		WDG_ERR_MOTOR4 | \
 		WDG_ERR_MOTOR5 | \
 		WDG_ERR_MOTOR6 | \
+		WDG_ERR_MOTOR7 | \
 		WDG_ERR_JUDSYS | \
 		WDG_ERR_JUDGIF | \
 		WDG_ERR_JUDRTB | \
@@ -130,9 +133,9 @@ typedef uint32_t WdgErr_t;
 #define WDG_OVERFLOW_CNT_ZGYRO 		WDG_CNT_CVT(100u)
 #define WDG_OVERFLOW_CNT_MOTOR 		WDG_CNT_CVT(100u)
 #define WDG_OVERFLOW_CNT_JUDSYS 	WDG_CNT_CVT(100u)
-#define WDG_OVERFLOW_CNT_JUDGIF 	WDG_CNT_CVT(200u)
-#define WDG_OVERFLOW_CNT_JUDRTB 	WDG_CNT_CVT(200u)
-#define WDG_OVERFLOW_CNT_JUDRTS 	WDG_CNT_CVT(200u)
+#define WDG_OVERFLOW_CNT_JUDGIF 	WDG_CNT_CVT(100u)
+#define WDG_OVERFLOW_CNT_JUDRTB 	WDG_CNT_CVT(100u)
+#define WDG_OVERFLOW_CNT_JUDRTS 	WDG_CNT_CVT(100u)
 
 #define WDG_OVERFLOW_CNT_DEFAULT \
 { \

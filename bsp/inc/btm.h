@@ -50,10 +50,10 @@ extern "C" {
 #define BTM_DMA_STREAM DMA1_Stream5
 #define BTM_DMA_CHANNEL DMA_Channel_4
 
-#define BTM_DMA_BUF_SIZE 100u
+#define BTM_DMA_BUF_SIZE 128u
 
-#define BTM_RX_FIFO_SIZE 256u
-#define BTM_TX_FIFO_SIZE 256u
+#define BTM_RX_FIFO_SIZE 128u
+#define BTM_TX_FIFO_SIZE 128u
 
 void Btm_Config(void);
 

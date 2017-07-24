@@ -39,7 +39,6 @@ void Tty_Config(void)
 			   TTY_USART_FC
 			   );
 
-    /*
     USART_DMACmd(TTY_USART, USART_DMAReq_Rx, ENABLE);
 
 	DMA_Config(TTY_DMA_STREAM,
@@ -50,7 +49,7 @@ void Tty_Config(void)
 
 	DMA_DoubleBufferModeConfig(TTY_DMA_STREAM, (u32)buf[1], DMA_Memory_0);
 	DMA_DoubleBufferModeCmd(TTY_DMA_STREAM, ENABLE);
-*/
+
 	//DMA_Cmd(TTY_DMA_STREAM, ENABLE);
 
 	NVIC_Config(TTY_NVIC, TTY_NVIC_PRE_PRIORITY, TTY_NVIC_SUB_PRIORITY);
