@@ -43,7 +43,7 @@ void TtyRxCallback(uint8_t data)
 
 void TtyIdleCallback(const uint8_t* buf, const uint32_t len)
 {
-	Top_Proc(buf, len);
+	//Top_Proc(buf, len);
 }
 
 

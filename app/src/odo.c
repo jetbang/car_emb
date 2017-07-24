@@ -24,7 +24,9 @@ Odo_t odo;
 
 static void GetPeriphsStateFdb(void)
 {
-	// TODO
+	FS_Det(&odo.fs, FS_LASR, laser.ReadOut());
+	FS_Det(&odo.fs, FS_FRIC, FRIC_IS_ON());
+	//FS_Det(&odo.fs, FS_TRIG, laser.ReadOut());
 }
 
 static void GetMecanumStateFdb(void)

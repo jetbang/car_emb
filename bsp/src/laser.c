@@ -14,18 +14,34 @@
  * limitations under the License.
  */
 
-#include "err.h"
+#include "laser.h"
 
-void Err_Init(void)
+const Hal_Gpio_t laser = HAL_GPIO_DEF(Laser);
+
+void Laser_Config(void)
 {
-	// TODO
+	GPIO_Out(LASER_PIN);
+	LASER_OFF();
 }
 
-void Err_Proc(void)
+uint8_t Laser_ReadIn(void)
 {
-	if (Wdg_IsOkay()) {
-		//LED_GREEN_ON();
-		//LED_RED_OFF();
-	}
+	return GPIO_READ_IN(LASER_PIN);
 }
+
+uint8_t Laser_ReadOut(void)
+{
+	return GPIO_READ_OUT(LASER_PIN);
+}
+
+void Laser_Write(uint8_t val)
+{
+	GPIO_WRITE(LASER_PIN, val);
+}
+
+void Laser_Toggle(void)
+{
+	GPIO_TOG(LASER_PIN);
+}
+
 

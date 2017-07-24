@@ -31,7 +31,9 @@ extern "C" {
 #include "dci.h"
 #include "cci.h"
 #include "fun.h"
-	
+
+#define DNL_TSK_TMS 10
+
 #define DNL_BUF_SIZE 256u
 	
 void Dnl_Init(void);

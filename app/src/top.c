@@ -63,18 +63,18 @@ void Top_Proc(const uint8_t* buf, const uint32_t len)
 void JudGameInfoCallback(JudGameInfo_t* gameInfo)
 {
 	Wdg_Feed(WDG_IDX_JUDGIF);
-	// TODO
+	Flag_Set(&top.flag, TOP_FLAG_GIF);
 }
 
 void JudRTBloodChangeCallback(JudRTBloodChange_t* bloodChange)
 {
 	Wdg_Feed(WDG_IDX_JUDRTB);
-	// TODO
+	Flag_Set(&top.flag, TOP_FLAG_RTB);
 }
 
 void JudRTShootDataCallback(JudRTShootData_t* shootData)
 {
 	Wdg_Feed(WDG_IDX_JUDRTS);
-	// TODO
+	Flag_Set(&top.flag, TOP_FLAG_RTS);
 }
 

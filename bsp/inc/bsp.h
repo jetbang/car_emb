@@ -29,6 +29,7 @@ extern "C" {
 #include "dbi.h"
 #include "ist8310.h"
 #include "key.h"
+#include "laser.h"
 #include "led.h"
 #include "mpu6500.h"
 #include "pwm.h"

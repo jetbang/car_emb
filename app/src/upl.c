@@ -32,6 +32,7 @@ static VDBusMsg_t vdbusMsg;
 
 static void Upl_PushUwbMsg(void)
 {
+	if (!Flag_Get(&top.flag, TOP_FLAG_GIF)) return;
 	uwbMsg.frame_id++;
 	uwbMsg.flag = top.gameInfo.gps.flag;
 	uwbMsg.x = top.gameInfo.gps.x;

@@ -28,7 +28,7 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
-#define CBUS_SIZE sizeof(CBUS_t)
+#pragma pack(1)
 
 typedef struct
 {
@@ -52,8 +52,6 @@ typedef struct
 }PantiltState_c; // Pantilt state control typedef
 
 #define CBUS_VALUE_SCALE 1e3f
-
-#pragma pack(1)
 
 typedef struct
 {

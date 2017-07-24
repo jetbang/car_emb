@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2016, Jack Mo (mobangjack@foxmail.com).
+ * Copyright (c) 2016, Jack Mo (mobangjack@foxmail.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,41 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-#ifndef __UPL_H__
-#define __UPL_H__
 
-/*****************************************/
-/*         Up-Link Communication         */
-/*****************************************/
+#ifndef __LASER_H__
+#define __LASER_H__
 
-#ifdef __cplusplus
+#ifdef __cpluplus
 extern "C" {
 #endif
 
-#include "msg.h"
-#include "cal.h"
-#include "top.h"
-#include "cmd.h"
-#include "odo.h"
-#include "dci.h"
-#include "srs.h"
-#include "wdg.h"
-#include "ini.h"
-#include "wsm.h"
-#include "ios.h"
+#include "stm32util.h"
+#include "hal_gpio.h"
 
-#define UPL_TSK_TMS 10
+#define LASER_PIN PG13
+#define LASER_WRITE(VAL) GPIO_WRITE(LASER_PIN, VAL)
+#define LASER_ON() LASER_WRITE(1)
+#define LASER_OFF() LASER_WRITE(0)
 
-#define UPL_BUF_SIZE 256u
+void Laser_Config(void);
 
-void Upl_Init(void);
-void Upl_Proc(void);
+uint8_t Laser_ReadIn(void);
+uint8_t Laser_ReadOut(void);
+void Laser_Write(uint8_t val);
+void Laser_Toggle(void);
 
-#ifdef __cplusplus
+extern const Hal_Gpio_t laser;
+
+#ifdef __cpluplus
 }
 #endif
 
 #endif
-
-

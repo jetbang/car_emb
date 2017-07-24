@@ -44,6 +44,12 @@ typedef struct
 	.Toggle = &DEV##_Toggle, \
 }
 
+#define HAL_GPIO_IF_DEF(NAME) \
+		uint8_t NAME##_ReadIn(void); \
+		uint8_t NAME##_ReadOut(void); \
+		void NAME##_Write(uint8_t val); \
+		void NAME##_Toggle(void); \
+
 void Hal_Gpio_Init(Hal_Gpio_t* gpio);
 
 #ifdef __cplusplus

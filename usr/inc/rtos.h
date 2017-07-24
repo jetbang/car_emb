@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2016, Jack Mo (mobangjack@foxmail.com).
+ * Copyright (c) 2016, Jack Mo (mobangjack@foxmail.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,41 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-#ifndef __UPL_H__
-#define __UPL_H__
 
-/*****************************************/
-/*         Up-Link Communication         */
-/*****************************************/
+#ifndef __RTOS_H__
+#define __RTOS_H__
 
-#ifdef __cplusplus
+#ifdef __cpluplus
 extern "C" {
 #endif
 
-#include "msg.h"
-#include "cal.h"
-#include "top.h"
-#include "cmd.h"
-#include "odo.h"
-#include "dci.h"
-#include "srs.h"
-#include "wdg.h"
-#include "ini.h"
-#include "wsm.h"
-#include "ios.h"
+#include "kos.h"
 
-#define UPL_TSK_TMS 10
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
-#define UPL_BUF_SIZE 256u
+void vAppTaskCreate(void);
 
-void Upl_Init(void);
-void Upl_Proc(void);
-
-#ifdef __cplusplus
+#ifdef __cpluplus
 }
 #endif
 
 #endif
-
-

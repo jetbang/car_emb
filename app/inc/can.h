@@ -41,7 +41,7 @@ extern "C" {
 #define MOTOR_ECD_MOD 8192
 #define MOTOR_ECD_GAP 4096
 
-#define MOTOR_NUM 6
+#define MOTOR_NUM 7
 #define MOTOR_INIT_FRAME_CNT 100
 
 #define MOTOR_RATE_DEG_RECIP 6.0f

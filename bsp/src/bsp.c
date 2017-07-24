@@ -34,6 +34,7 @@ void Bsp_Config(void)
 	Can2_Config();
 	SR04_Config();
 	Spi5_Config();
+	Laser_Config();
 	MPU6500_Config();
 	IST8310_Config();
 	LED_GREEN_ON();

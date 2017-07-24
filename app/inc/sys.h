@@ -30,10 +30,11 @@ extern "C" {
 
 typedef uint32_t PeriphsState_t; // Peripherals state flag bits
 
-#define FS_FRIC        (1u<<0)
-#define FS_SPIN        (1u<<1)
+#define FS_LASR        (1u<<0)
+#define FS_FRIC        (1u<<1)
+#define FS_TRIG        (1u<<2)
 
-#define FS_ALL         (FS_FRIC|FS_SPIN)
+#define FS_ALL         (FS_LASR|FS_FRIC|FS_TRIG)
 #define FS_NON         ((uint32_t)0)
 
 typedef struct

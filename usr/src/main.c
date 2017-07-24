@@ -16,41 +16,6 @@
  
 #include "main.h"
 
-static void vErrThreadFun(void* pvParam)
-{
-	while (1) {
-		Err_Proc();
-		vTaskDelay(20);
-	}
-}
-
-static void vDnlThreadFun(void* pvParam)
-{
-	while (1) {
-		Dnl_Proc();
-		vTaskDelay(20);
-	}
-}
-
-static void vUplThreadFun(void* pvParam)
-{
-	while (1) {
-		Upl_Proc();
-		vTaskDelay(10);
-	}
-}
-
-static TaskHandle_t xErrTaskHandle = NULL;
-static TaskHandle_t xDnlTaskHandle = NULL;
-static TaskHandle_t xUplTaskHandle = NULL;
-
-static void vAppTaskCreate(void)
-{
-	xTaskCreate(vErrThreadFun, "vErrThreadFun", 128, NULL, 1, &xErrTaskHandle);
-	xTaskCreate(vDnlThreadFun, "vDnlThreadFun", 128, NULL, 1, &xDnlTaskHandle);
-	xTaskCreate(vUplThreadFun, "vUplThreadFun", 128, NULL, 1, &xUplTaskHandle);
-}
-
 int main()
 {
 	//__set_PRIMASK(1); // Close global interrupt
@@ -63,7 +28,8 @@ int main()
 	
 	while(1)
 	{
-		// KOS_Spin();
+		//KOS_Spin();
 	}
 }
+
 

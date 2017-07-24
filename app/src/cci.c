@@ -16,6 +16,8 @@
  
 #include "cci.h"
 
+#include "led.h"
+
 /*************************************************/
 /*            CBUS Control Interface             */
 /*************************************************/
@@ -29,6 +31,9 @@ static void GetChassisStateRef(const CBus_t* cbus)
 	cmd.cv.x = cbus->cv.x / CBUS_VALUE_SCALE;
 	cmd.cv.y = cbus->cv.y / CBUS_VALUE_SCALE;
 	cmd.cv.z = cbus->cv.z / CBUS_VALUE_SCALE;
+
+	//printf("%d,%d,%d,%d,%d,%d\n", cbus->cv.x, cbus->cv.y, cbus->cv.z, cbus->cp.x, cbus->cp.y, cbus->cp.z);
+	//ledG.Toggle();
 
 	LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
 	LIMIT(cmd.cv.y, -cfg.vel.y, cfg.vel.y);

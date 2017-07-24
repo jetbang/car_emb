@@ -23,9 +23,15 @@ extern "C" {
 
 #include "jud.h"
 #include "wdg.h"
+#include "fun.h"
+
+#define TOP_FLAG_GIF ((uint8_t)0x01)
+#define TOP_FLAG_RTB ((uint8_t)0x02)
+#define TOP_FLAG_RTS ((uint8_t)0x03)
 
 typedef struct
 {
+	uint32_t flag;
 	JudFrameHeader_t frameHeader;
 	JudCmdId_t cmdId;
 	JudGameInfo_t gameInfo;

@@ -31,7 +31,7 @@ void Tty_Config(void)
 	FIFO_Init(&tx_fifo, tx_buf, TTY_TX_FIFO_SIZE);
 
     USART_Bind(TTY_RX_PIN, TTY_TX_PIN,
-    		 TTY_USART,
+    		   TTY_USART,
 			   TTY_USART_BR,
 			   TTY_USART_WL,
 			   TTY_USART_PA,
@@ -39,6 +39,7 @@ void Tty_Config(void)
 			   TTY_USART_FC
 			   );
 
+    /*
     USART_DMACmd(TTY_USART, USART_DMAReq_Rx, ENABLE);
 
 	DMA_Config(TTY_DMA_STREAM,
@@ -49,13 +50,13 @@ void Tty_Config(void)
 
 	DMA_DoubleBufferModeConfig(TTY_DMA_STREAM, (u32)buf[1], DMA_Memory_0);
 	DMA_DoubleBufferModeCmd(TTY_DMA_STREAM, ENABLE);
-
-	DMA_Cmd(TTY_DMA_STREAM, ENABLE);
+*/
+	//DMA_Cmd(TTY_DMA_STREAM, ENABLE);
 
 	NVIC_Config(TTY_NVIC, TTY_NVIC_PRE_PRIORITY, TTY_NVIC_SUB_PRIORITY);
 
 	USART_ITConfig(TTY_USART, USART_IT_RXNE, ENABLE);
-	USART_ITConfig(TTY_USART, USART_IT_IDLE, ENABLE);
+	//USART_ITConfig(TTY_USART, USART_IT_IDLE, ENABLE);
 
 	USART_Cmd(TTY_USART, ENABLE);
 }

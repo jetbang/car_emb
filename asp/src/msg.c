@@ -77,7 +77,7 @@ uint32_t Msg_Pop(FIFO_t* fifo, void* buf, const void* head, void* body)
 {
 	MsgHead_t mhead;
 	const MsgHead_t* phead = (MsgHead_t*)head;
-	uint32_t len = phead->attr.length + MSG_LEN_EXT;
+	const uint32_t len = phead->attr.length + MSG_LEN_EXT;
 	if (FIFO_GetUsed(fifo) < len) {
 		return 0;
 	}

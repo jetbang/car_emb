@@ -23,6 +23,33 @@ extern "C" {
 	
 #include "stm32util.h"
 
+#define FRIC_PWM_PIN_1 PH6
+#define FRIC_PWM_PIN_2 PH9
+#define FRIC_PWM_PIN_3 0
+#define FRIC_PWM_PIN_4 0
+
+#define FRIC_PWM_TIM TIM12
+#define FRIC_PWM_TIM_PS 89
+#define FRIC_PWM_TIM_PD 2500
+#define FRIC_PWM_TIM_PW 1000
+
+#define FRIC_PWM_1 FRIC_PWM_TIM->CCR1
+#define FRIC_PWM_2 FRIC_PWM_TIM->CCR2
+#define FRIC_PWM_3 FRIC_PWM_TIM->CCR3
+#define FRIC_PWM_4 FRIC_PWM_TIM->CCR4
+
+#define FRIC_PWM FRIC_PWM_1
+#define FRIC_SET_PWM(PWM) do { FRIC_PWM_1 = FRIC_PWM_2 = PWM; } while (0)
+
+#define FRIC_PWM_H 1580
+#define FRIC_PWM_L 1000
+
+#define FRIC_ON() FRIC_SET_PWM(FRIC_PWM_H)
+#define FRIC_OFF() FRIC_SET_PWM(FRIC_PWM_L)
+
+#define FRIC_IS_ON() (FRIC_PWM == FRIC_PWM_H)
+#define FRIC_IS_OFF() (FRIC_PWM == FRIC_PWM_L)
+
 #define CLAW_PWM_PIN_1 PD12
 #define CLAW_PWM_PIN_2 PD13
 #define CLAW_PWM_PIN_3 PD14

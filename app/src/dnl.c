@@ -52,6 +52,7 @@ static void Dnl_ProcCBusMsg(const CBusMsg_t* cbusMsg)
 	Wdg_Feed(WDG_IDX_CBUS);
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
 		Cci_Proc(&cbusMsg->cbus);
+		//ledG.Toggle();
 	}
 }
 
@@ -153,11 +154,9 @@ void Dnl_Proc(void)
 	len = IOS_COM_DEV.Read(buf[1], len);
 	// If input stream not available, abort
 	if (len > 0) {
-		// Push stream into fifo
 		FIFO_Push(&fifo, buf[1], len);
 	}
 	// Check if any message received
-
 	if (Msg_Pop(&fifo, buf[1], &msg_head_vrc, &vrcMsg)) {
 		Dnl_ProcVRCMsg(&vrcMsg);
 	}
@@ -166,11 +165,11 @@ void Dnl_Proc(void)
 	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_cbus, &cbusMsg)) {
 		Dnl_ProcCBusMsg(&cbusMsg);
+		//ledG.Toggle();
 	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_vdbus, &vdbusMsg)) {
 		Dnl_ProcVDBusMsg(&vdbusMsg);
 	}
-
 	/*
 	if (Msg_Pop(&fifo, buf[1], &msg_head_subsc, &subscMsg)) {
 		Dnl_ProcSubscMsg(&subscMsg);
