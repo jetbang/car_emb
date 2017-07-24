@@ -199,6 +199,11 @@ void Dnl_Proc(void)
 	}
 	*/
 
+	/*
+	if (FIFO_) {
+
+	}
+*/
 	if (Wdg_HasErr(WDG_ERR_CBUS) && Rci_Sw(SW_IDX_R) == SW_DN) {
 		CS_Set(&cmd.cv, 0, 0, 0);
 	}

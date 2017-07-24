@@ -24,7 +24,10 @@ extern "C" {
 #include "stm32util.h"
 #include "fifo.h"
 #include "hal_uart.h"
-	
+
+#define TTY_USE_DMA  0
+#define TTY_USE_FIFO 1
+
 #define TTY_TX_PIN PG9
 #define TTY_RX_PIN PG14
 #define TTY_USART USART6

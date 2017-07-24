@@ -25,6 +25,7 @@ void Top_Init(void)
 	memset(&top, 0, sizeof(Top_t));
 }
 
+/*
 void Top_Proc(const uint8_t* buf, const uint32_t len)
 {
 	if (Jud_Dec(buf, len, &top.frameHeader, &top.cmdId))
@@ -58,6 +59,12 @@ void Top_Proc(const uint8_t* buf, const uint32_t len)
 				break;
 		}
 	}
+}
+*/
+
+void Top_Proc(void)
+{
+	if ()
 }
 
 void JudGameInfoCallback(JudGameInfo_t* gameInfo)
