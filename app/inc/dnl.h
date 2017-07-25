@@ -30,15 +30,11 @@ extern "C" {
 #include "cal.h"
 #include "dci.h"
 #include "cci.h"
-#include "top.h"
+#include "jud.h"
 #include "fun.h"
 
-#define DNL_TSK_TMS 10
-
-#define DNL_BUF_SIZE 128u
-	
 void Dnl_Init(void);
-void Dnl_Proc(void);
+void Dnl_Proc(const uint8_t* buf, const uint32_t len);
 
 #ifdef __cplusplus
 }

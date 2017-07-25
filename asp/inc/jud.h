@@ -17,7 +17,6 @@
 #ifndef __JUD_H__
 #define __JUD_H__
 
-#include "fifo.h"
 #include "crc8.h"
 #include "crc16.h"
 #include <string.h>
@@ -29,8 +28,8 @@
 #define JUD_CMD_ID_LEN 2
 #define JUD_CRC_LEN 2
 #define JUD_DATA_OFFSET (JUD_HEADER_LEN + JUD_CMD_ID_LEN)
-#define JUD_EXT_FRAME_LEN (JUD_HEADER_LEN + JUD_CMD_ID_LEN + JUD_CRC_LEN)
-#define JUD_GET_FRAME_LEN(DATA_LENGTH) ((DATA_LENGTH) + JUD_EXT_FRAME_LEN)
+#define JUD_EXT_LEN (JUD_HEADER_LEN + JUD_CMD_ID_LEN + JUD_CRC_LEN)
+#define JUD_GET_FRAME_LEN(DATA_LENGTH) ((DATA_LENGTH) + JUD_EXT_LEN)
 
 //crc8 generator polynomial:G(x) = x8+x5+x4+1
 #define  JUD_CRC8_INIT 0xff
@@ -40,6 +39,7 @@
 
 typedef uint16_t JudCmdId_t;
 
+#define JUD_CMD_ID_INVALID         ((uint16_t)0x0000)
 #define JUD_CMD_ID_GAME_INFO       ((uint16_t)0x0001)
 #define JUD_CMD_ID_RT_BLOOD_CHANGE ((uint16_t)0x0002)
 #define JUD_CMD_ID_RT_SHOOT_DATA   ((uint16_t)0x0003)
@@ -125,12 +125,8 @@ typedef union {
 
 #pragma pack()
 
-JudFrameHeader_t* Jud_CheckHeader(const void* buf);
-uint16_t Jud_GetCmdId(const void* buf);
-uint8_t Jud_CheckData(const void* buf);
-uint8_t Jud_GetData(const void* buf, void* data, uint32_t len);
-
-uint8_t Jud_Dec(const uint8_t* buf, const uint32_t len, void* header, void* cmdId);
-uint8_t Jud_Pop(FIFO_t* fifo, uint8_t* buf, const uint32_t len, void* header, void* cmdId);
+JudFrameHeader_t* Jud_GetFrameHeader(const void* buf);
+void* Jud_GetData(const void* buf);
+JudCmdId_t Jud_GetCmdId(const void* buf);
 
 #endif

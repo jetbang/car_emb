@@ -36,7 +36,7 @@ void Bsp_Config(void)
 	Spi5_Config();
 	Laser_Config();
 	MPU6500_Config();
-	IST8310_Config();
+	//IST8310_Config();
 	LED_GREEN_ON();
 }
 

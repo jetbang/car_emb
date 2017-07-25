@@ -39,7 +39,7 @@ void Beep_SingStartupMusic(uint32_t index)
 void Beep_Config(void)
 {
 	PWM_Bind(BEEP_PIN, 0, 0, 0,
-    	 BEEP_TIM,
+    	     BEEP_TIM,
 			 BEEP_TIM_PS,
 			 BEEP_TIM_PD,
 			 BEEP_TIM_PW);

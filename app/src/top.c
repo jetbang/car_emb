@@ -16,8 +16,6 @@
 
 #include "top.h"
 
-#include "led.h"
-
 Top_t top;
 
 void Top_Init(void)
@@ -25,46 +23,60 @@ void Top_Init(void)
 	memset(&top, 0, sizeof(Top_t));
 }
 
-/*
 void Top_Proc(const uint8_t* buf, const uint32_t len)
 {
-	if (Jud_Dec(buf, len, &top.frameHeader, &top.cmdId))
-	{
-		uint8_t offset = JUD_HEADER_LEN + JUD_CMD_ID_LEN;
-		Wdg_Feed(WDG_IDX_JUDSYS);
-		switch (top.cmdId)
-		{
-			case JUD_CMD_ID_GAME_INFO:
-			{
-				if (top.frameHeader.dataLength != sizeof(JudGameInfo_t)) break;
-				memcpy(&top.gameInfo, buf + offset, top.frameHeader.dataLength);
-				JudGameInfoCallback(&top.gameInfo);
-				break;
-			}
-			case JUD_CMD_ID_RT_BLOOD_CHANGE:
-			{
-				if (top.frameHeader.dataLength != sizeof(JudRTBloodChange_t)) break;
-				memcpy(&top.RTBloodChange, buf + offset, top.frameHeader.dataLength);
-				JudRTBloodChangeCallback(&top.RTBloodChange);
-				break;
-			}
-			case JUD_CMD_ID_RT_SHOOT_DATA:
-			{
-				if (top.frameHeader.dataLength != sizeof(JudRTShootData_t)) break;
-				memcpy(&top.RTShootData, buf + offset, top.frameHeader.dataLength);
-				JudRTShootDataCallback(&top.RTShootData);
-				break;
-			}
-			default:
-				break;
-		}
-	}
-}
-*/
+	JudFrameHeader_t* pHeader = NULL;
+	uint32_t frameLength = 0;
+	void* pData = NULL;
+	uint16_t cmdId = JUD_CMD_ID_INVALID;
 
-void Top_Proc(void)
-{
-	if ()
+	if (len < JUD_EXT_LEN)
+	{
+		return;
+	}
+
+	pHeader = Jud_GetFrameHeader(buf);
+	if (pHeader == NULL)
+	{
+		return;
+	}
+
+	frameLength = JUD_GET_FRAME_LEN(pHeader->dataLength);
+	if (len < frameLength)
+	{
+		return;
+	}
+
+	pData = Jud_GetData(buf);
+	if (pData == NULL)
+	{
+		return;
+	}
+
+	cmdId = Jud_GetCmdId(buf);
+	switch (cmdId)
+	{
+		case JUD_CMD_ID_GAME_INFO:
+		{
+			memcpy(&top.gameInfo, pData, pHeader->dataLength);
+			JudGameInfoCallback(&top.gameInfo);
+			break;
+		}
+		case JUD_CMD_ID_RT_BLOOD_CHANGE:
+		{
+			memcpy(&top.RTBloodChange, pData, pHeader->dataLength);
+			JudRTBloodChangeCallback(&top.RTBloodChange);
+			break;
+		}
+		case JUD_CMD_ID_RT_SHOOT_DATA:
+		{
+			memcpy(&top.RTShootData, pData, pHeader->dataLength);
+			JudRTShootDataCallback(&top.RTShootData);
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void JudGameInfoCallback(JudGameInfo_t* gameInfo)
@@ -84,4 +96,6 @@ void JudRTShootDataCallback(JudRTShootData_t* shootData)
 	Wdg_Feed(WDG_IDX_JUDRTS);
 	Flag_Set(&top.flag, TOP_FLAG_RTS);
 }
+
+
 

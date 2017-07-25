@@ -23,8 +23,8 @@ int main()
 	// Boot KOS
 	KOS_Boot();
 	
-	vAppTaskCreate();
-	vTaskStartScheduler();
+	//vAppTaskCreate();
+	//vTaskStartScheduler();
 	
 	while(1)
 	{

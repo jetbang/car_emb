@@ -23,7 +23,7 @@ static FIFO_t tx_fifo;
 static uint8_t rx_buf[DBI_RX_FIFO_SIZE];
 static uint8_t tx_buf[DBI_TX_FIFO_SIZE];
 
-//static uint8_t buf[2][DBI_DMA_BUF_SIZE];
+static uint8_t buf[2][DBI_DMA_BUF_SIZE];
 
 void Dbi_Config(void)
 {
@@ -38,7 +38,7 @@ void Dbi_Config(void)
 			   DBI_USART_SB,
 			   DBI_USART_FC
 			   );
-/*
+
     USART_DMACmd(DBI_USART, USART_DMAReq_Rx, ENABLE);
 
 	DMA_Config(DBI_DMA_STREAM,
@@ -51,11 +51,11 @@ void Dbi_Config(void)
 	DMA_DoubleBufferModeCmd(DBI_DMA_STREAM, ENABLE);
 
 	DMA_Cmd(DBI_DMA_STREAM, ENABLE);
-*/
+
 	NVIC_Config(DBI_NVIC, DBI_NVIC_PRE_PRIORITY, DBI_NVIC_SUB_PRIORITY);
 
     USART_ITConfig(DBI_USART, USART_IT_RXNE, ENABLE);
-    //USART_ITConfig(DBI_USART, USART_IT_IDLE, ENABLE);
+    USART_ITConfig(DBI_USART, USART_IT_IDLE, ENABLE);
 
     USART_Cmd(DBI_USART, ENABLE);
 }
@@ -206,35 +206,29 @@ void DBI_IRQ_HANDLER(void)
 		FIFO_Push(&rx_fifo, &rx_data, 1);
 		DbiRxCallback(rx_data);
 	}
-	/*
 	else if (USART_GetITStatus(DBI_USART, USART_IT_IDLE) != RESET)
 	{
 		uint8_t* pbuf = buf[0];
-
 		uint16_t rx_len = 0;
-
 		//clear the idle pending flag
 		(void)DBI_USART->SR;
 		(void)DBI_USART->DR;
-
 		DMA_Cmd(DBI_DMA_STREAM, DISABLE);
 		rx_len = DBI_DMA_BUF_SIZE - DMA_GetCurrDataCounter(DBI_DMA_STREAM);
-
-		DBI_DMA_STREAM->NDTR = (uint16_t)DBI_DMA_BUF_SIZE;     //relocate the DMA memory pointer to the beginning position
+		DBI_DMA_STREAM->NDTR = (uint16_t)DBI_DMA_BUF_SIZE; //relocate the DMA memory pointer to the beginning position
 		//Target is Memory0
 		if(DMA_GetCurrentMemoryTarget(DBI_DMA_STREAM) == 0)
 		{
 			pbuf = buf[0];
-			DBI_DMA_STREAM->CR |= (uint32_t)(DMA_SxCR_CT);        //enable the current selected memory is Memory 1
+			DBI_DMA_STREAM->CR |= (uint32_t)(DMA_SxCR_CT); //enable the current selected memory is Memory 1
 		}
 		else
 		{
 			pbuf = buf[1];
-			DBI_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT);       //enable the current selected memory is Memory 0
+			DBI_DMA_STREAM->CR &= ~(uint32_t)(DMA_SxCR_CT); //enable the current selected memory is Memory 0
 		}
 		DMA_Cmd(DBI_DMA_STREAM, ENABLE);
 		DbiIdleCallback(pbuf, rx_len);
 	}
-	*/
 }
 

@@ -30,6 +30,7 @@ extern "C" {
 #include "wdg.h"
 
 #define IOS_DBG_DEV btm
+#define IOS_JUD_DEV dbi
 #define IOS_COM_DEV tty
 
 #ifdef __GNUC__

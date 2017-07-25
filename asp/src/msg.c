@@ -38,6 +38,19 @@ const MsgHead_t msg_head_vel_calib = MSG_HEAD_VEL_CALIB;
 const MsgHead_t msg_head_mec_calib = MSG_HEAD_MEC_CALIB;
 const MsgHead_t msg_head_pos_calib = MSG_HEAD_POS_CALIB;
 
+void* Msg_GetData(const void* buf, const void* head)
+{
+	const MsgHead_t* headin = (MsgHead_t*)buf;
+	const MsgHead_t* headex = (MsgHead_t*)head;
+	uint32_t len = headex->attr.length + MSG_LEN_EXT;
+	if (headin->value != headex->value) {
+		return NULL;
+	}
+	if (!CRC16Check(buf, len, headex->attr.token)) {
+		return NULL;
+	}
+	return (((uint8_t*)buf) + sizeof(MsgHead_t));
+}
 
 /**
  * @brief Push a single message to message buffer. 
@@ -82,13 +95,7 @@ uint32_t Msg_Pop(FIFO_t* fifo, void* buf, const void* head, void* body)
 		return 0;
 	}
 	FIFO_Peek(fifo, (uint8_t*)&mhead, sizeof(MsgHead_t));
-	if (mhead.attr.id != phead->attr.id) {
-		return 0;
-	}
-	if (mhead.attr.length != phead->attr.length) {
-		return 0;
-	}
-	if (mhead.attr.token != phead->attr.token) {
+	if (mhead.value != phead->value) {
 		return 0;
 	}
 	FIFO_Peek(fifo, buf, len);
@@ -99,4 +106,5 @@ uint32_t Msg_Pop(FIFO_t* fifo, void* buf, const void* head, void* body)
 	FIFO_Pop(fifo, buf, len);
 	return len;
 }
+
 

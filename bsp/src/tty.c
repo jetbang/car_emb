@@ -23,7 +23,7 @@ static FIFO_t tx_fifo;
 static uint8_t rx_buf[TTY_RX_FIFO_SIZE];
 static uint8_t tx_buf[TTY_TX_FIFO_SIZE];
 
-//static uint8_t buf[2][TTY_DMA_BUF_SIZE];
+static uint8_t buf[2][TTY_DMA_BUF_SIZE];
 
 void Tty_Config(void)
 {
@@ -38,9 +38,8 @@ void Tty_Config(void)
 			   TTY_USART_SB,
 			   TTY_USART_FC
 			   );
-/*
-    USART_DMACmd(TTY_USART, USART_DMAReq_Rx, ENABLE);
 
+    USART_DMACmd(TTY_USART, USART_DMAReq_Rx, ENABLE);
 	DMA_Config(TTY_DMA_STREAM,
 			   TTY_DMA_CHANNEL,
 			   (u32)&TTY_USART->DR,
@@ -50,12 +49,12 @@ void Tty_Config(void)
 	DMA_DoubleBufferModeConfig(TTY_DMA_STREAM, (u32)buf[1], DMA_Memory_0);
 	DMA_DoubleBufferModeCmd(TTY_DMA_STREAM, ENABLE);
 
-	//DMA_Cmd(TTY_DMA_STREAM, ENABLE);
-*/
+	DMA_Cmd(TTY_DMA_STREAM, ENABLE);
+
 	NVIC_Config(TTY_NVIC, TTY_NVIC_PRE_PRIORITY, TTY_NVIC_SUB_PRIORITY);
 
 	USART_ITConfig(TTY_USART, USART_IT_RXNE, ENABLE);
-	//USART_ITConfig(TTY_USART, USART_IT_IDLE, ENABLE);
+	USART_ITConfig(TTY_USART, USART_IT_IDLE, ENABLE);
 
 	USART_Cmd(TTY_USART, ENABLE);
 }
@@ -206,17 +205,13 @@ void TTY_IRQ_HANDLER(void)
 		FIFO_Push(&rx_fifo, &rx_data, 1);
 		TtyRxCallback(rx_data);
 	}
-	/*
 	else if (USART_GetITStatus(TTY_USART, USART_IT_IDLE) != RESET)
 	{
 		uint8_t* pbuf = buf[0];
-
 		uint16_t rx_len = 0;
-
 		//clear the idle pending flag
 		(void)TTY_USART->SR;
 		(void)TTY_USART->DR;
-
 		DMA_Cmd(TTY_DMA_STREAM, DISABLE);
 		rx_len = TTY_DMA_BUF_SIZE - DMA_GetCurrDataCounter(TTY_DMA_STREAM);
 		TTY_DMA_STREAM->NDTR = (uint16_t)TTY_DMA_BUF_SIZE;     //relocate the DMA memory pointer to the beginning position
@@ -234,6 +229,5 @@ void TTY_IRQ_HANDLER(void)
 		DMA_Cmd(TTY_DMA_STREAM, ENABLE);
 		TtyIdleCallback(pbuf, rx_len);
 	}
-	*/
 }
 

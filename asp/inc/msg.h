@@ -389,6 +389,8 @@ typedef enum
 
 #pragma pack()
 
+void* Msg_GetData(const void* buf, const void* head);
+
 /**
  * @brief: Push a single message to message fifo. 
  * @param fifo Message fifo
