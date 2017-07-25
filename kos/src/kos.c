@@ -66,8 +66,7 @@ void KOS_Stop(void)
 
 void KOS_Spin(void)
 {
-	Dnl_Proc();
-	if (Clk_GetUsTick() % 2000 == 0) {
+	if (Clk_GetUsTick() % UPL_TSK_TMS == 0) {
 		Upl_Proc();
 	}
 }

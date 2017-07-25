@@ -24,16 +24,6 @@ static void vErrThreadFun(void* pvParam)
 	}
 }
 
-/*
-static void vDnlThreadFun(void* pvParam)
-{
-	while (1) {
-		Dnl_Proc();
-		vTaskDelay(DNL_TSK_TMS);
-	}
-}
-*/
-
 static void vUplThreadFun(void* pvParam)
 {
 	while (1) {
@@ -43,13 +33,11 @@ static void vUplThreadFun(void* pvParam)
 }
 
 static TaskHandle_t xErrTaskHandle = NULL;
-//static TaskHandle_t xDnlTaskHandle = NULL;
 static TaskHandle_t xUplTaskHandle = NULL;
 
 void vAppTaskCreate(void)
 {
 	xTaskCreate(vErrThreadFun, "vErrThreadFun", 128, NULL, 1, &xErrTaskHandle);
-	//xTaskCreate(vDnlThreadFun, "vDnlThreadFun", 128, NULL, 1, &xDnlTaskHandle);
 	xTaskCreate(vUplThreadFun, "vUplThreadFun", 128, NULL, 1, &xUplTaskHandle);
 }
 

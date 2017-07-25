@@ -20,15 +20,32 @@
 /*         Up-Link Communication         */
 /*****************************************/
 
-static uint8_t buf[2][UPL_BUF_SIZE];
-static FIFO_t fifo;
+static uint8_t len = 0;
+static uint8_t buf[UPL_BUF_SIZE];
 
-static MsgType_t msgType = MSG_TYPE_UWB;
+static MsgType_e msgType = MSG_TYPE_UWB;
 
+static BotMsg_t botMsg;
 static UwbMsg_t uwbMsg;
-static OdoMsg_t odoMsg;
 static ZGyroMsg_t zgyroMsg;
 static VDBusMsg_t vdbusMsg;
+
+static void Upl_PushBotMsg(void)
+{
+	botMsg.frame_id++;
+	botMsg.cbus.fs = odo.fs;
+	botMsg.cbus.cv.x = odo.cv.x * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.cv.y = odo.cv.y * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.cv.z = odo.cv.z * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.cp.x = odo.cp.x * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.cp.y = odo.cp.y * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.cp.z = odo.cp.z * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.gv.p = odo.gv.p * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.gp.p = odo.gp.p * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.gv.t = odo.gv.t * BOT_MSG_VALUE_SCALE;
+	botMsg.cbus.gp.t = odo.gp.p * BOT_MSG_VALUE_SCALE;
+	len = Msg_Pack(buf, &msg_head[MSG_TYPE_IDX_BOT], &botMsg);
+}
 
 static void Upl_PushUwbMsg(void)
 {
@@ -39,24 +56,7 @@ static void Upl_PushUwbMsg(void)
 	uwbMsg.y = top.gameInfo.gps.y;
 	uwbMsg.z = top.gameInfo.gps.z;
 	uwbMsg.w = top.gameInfo.gps.w;
-	Msg_Push(&fifo, buf[1], &msg_head_uwb, &uwbMsg);
-}
-
-static void Upl_PushOdoMsg(void)
-{
-	odoMsg.frame_id++;
-	odoMsg.fs = odo.fs;
-	odoMsg.cv.x = odo.cv.x * ODO_MSG_VALUE_SCALE;
-	odoMsg.cv.y = odo.cv.y * ODO_MSG_VALUE_SCALE;
-	odoMsg.cv.z = odo.cv.z * ODO_MSG_VALUE_SCALE;
-	odoMsg.cp.x = odo.cp.x * ODO_MSG_VALUE_SCALE;
-	odoMsg.cp.y = odo.cp.y * ODO_MSG_VALUE_SCALE;
-	odoMsg.cp.z = odo.cp.z * ODO_MSG_VALUE_SCALE;
-	odoMsg.gv.p = odo.gv.p * ODO_MSG_VALUE_SCALE;
-	odoMsg.gp.p = odo.gp.p * ODO_MSG_VALUE_SCALE;
-	odoMsg.gv.t = odo.gv.t * ODO_MSG_VALUE_SCALE;
-	odoMsg.gp.t = odo.gp.p * ODO_MSG_VALUE_SCALE;
-	Msg_Push(&fifo, buf[1], &msg_head_odo, &odoMsg);
+	len = Msg_Pack(buf, &msg_head[MSG_TYPE_IDX_UWB], &uwbMsg);
 }
 
 static void Upl_PushZGyroMsg(void)
@@ -64,63 +64,60 @@ static void Upl_PushZGyroMsg(void)
 	zgyroMsg.frame_id++;
 	zgyroMsg.angle = zgyro.angle;
 	zgyroMsg.rate = zgyro.rate;
-	Msg_Push(&fifo, buf[1], &msg_head_zgyro, &zgyroMsg);
+	len = Msg_Pack(buf, &msg_head[MSG_TYPE_IDX_ZGYRO], &zgyroMsg);
 }
 
 static void Upl_PushVDBusMsg(void)
 {
 	vdbusMsg.frame_id++;
 	DBus_Enc(&dbus, vdbusMsg.data);
-	Msg_Push(&fifo, buf[1], &msg_head_zgyro, &zgyroMsg);
+	len = Msg_Pack(buf, &msg_head[MSG_TYPE_IDX_VDBUS], &vdbusMsg);
 }
 
 static void Upl_SendMsg(void)
 {
-	uint8_t data;
-	while (!FIFO_IsEmpty(&fifo)) {
-		FIFO_Pop(&fifo, &data, 1);
-		IOS_COM_DEV.WriteByte(data);
-	}
+	IOS_COM_DEV.Write(buf, len);
 }
 
 void Upl_Init(void)
 {
-	FIFO_Init(&fifo, buf[0], UPL_BUF_SIZE);
+	len = 0;
+	memset(buf, 0, UPL_BUF_SIZE);
 }
 
 void Upl_Proc(void)
 {
 	switch (msgType) {
-		case MSG_TYPE_UWB:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_uwb.attr.length + MSG_LEN_EXT) {
-				Upl_PushUwbMsg();
+		case MSG_TYPE_BOT:
+			if (IOS_COM_DEV.GetTxFifoFree() >= MSG_LEN_OF(BOT)) {
+				Upl_PushBotMsg();
 				Upl_SendMsg();
-				msgType = MSG_TYPE_ODO;
+				msgType = MSG_TYPE_UWB;
 			}
 			break;
-		case MSG_TYPE_ODO:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_odo.attr.length + MSG_LEN_EXT) {
-				Upl_PushOdoMsg();
+		case MSG_TYPE_UWB:
+			if (IOS_COM_DEV.GetTxFifoFree() >= MSG_LEN_OF(UWB)) {
+				Upl_PushUwbMsg();
 				Upl_SendMsg();
 				msgType = MSG_TYPE_ZGYRO;
 			}
 			break;
 		case MSG_TYPE_ZGYRO:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_zgyro.attr.length + MSG_LEN_EXT) {
+			if (IOS_COM_DEV.GetTxFifoFree() >= MSG_LEN_OF(ZGYRO)) {
 				Upl_PushZGyroMsg();
 				Upl_SendMsg();
 				msgType = MSG_TYPE_VDBUS;
 			}
 			break;
 		case MSG_TYPE_VDBUS:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_vdbus.attr.length + MSG_LEN_EXT) {
+			if (IOS_COM_DEV.GetTxFifoFree() >= MSG_LEN_OF(VDBUS)) {
 				Upl_PushVDBusMsg();
 				Upl_SendMsg();
-				msgType = MSG_TYPE_UWB;
+				msgType = MSG_TYPE_BOT;
 			}
 			break;
 		default:
-			msgType = MSG_TYPE_UWB;
+			msgType = MSG_TYPE_BOT;
 		break;
 	}
 }

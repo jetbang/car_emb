@@ -20,11 +20,13 @@
 /*        Down-Link Communication        */
 /*****************************************/
 
-static VRCMsg_t vrcMsg;
-static VHCMsg_t vhcMsg;
-static CBusMsg_t cbusMsg;
-static VDBusMsg_t vdbusMsg;
-
+void Dnl_ProcBotMsg(const BotMsg_t* botMsg)
+{
+	Wdg_Feed(WDG_IDX_CBUS);
+	if (Rci_Sw(SW_IDX_R) == SW_DN) {
+		Cci_Proc(&botMsg->cbus);
+	}
+}
 
 void Dnl_ProcVRCMsg(const VRCMsg_t* vrcMsg)
 {
@@ -44,14 +46,6 @@ void Dnl_ProcVHCMsg(const VHCMsg_t* vhcMsg)
 	}
 }
 
-void Dnl_ProcCBusMsg(const CBusMsg_t* cbusMsg)
-{
-	Wdg_Feed(WDG_IDX_CBUS);
-	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		Cci_Proc(&cbusMsg->cbus);
-	}
-}
-
 void Dnl_ProcVDBusMsg(const VDBusMsg_t* vdbusMsg)
 {
 	Wdg_Feed(WDG_IDX_VDBUS);
@@ -62,75 +56,32 @@ void Dnl_ProcVDBusMsg(const VDBusMsg_t* vdbusMsg)
 	}
 }
 
-/*
-void Dnl_ProcSubscMsg(const SubscMsg_t* subscMsg)
+void Dnl_ProcMsg(const uint8_t typeId, const void* pData)
 {
-	if (subscMsg->msg_type & MSG_TYPE_CALIB) {
+	switch (typeId)
+	{
+		case MSG_TYPE_IDX_BOT:
+		{
+			Dnl_ProcBotMsg((BotMsg_t*)pData);
+			break;
+		}
+		case MSG_TYPE_IDX_VRC:
+		{
+			Dnl_ProcVRCMsg((VRCMsg_t*)pData);
+			break;
+		}
+		case MSG_TYPE_IDX_VHC:
+		{
+			Dnl_ProcVHCMsg((VHCMsg_t*)pData);
+			break;
+		}
+		case MSG_TYPE_IDX_VDBUS:
+		{
+			Dnl_ProcVDBusMsg((VDBusMsg_t*)pData);
+			break;
+		}
 	}
 }
-
-void Dnl_ProcCalibMsg(const CalibMsg_t* calibMsg)
-{
-	Wdg_Feed(WDG_IDX_CALIB);
-	if (calibMsg->auto_cali_flag & CALIB_FLAG_BIT_POS) {
-		Cal_Init();
-	}
-}
-
-void Dnl_ProcIMUCalib(const IMUCalib_t* IMUCalib)
-{
-	Calib_SetIMU(&cfg.imu, IMUCalib);
-	Cfg_SetFlag(CFG_FLAG_IMU);
-	cfg_sync_flag = 1;
-}
-
-void Dnl_ProcMagCalib(const MagCalib_t* MagCalib)
-{
-	Calib_SetMag(&cfg.mag, MagCalib);
-	Cfg_SetFlag(CFG_FLAG_MAG);
-	cfg_sync_flag = 1;
-}
-
-void Dnl_ProcVelCalib(const VelCalib_t* VelCalib)
-{
-	Calib_SetVel(&cfg.vel, VelCalib);
-	Cfg_SetFlag(CFG_FLAG_VEL);
-	cfg_sync_flag = 1;
-}
-
-void Dnl_ProcMecCalib(const MecCalib_t* MecCalib)
-{
-	Calib_SetMec(&cfg.mec, MecCalib);
-	Cfg_SetFlag(CFG_FLAG_MEC);
-	cfg_sync_flag = 1;
-}
-
-void Dnl_ProcPosCalib(const PosCalib_t* PosCalib)
-{
-	Calib_SetPos(&cfg.pos, PosCalib);
-	Cfg_SetFlag(CFG_FLAG_POS);
-	cfg_sync_flag = 1;
-}
-
-void Dnl_ProcPIDCalib(const PIDCalib_t* PIDCalib)
-{
-	if (PIDCalib->type == PID_CALIB_TYPE_CHASSIS_VELOCITY) {
-		Calib_SetPID(&cfg.cvl, PIDCalib);
-		Cfg_SetFlag(CFG_FLAG_CVL);
-		cfg_sync_flag = 1;
-	}
-	else if (PIDCalib->type == PID_CALIB_TYPE_GRABBER_VELOCITY) {
-		Calib_SetPID(&cfg.gvl, PIDCalib);
-		Cfg_SetFlag(CFG_FLAG_GVL);
-		cfg_sync_flag = 1;
-	}
-	else if (PIDCalib->type == PID_CALIB_TYPE_GRABBER_POSITION) {
-		Calib_SetPID(&cfg.gpl, PIDCalib);
-		Cfg_SetFlag(CFG_FLAG_GPL);
-		cfg_sync_flag = 1;
-	}
-}
-*/
 
 void Dnl_Init(void)
 {
@@ -138,21 +89,15 @@ void Dnl_Init(void)
 
 void Dnl_Proc(const uint8_t* buf, const uint32_t len)
 {
-	const MsgHead_t* headin = (MsgHead_t*)buf;
-	uint32_t msgLen = headin->attr.length;
-	if (headin->value != msg_head_cbus.value)
+	uint8_t i = 0;
+	void* pData = NULL;
+	for (i = 0; i < MSG_TYPE_NUM; i++)
 	{
-		return;
+		pData = Msg_GetData(buf, &msg_head[i]);
+		if (pData == NULL) continue;
+		Dnl_ProcMsg(i, pData);
+		break;
 	}
-	if (len < msgLen + MSG_LEN_EXT)
-	{
-		return;
-	}
-	if (!CRC16Check(buf, len, headin->attr.token))
-	{
-		return;
-	}
-	ledg.Toggle();
 }
 
 

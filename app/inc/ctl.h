@@ -26,6 +26,7 @@ extern "C" {
 #endif
 
 #include "sys.h"
+#include "dci.h"
 #include "cmd.h"
 #include "odo.h"
 #include "pid.h"

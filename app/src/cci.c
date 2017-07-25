@@ -16,10 +16,6 @@
  
 #include "cci.h"
 
-#include "led.h"
-#include "msg.h"
-#include <stdio.h>
-
 /*************************************************/
 /*            CBUS Control Interface             */
 /*************************************************/
@@ -33,10 +29,6 @@ static void GetChassisStateRef(const CBus_t* cbus)
 	cmd.cv.x = cbus->cv.x / CBUS_VALUE_SCALE;
 	cmd.cv.y = cbus->cv.y / CBUS_VALUE_SCALE;
 	cmd.cv.z = cbus->cv.z / CBUS_VALUE_SCALE;
-
-	//printf("%d\n", tty.GetRxFifoUsed());
-	//printf("%d,%d,%d,%d,%d,%d\n", cbus->cv.x, cbus->cv.y, cbus->cv.z, cbus->cp.x, cbus->cp.y, cbus->cp.z);
-	//ledg.Toggle();
 
 	LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
 	LIMIT(cmd.cv.y, -cfg.vel.y, cfg.vel.y);
@@ -81,8 +73,8 @@ static void GetChassisStateRef(const CBus_t* cbus)
 
 static void GetPantiltStateRef(const CBus_t* cbus)
 {
-	cmd.gp.p = cbus->gp.p;
-	cmd.gp.t = cbus->gp.t;
+	cmd.gp.p = cbus->gp.p / CBUS_VALUE_SCALE;
+	cmd.gp.t = cbus->gp.t / CBUS_VALUE_SCALE;
 
 	LIMIT(cmd.gv.p, -cfg.vel.p, cfg.vel.p);
 	LIMIT(cmd.gv.t, -cfg.vel.t, cfg.vel.t);

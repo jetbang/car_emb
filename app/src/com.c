@@ -28,7 +28,6 @@ void Com_Init(void)
 
 void Com_Proc(void)
 {
-	Dnl_Proc();
 	Upl_Proc();
 }
 

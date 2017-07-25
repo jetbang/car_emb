@@ -23,12 +23,12 @@ int main()
 	// Boot KOS
 	KOS_Boot();
 	
-	//vAppTaskCreate();
-	//vTaskStartScheduler();
+	vAppTaskCreate();
+	vTaskStartScheduler();
 	
 	while(1)
 	{
-		//KOS_Spin();
+		// KOS_Spin();
 	}
 }
 

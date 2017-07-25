@@ -23,7 +23,7 @@ void BtmRxCallback(uint8_t data)
 
 void BtmIdleCallback(const uint8_t* buf, const uint32_t len)
 {
-	// TODO
+	Dnl_Proc(buf, len);
 }
 
 void DbiRxCallback(uint8_t data)

@@ -30,11 +30,16 @@ extern "C" {
 #include "cal.h"
 #include "dci.h"
 #include "cci.h"
-#include "jud.h"
 #include "fun.h"
 
 void Dnl_Init(void);
 void Dnl_Proc(const uint8_t* buf, const uint32_t len);
+
+void Dnl_ProcBotMsg(const BotMsg_t* botMsg);
+void Dnl_ProcVRCMsg(const VRCMsg_t* vrcMsg);
+void Dnl_ProcVHCMsg(const VHCMsg_t* vhcMsg);
+void Dnl_ProcVDBusMsg(const VDBusMsg_t* vdbusMsg);
+void Dnl_ProcMsg(const uint8_t typeId, const void* pData);
 
 #ifdef __cplusplus
 }

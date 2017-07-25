@@ -23,9 +23,9 @@ void Err_Init(void)
 
 void Err_Proc(void)
 {
-	if (Wdg_IsOkay()) {
-		//LED_GREEN_ON();
-		//LED_RED_OFF();
+	if (Rci_Sw(SW_IDX_R) == SW_DN && Wdg_HasErr(WDG_ERR_CBUS))
+	{
+		CS_Set(&cmd.cv, 0, 0, 0);
 	}
 }
 

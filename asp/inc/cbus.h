@@ -30,36 +30,42 @@ extern "C" {
 
 #pragma pack(1)
 
-typedef struct
-{
-	int32_t x;
-	int32_t y;
-	int32_t z;
-}ChassisState_p; // Chassis state control typedef
+#define VEC3_TYPED_DEF(TYPE,NAME) \
+typedef struct \
+{ \
+	TYPE x; \
+	TYPE y; \
+	TYPE z; \
+}NAME;
 
-typedef struct
-{
-	int16_t x;
-	int16_t y;
-	int16_t z;
-}ChassisState_v; // Chassis state control typedef
+#define GIM2_TYPED_DEF(TYPE,NAME) \
+typedef struct \
+{ \
+	TYPE p; \
+	TYPE t; \
+}NAME;
 
-typedef struct
-{
-	int16_t p;
-	int16_t t;
-	int16_t z;
-}PantiltState_c; // Pantilt state control typedef
+#define GIM3_TYPED_DEF(TYPE,NAME) \
+typedef struct \
+{ \
+	TYPE p; \
+	TYPE t; \
+	TYPE z; \
+}NAME;
+
+VEC3_TYPED_DEF(int32_t, ChassisState_i) // Chassis state control typedef (int)
+VEC3_TYPED_DEF(int16_t, ChassisState_s) // Chassis state control typedef (short)
+GIM2_TYPED_DEF(int16_t, PantiltState_s) // Pantilt state control typedef (short)
 
 #define CBUS_VALUE_SCALE 1e3f
 
 typedef struct
 {
 	uint32_t fs; // Flag bits
-	ChassisState_p cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
-	ChassisState_v cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
-	PantiltState_c gp; // Pantilt position, unit: linear: mm, angular: rad
-	PantiltState_c gv; // Pantilt velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	ChassisState_i cp; // Chassis position, unit: linear: mm, angular: 1e-3rad
+	ChassisState_s cv; // Chassis velocity, unit: linear: mm/s, angular: 1e-3rad/s
+	PantiltState_s gp; // Pantilt position, unit: linear: mm, angular: rad
+	PantiltState_s gv; // Pantilt velocity, unit: linear: mm/s, angular: 1e-3rad/s
 }CBus_t;
 
 #pragma pack()
