@@ -25,9 +25,6 @@ extern "C" {
 #include "fifo.h"
 #include "hal_uart.h"
 
-#define TTY_USE_DMA  0
-#define TTY_USE_FIFO 1
-
 #define TTY_TX_PIN PG9
 #define TTY_RX_PIN PG14
 #define TTY_USART USART6
@@ -47,7 +44,7 @@ extern "C" {
 
 #define TTY_IRQ_HANDLER IRQ_HANDLER(USART6)
 #define TTY_NVIC IRQ(USART6)
-#define TTY_NVIC_PRE_PRIORITY 1
+#define TTY_NVIC_PRE_PRIORITY 0
 #define TTY_NVIC_SUB_PRIORITY 1
 
 #define TTY_DMA_STREAM DMA2_Stream1
@@ -58,7 +55,6 @@ extern "C" {
 #define TTY_RX_FIFO_SIZE 128u
 #define TTY_TX_FIFO_SIZE 128u
 
-void Tty_InitIO(void);
 void Tty_Config(void);
 
 uint32_t Tty_GetRxFifoSize(void);

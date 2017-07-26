@@ -153,7 +153,7 @@ typedef enum
 #define MOTOR_ECD_ANGLE_MAX 8191
 typedef struct
 {
-	uint8_t id; // 0~5
+	uint8_t id; // 0~6
 	uint32_t frame_id;
 	uint16_t ecd_angle; // Encoder angle, range from 0~8191
 	int32_t round;

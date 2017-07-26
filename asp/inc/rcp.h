@@ -26,9 +26,9 @@
 #define CH_MID	           	 	 ((uint16_t)1024  )
 #define CH_MAX              	 ((uint16_t)1684  )
 /* ----------------------- RC Switch Value Definition----------------------------- */
-#define SW_UP                  ((uint8_t)1      )
+#define SW_UP                    ((uint8_t)1      )
 #define SW_MD                	 ((uint8_t)3      )
-#define SW_DN                  ((uint8_t)2      )
+#define SW_DN                    ((uint8_t)2      )
 
 #define CH_CNT   4
 #define SW_CNT   2

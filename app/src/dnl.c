@@ -80,6 +80,8 @@ void Dnl_ProcMsg(const uint8_t typeId, const void* pData)
 			Dnl_ProcVDBusMsg((VDBusMsg_t*)pData);
 			break;
 		}
+		default:
+			break;
 	}
 }
 

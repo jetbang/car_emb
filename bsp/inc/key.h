@@ -23,15 +23,10 @@ extern "C" {
 
 #include "stm32util.h"
 
-#define KEY_H_PIN PB0
-#define KEY_L_PIN PC2
-#define KEY_M_PIN PB1
-#define KEY_N_PIN PC3
+#define KEY_PIN PD10
 	
-#define KEY_H_IS_PRESSED() (GPIO_READ_IN(KEY_H_PIN) == 0)
-#define KEY_L_IS_PRESSED() (GPIO_READ_IN(KEY_L_PIN) == 0)
-#define KEY_M_IS_PRESSED() (GPIO_READ_IN(KEY_M_PIN) == 0)
-#define KEY_N_IS_PRESSED() (GPIO_READ_IN(KEY_N_PIN) == 0)
+#define KEY_IS_PRESSED() (GPIO_READ_IN(KEY_PIN) == 0)
+#define KEY_IS_PRESSED() (GPIO_READ_IN(KEY_PIN) == 0)
 	
 void Key_Config(void);
 

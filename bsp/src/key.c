@@ -18,10 +18,7 @@
 
 void Key_Config(void)
 {
-	GPIO_In(KEY_H_PIN);
-	GPIO_In(KEY_L_PIN);
-	GPIO_In(KEY_M_PIN);
-	GPIO_In(KEY_N_PIN);
+	GPIO_In(KEY_PIN);
 }
 
 

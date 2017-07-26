@@ -35,6 +35,7 @@ void Cal_Init(void)
 	Maf_Init(&maf, buf, CAL_GM_MAF_BUF_LEN);
 }
 
+/*
 // Set gimbal position elevator high
 static void Cal_SetGpeh(void)
 {
@@ -54,10 +55,12 @@ static void Cal_SetGpel(void)
 	//cfg.pos.el = odo.gp.e;
 	Flag_Set(&calFlag, CAL_FLAG_GPEL);
 }
+*/
 
 // Set gimbal position elevator
 static void Cal_ProcGpe(void)
 {
+	/*
 	if (!Cal_HasFlag(CAL_FLAG_GPEL)) {
 		if (!KEY_L_IS_PRESSED()) {
 			GM_CMD(0, CAL_GM_DRV_CURRENT * (-CAL_GM_UP_DIR));
@@ -94,6 +97,7 @@ static void Cal_ProcGpe(void)
 			//printf("key_h detected, gph=%f\n", cfg.pos.eh);
 		}
 	}
+	*/
 }
 
 static void Cal_SetGpch(void)

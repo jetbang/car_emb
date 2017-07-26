@@ -24,7 +24,7 @@ extern "C" {
 #include "wdg.h"
 #include "act.h"
 
-#define ERR_TSK_TMS 10
+#define ERR_TSK_TMS 50
 
 void Err_Init(void);
 void Err_Proc(void);

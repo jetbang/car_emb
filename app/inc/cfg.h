@@ -152,7 +152,7 @@ typedef struct
 
 #define CVL_CFG_DEF \
 { \
-	.kp = 1100, \
+	.kp = 1000, \
 	.ki = 0, \
 	.kd = 0, \
 	.db = 0, \

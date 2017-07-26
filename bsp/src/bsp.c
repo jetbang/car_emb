@@ -32,7 +32,7 @@ void Bsp_Config(void)
 	Tty_Config();
 	Can1_Config();
 	Can2_Config();
-	SR04_Config();
+	//SR04_Config(); // Not used
 	Spi5_Config();
 	Laser_Config();
 	MPU6500_Config();
