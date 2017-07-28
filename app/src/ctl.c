@@ -78,17 +78,19 @@ static void ChassisStateCtl(void)
 	Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
 
 	for (i = 0; i < CCL_NUM; i++) {
-		ctl.mc.w[i] = PID_Calc(&ctl.mv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
+		ctl.mc.w[i] = PID_Calc(&pid.mv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
 	}
 
 }
 
 static void PantiltStateCtl(void)
 {
+	/*
 	ctl.gv.p = PID_Calc(&pid.gp.p, cmd.gp.p, odo.gp.p);
 	ctl.gv.t = PID_Calc(&pid.gp.t, cmd.gp.t, odo.gp.t);
 	ctl.gc.p = PID_Calc(&pid.gv.p, ctl.gv.p, odo.gv.p) * rmp.out;
-	ctl.gc.t = PID_Calc(&pid.gv.t, ctl.gv.t, odo.gv.t) * rmp.out;;
+	ctl.gc.t = PID_Calc(&pid.gv.t, ctl.gv.t, odo.gv.t) * rmp.out;
+	*/
 }
 
 static void Rmp_Init(Rmp_t* rmp)
@@ -171,8 +173,8 @@ void Ctl_Init(void)
 	Rmp_Init(&rmp);
 
 	for (i = 0 ; i < CCL_NUM; i++) {
-		Cvl_Init(&ctl.mv.w[i]);
-		Cpl_Init(&ctl.mp.w[i]);
+		Cvl_Init(&pid.mv.w[i]);
+		Cpl_Init(&pid.mp.w[i]);
 	}
 
 	Gvl_Init(&pid.gv.p);
