@@ -57,6 +57,21 @@ VEC3_TYPED_DEF(int32_t, ChassisState_i) // Chassis state control typedef (int)
 VEC3_TYPED_DEF(int16_t, ChassisState_s) // Chassis state control typedef (short)
 GIM2_TYPED_DEF(int16_t, PantiltState_s) // Pantilt state control typedef (short)
 
+
+#define CBUS_FS_CP     (1u<<0)
+#define CBUS_FS_CP_ABS (1u<<1)
+#define CBUS_FS_CV     (1u<<2)
+#define CBUS_FS_GV     (1u<<3)
+#define CBUS_FS_GP_ABS (1u<<4)
+#define CBUS_FS_LASR   (1u<<5)
+#define CBUS_FS_FRIC   (1u<<6)
+#define CBUS_FS_TRIG   (1u<<7)
+
+#define CBUS_FS_MOD (CBUS_FS_CP|CBUS_FS_CP_ABS|CBUS_FS_GV|CBUS_FS_GP_ABS)
+#define CBUS_FS_FUN (CBUS_FS_LASR|CBUS_FS_FRIC|CBUS_FS_TRIG)
+
+#define CBUS_FS_ALL (CBUS_FS_MOD|CBUS_FS_FUN)
+
 #define CBUS_VALUE_SCALE 1e3f
 
 typedef struct

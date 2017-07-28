@@ -55,10 +55,10 @@ typedef struct
 typedef struct
 {
 	uint8_t flag; // 0:invalid 1:valid
-    uint32_t x;
-    uint32_t y;
-    uint32_t z;
-    uint32_t w;
+    float x;
+    float y;
+    float z;
+    float w;
 } JudGps_t;
 
 /** 

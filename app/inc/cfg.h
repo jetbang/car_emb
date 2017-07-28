@@ -169,7 +169,7 @@ typedef struct
 	.kp = 30, \
 	.ki = 0, \
 	.kd = 0, \
-	.db = 0, \
+	.db = 1, \
 	.it = 0, \
 	.Emax = 3000, \
 	.Pmax = 4950, \

@@ -27,6 +27,8 @@ static MsgType_e msgType = MSG_TYPE_UWB;
 
 static BotMsg_t botMsg;
 static UwbMsg_t uwbMsg;
+//static ImuMsg_t imuMsg;
+//static MagMsg_t magMsg;
 static ZGyroMsg_t zgyroMsg;
 static VDBusMsg_t vdbusMsg;
 
@@ -51,13 +53,25 @@ static void Upl_PushUwbMsg(void)
 {
 	if (!Flag_Get(&top.flag, TOP_FLAG_GIF)) return;
 	uwbMsg.frame_id++;
-	uwbMsg.flag = top.gameInfo.gps.flag;
-	uwbMsg.x = top.gameInfo.gps.x;
-	uwbMsg.y = top.gameInfo.gps.y;
-	uwbMsg.z = top.gameInfo.gps.z;
-	uwbMsg.w = top.gameInfo.gps.w;
+	uwbMsg.data.flag = top.gameInfo.gps.flag;
+	uwbMsg.data.x = top.gameInfo.gps.x;
+	uwbMsg.data.y = top.gameInfo.gps.y;
+	uwbMsg.data.z = top.gameInfo.gps.z;
+	uwbMsg.data.w = top.gameInfo.gps.w;
 	len = Msg_Pack(buf, &msg_head[MSG_TYPE_IDX_UWB], &uwbMsg);
 }
+
+/*
+static void Upl_PushImuMsg(void)
+{
+	// TODO
+}
+
+static void Upl_PushMagMsg(void)
+{
+	// TODO
+}
+*/
 
 static void Upl_PushZGyroMsg(void)
 {

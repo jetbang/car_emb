@@ -26,6 +26,7 @@ extern "C" {
 #endif
 
 #include "sys.h"
+#include "cci.h"
 #include "dci.h"
 #include "cmd.h"
 #include "odo.h"
@@ -38,6 +39,7 @@ typedef struct
 	ChassisState_t cv;
 	MecanumState_t mv;
 	MecanumState_t mc;
+	MecanumState_t mp;
 	PantiltState_t gv;
 	PantiltState_t gc;
 }Ctl_t;
@@ -56,8 +58,8 @@ typedef struct
 
 typedef struct
 {
-	Ccl_t cp;
-	Ccl_t cv;
+	Ccl_t mp;
+	Ccl_t mv;
 	Gcl_t gp;
 	Gcl_t gv;
 }Pid_t;

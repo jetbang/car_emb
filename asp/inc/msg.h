@@ -32,6 +32,7 @@
 extern "C" {
 #endif
 
+#include "jud.h"
 #include "cbus.h"
 #include "dbus.h"
 #include "fifo.h"
@@ -88,14 +89,11 @@ typedef struct
 	int16_t mz;
 }MagMsg_t;
 
+#define UWB_MSG_VALUE_SCALE 1.0f
 typedef struct
 {
 	uint32_t frame_id;
-	uint8_t  flag; //0:invalid 1:valid
-	uint32_t x;
-	uint32_t y;
-	uint32_t z;
-	uint32_t w;
+	JudGps_t data;
 }UwbMsg_t;
 
 #define PTZ_MSG_VALUE_SCALE 1e3f

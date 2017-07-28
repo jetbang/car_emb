@@ -31,13 +31,46 @@ static void RmpGeneraterCtl(void)
 
 static void PeriphsStateCtl(void)
 {
-	FS_Cpy(&ctl.fs, cmd.fs, FS_ALL);
+	FS_Cpy(&ctl.fs, cmd.fs, CBUS_FS_ALL);
 }
 
 static void ChassisStateCtl(void)
 {
 	uint8_t i = 0;
 
+	/*
+	if (Flag_Get(&cmd.fs, CBUS_FS_CP))
+	{
+		float dpx = Flag_Get(&cmd->fs, CBUS_FS_CP_ABS) ? cmd.cp.x - odo.cp.x : cmd.cp.x;
+		float dpy = Flag_Get(&cmd->fs, CBUS_FS_CP_ABS) ? cmd.cp.y - odo.cp.y : cmd.cp.y;
+		float dpz = Flag_Get(&cmd->fs, CBUS_FS_CP_ABS) ? cmd.cp.z - odo.cp.z : cmd.cp.z;
+
+		//if (pid.mv.)
+		ctl.cv.x = map(dpx, -CCI_DPT_TH, CCI_DPT_TH, -1, 1) * cmd.cv.x;
+		ctl.cv.y = map(dpy, -CCI_DPT_TH, CCI_DPT_TH, -1, 1) * cmd.cv.y;
+		ctl.cv.z = map(dpz, -CCI_DPR_TH, CCI_DPR_TH, -1, 1) * cmd.cv.z;
+
+		Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
+
+		for (i = 0; i < CCL_NUM; i++) {
+			ctl.mp.w[i] += ctl.mv.w[i] * SYS_CTL_TSC;
+			ctl.mv.w[i] = PID_Calc(&ctl.mp.w[i], ctl.mp.w[i], odo.mp.w[i]);
+			ctl.mc.w[i] = PID_Calc(&ctl.mv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
+		}
+	}
+	else
+	{
+		ctl.cv.x = cmd.cv.x;
+		ctl.cv.y = cmd.cv.y;
+		ctl.cv.z = cmd.cv.z;
+
+		Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
+
+		for (i = 0; i < CCL_NUM; i++) {
+			ctl.mc.w[i] = PID_Calc(&ctl.mv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
+		}
+	}
+	*/
 	ctl.cv.x = cmd.cv.x;
 	ctl.cv.y = cmd.cv.y;
 	ctl.cv.z = cmd.cv.z;
@@ -45,8 +78,9 @@ static void ChassisStateCtl(void)
 	Mec_Decomp((float*)&ctl.cv, (float*)&ctl.mv);
 
 	for (i = 0; i < CCL_NUM; i++) {
-		ctl.mc.w[i] = PID_Calc(&pid.cv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
+		ctl.mc.w[i] = PID_Calc(&ctl.mv.w[i], ctl.mv.w[i], odo.mv.w[i]) * rmp.out;
 	}
+
 }
 
 static void PantiltStateCtl(void)
@@ -137,8 +171,8 @@ void Ctl_Init(void)
 	Rmp_Init(&rmp);
 
 	for (i = 0 ; i < CCL_NUM; i++) {
-		Cvl_Init(&pid.cv.w[i]);
-		Cpl_Init(&pid.cp.w[i]);
+		Cvl_Init(&ctl.mv.w[i]);
+		Cpl_Init(&ctl.mp.w[i]);
 	}
 
 	Gvl_Init(&pid.gv.p);
