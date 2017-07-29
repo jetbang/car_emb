@@ -35,7 +35,7 @@ extern "C" {
 #include "cfg.h"
 #include "mecanum.h"
 
-#define MOTOR_REDUCTION_RATION 19.0f
+#define MOTOR_REDUCTION_RATIO 19.0f
 
 void Mec_Config(float lx, float ly, float r1, float r2);
 void Mec_Synthe(const float* w, float* v);

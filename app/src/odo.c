@@ -33,8 +33,8 @@ static void GetMecanumStateFdb(void)
 {
 	uint8_t i = 0;
 	for (i = 0; i < 4; i++) {
-		odo.mp.w[i] = motor[i].angle_rad / MOTOR_REDUCTION_RATION;
-		odo.mv.w[i] = motor[i].rate_rad / MOTOR_REDUCTION_RATION;
+		odo.mp.w[i] = motor[i].angle_rad / MOTOR_REDUCTION_RATIO;
+		odo.mv.w[i] = motor[i].rate_rad / MOTOR_REDUCTION_RATIO;
 	}
 }
 
